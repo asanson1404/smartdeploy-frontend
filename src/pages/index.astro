@@ -1,0 +1,142 @@
+---
+import "../css/global.css";
+---
+
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Soroban Abundance Token</title>
+    <meta property="og:title" content="🌳 Soroban Abundance Token" />
+    <meta
+      property="og:description"
+      content="A Soroban Fungible token that you can mint to yourself"
+    />
+    <link rel="icon" href="/soroban-abundance-token/img/favicon.ico" />
+    <link rel="manifest" href="/soroban-abundance-token/site.webmanifest" />
+    <link
+      rel="apple-touch-icon"
+      href="/soroban-abundance-token/img/android-chrome-192x192.png"
+    />
+    <meta
+      property="og:image"
+      content="/soroban-abundance-token/img/social-preview.png"
+    />
+    <meta
+      property="og:url"
+      content="https://ahalabs.dev/soroban-abundance-token"
+    />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta
+      name="twitter:image"
+      content="https://ahalabs.dev/soroban-abundance-token/social-preview.png"
+    />
+  </head>
+  <body>
+    <nav style="position: absolute; right: 0.5em; top: 0.5em; z-index: 2">
+      <div
+        id="menu"
+        class="dropdown"
+        aria-live="polite"
+        style="font-size: 0.8em"
+      >
+        <button class="menu-icon" aria-controls="menu">
+          <div></div>
+          <span class="visually-hidden">menu</span>
+        </button>
+        <div class="right" style="width: 7em">
+          <div>
+            <a href="https://github.com/AhaLabs/soroban-abundance-token"
+              >View source</a
+            >
+          </div>
+        </div>
+      </div>
+    </nav>
+
+    <main style="margin: 0 auto; max-width: 50em; padding-bottom: 2rem">
+      <div style="text-align: center; margin: 2rem auto 5rem; max-width: 25em">
+        <h1 class="title">
+          Abundance Token (<span data-behavior="tokenSymbol">ABND</span>)
+        </h1>
+        <p>
+          An non-scarce <a href="https://soroban.stellar.org/" rel="nofollow"
+            >Soroban</a
+          >
+          <a
+            href="https://soroban.stellar.org/docs/reference/interfaces/token-interface"
+            rel="nofollow">Fungible Token</a
+          >. Go ahead and take as much as you want!
+        </p>
+      </div>
+      <div data-behavior="gettingStarted" style="display: none">
+        <h1>Let's get you set up</h1>
+        <p>You'll need a few things to get started. Don't worry, it's easy!</p>
+        <div class="todo-cards">
+          <div id="getFreighter">
+            <h2>1. Get Freighter</h2>
+            <p>
+              Freighter is a browser extension that lets you interact with the
+              Soroban network.
+            </p>
+            <p>
+              <a href="https://www.freighter.app/">Get Freighter</a>
+            </p>
+          </div>
+          <div id="enableFreighter">
+            <h2>2. Enable Freighter</h2>
+            <p>
+              Once you install Freighter, this page will prompt you to connect
+              to it. Say yes!
+            </p>
+          </div>
+          <div id="selectFuturenet">
+            <h2>3. Select Futurenet</h2>
+            <ol style="padding: 0 0 0 1em; margin-bottom: 0">
+              <li>
+                Freighter Settings → Preferences, enable Experimental Mode.
+              </li>
+              <li>Select Futurenet network in the top right.</li>
+            </ol>
+          </div>
+        </div>
+      </div>
+
+      <div
+        data-behavior="allReady"
+        style="display: none; text-align: center; margin: 2rem auto 0; max-width: 25em; padding-bottom: 2rem"
+      >
+        <!-- <h2>
+          Deployed Contracts:
+          <ul class="contracts" data-behavior="deployedContracts">🤔</ul>
+        </h2> -->
+        <button data-behavior="mint"> Mint One</button>
+        <!-- the takes-an-argument version
+      <form style="margin: 0 auto; max-width: 15em">
+        <fieldset id="fieldset">
+          <label
+            for="amount"
+            style="display: block; margin: 2em 0 0.1em"
+          >
+            Want more?
+          </label>
+          <div style="display: flex">
+            <input
+              autocomplete="off"
+              id="amount"
+              type="number"
+            />
+            <button id="submit" disabled style="border-radius: 0 5px 5px 0">
+              OK
+            </button>
+          </div>
+        </fieldset>
+      </form>
+      -->
+      </div>
+    </main>
+
+    <script src="../js/index.js"></script>
+  </body>
+</html>
