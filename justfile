@@ -34,7 +34,7 @@ fetch:
     @just soroban contract fetch --network futurenet --id {{ CONTRACT_ID }} --out-file {{ SMARTDEPLOY }}
     
 
-generate: install_generated
+generate: setup && install_generated
     ./target/bin/soroban contract bindings ts \
         --wasm {{ SMARTDEPLOY }} \
         --id {{ CONTRACT_ID }} \

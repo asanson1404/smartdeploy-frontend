@@ -13,6 +13,7 @@ Contributing
 
 Get the frontend working:
 0. Clone this repo and `cd` into its directory
+0. Generate the JS client for the contract with `just generate` (or `npm run generate`, which runs `just generate`)
 0. Install dependencies with `npm install`
 0. Run frontend app in development mode with `npm run dev` or `just dev` (see other commands you can run with `just --list` and in the `scripts` section of `package.json`)
 
