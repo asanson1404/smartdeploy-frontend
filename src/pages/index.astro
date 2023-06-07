@@ -102,38 +102,21 @@ import "../css/global.css";
           </div>
         </div>
       </div>
-
+      <div id="userData">
+        <h1>User Info:</h1>
+        <h2>Address:</h2>
+         <code style="font-size: 22px" id="userAddress"></code>
+        <div id="userContractsWrapper">
+          <h2>User Contracts:</h2>
+          <div id="userContracts">
+            <ul data-behavior="userContracts"></ul>
+          </div>
+        </div>
+      </div>
       <div
         data-behavior="allReady"
         style="display: none; text-align: center; margin: 2rem auto 0; max-width: 25em; padding-bottom: 2rem"
       >
-        <!-- <h2>
-          Deployed Contracts:
-          <ul class="contracts" data-behavior="deployedContracts">🤔</ul>
-        </h2> -->
-        <button data-behavior="mint"> Mint One</button>
-        <!-- the takes-an-argument version
-      <form style="margin: 0 auto; max-width: 15em">
-        <fieldset id="fieldset">
-          <label
-            for="amount"
-            style="display: block; margin: 2em 0 0.1em"
-          >
-            Want more?
-          </label>
-          <div style="display: flex">
-            <input
-              autocomplete="off"
-              id="amount"
-              type="number"
-            />
-            <button id="submit" disabled style="border-radius: 0 5px 5px 0">
-              OK
-            </button>
-          </div>
-        </fieldset>
-      </form>
-      -->
       </div>
     </main>
 
