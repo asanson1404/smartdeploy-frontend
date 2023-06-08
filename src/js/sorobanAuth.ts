@@ -35,21 +35,15 @@ async function ensureAccountFunded(publicKey: string): Promise<void> {
 
 // get user's deployed contracts
 async function getUserContracts(
-  userAddress: string
+  { start, limit }: { start?: number, limit?: number }
 ): Promise<Array<[string, string]>> {
   const contractsResult = await list_deployed_contracts({
-    start: undefined,
-    limit: undefined,
+    start,
+    limit,
   });
 
-  if (contractsResult.isErr()) {
-    throw new Error(contractsResult.unrap_err().message);
-  }
-
   // filter contracts for the ones where the address matches the user's address
-  const userContracts = contractsResult
-    .unwrap()
-    .filter(([, address]) => address === userAddress);
+  const userContracts = contractsResult.unwrap();
 
   return userContracts;
 }
@@ -69,7 +63,7 @@ async function getUserContracts(
       if (window.sorobanUserAddress) {
         await ensureAccountFunded(window.sorobanUserAddress);
 
-        const userContracts = await getUserContracts(window.sorobanUserAddress);
+        const userContracts = await getUserContracts({ start: 0, limit: 100 });
         console.log("User Contracts: ", userContracts);
 
         // update DOM
