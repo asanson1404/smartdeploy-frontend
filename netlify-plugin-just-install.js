@@ -1,10 +1,18 @@
 module.exports = {
     async onPreBuild({ utils }) {
       try {
-        // Run the shell command to install `just` from npm
-        await utils.run.command('npm install just');
+        // Run the 'just generate' command
+        await utils.run.command('npx just generate');
       } catch (error) {
-        utils.build.failBuild('Failed to install `just`', { error });
+        utils.build.failBuild('Failed to run `just generate` command', { error });
+      }
+    },
+    async onBuild({ utils }) {
+      try {
+        // Run the 'npm run build' command
+        await utils.run.command('npm run build');
+      } catch (error) {
+        utils.build.failBuild('Failed to run `npm run build` command', { error });
       }
     },
   };
