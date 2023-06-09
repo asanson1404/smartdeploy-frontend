@@ -3,8 +3,8 @@ const just = require("just");
 module.exports = {
   async onPreBuild({ utils }) {
     try {
-      // Run the 'just generate' command
-      await just.generate();
+      // Run the 'just generate' command via shell
+      await utils.run.command("just generate");
     } catch (error) {
       utils.build.failBuild("Failed to run `just generate` command", { error });
     }
