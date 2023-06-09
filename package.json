@@ -3,7 +3,6 @@
   "type": "module",
   "version": "0.0.1",
   "scripts": {
-    "preinstall": "just setup",
     "soroban": "./target/bin/soroban",
     "dev": "astro dev",
     "start": "astro dev",
