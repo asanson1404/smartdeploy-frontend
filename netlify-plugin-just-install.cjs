@@ -3,8 +3,10 @@ const just = require("just");
 module.exports = {
   async onPreBuild({ utils }) {
     try {
-      // Run the 'just generate' command via shell
-      await utils.run.command("just generate");
+      // Run the 'just generate' command via shell using the absolute path
+      await utils.run.command(
+        "/opt/build/repo/node_modules/.bin/just generate"
+      );
     } catch (error) {
       utils.build.failBuild("Failed to run `just generate` command", { error });
     }
