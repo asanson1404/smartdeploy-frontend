@@ -4,7 +4,7 @@ import {
   isConnected,
 } from "@stellar/freighter-api";
 import render from "./render";
-import { Server, list_deployed_contracts } from "smartdeploy";
+import { Server, list_deployed_contracts } from "../../target/js-clients/smartdeploy";
 
 type RpcError = { code: number; message: string };
 
@@ -21,7 +21,6 @@ async function ensureAccountFunded(publicKey: string): Promise<void> {
       await fetch(`${friendbotUrl}?addr=${publicKey}`);
       await Server.getAccount(publicKey);
     } else {
-      // re-throw
       throw e;
     }
   }
