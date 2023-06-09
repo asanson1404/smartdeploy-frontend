@@ -3,10 +3,10 @@ const { spawnSync } = require('child_process');
 module.exports = {
   async onPreBuild({ utils }) {
     try {
-      // Run the 'npx just generate' command using spawnSync
-      spawnSync('npx', ['just', 'generate'], { stdio: 'inherit' });
+      // Run the 'npm run preinstall' command using spawnSync
+      spawnSync('npm', ['run', 'preinstall'], { stdio: 'inherit' });
     } catch (error) {
-      utils.build.failBuild('Failed to run `just generate` command', { error });
+      utils.build.failBuild('Failed to run `npm run preinstall` command', { error });
     }
   },
   async onBuild({ utils }) {

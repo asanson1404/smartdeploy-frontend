@@ -1,5 +1,5 @@
 [build]
-command = "just build_generated"
+command = "npm ci && npm run build"
 
 [[plugins]]
-package = "./netlify-plugin-just-install.cjs"
+package = "netlify-plugin-just-install.cjs"
