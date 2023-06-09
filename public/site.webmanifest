@@ -1,7 +1,7 @@
 {
-  "name": "Soroban Abundance Token",
-  "short_name": "🌳 Abundance",
-  "description": "A Soroban Fungible Token that anyone can mint to themselves",
+  "name": "SmartDeploy",
+  "short_name": "SmartDeploy",
+  "description": "SmartDeploy || Ready. Set. SmartDeploy!",
   "start_url": "/",
   "icons":[{
     "src": "img/android-chrome-192x192.png",
@@ -12,7 +12,7 @@
     "sizes": "512x512",
     "type": "image/png"
   }],
-  "theme_color": "#FF585D",
+  "theme_color": "#212121",
   "background_color": "#1e1e1e",
   "display": "browser"
 }
