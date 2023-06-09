@@ -1,12 +1,10 @@
-const just = require("just");
+const { execSync } = require("child_process");
 
 module.exports = {
   async onPreBuild({ utils }) {
     try {
-      // Run the 'just generate' command via shell using the absolute path
-      await utils.run.command(
-        "/opt/build/repo/node_modules/.bin/just generate"
-      );
+      // Run the 'just generate' command using execSync
+      execSync("npx just generate", { stdio: "inherit" });
     } catch (error) {
       utils.build.failBuild("Failed to run `just generate` command", { error });
     }
