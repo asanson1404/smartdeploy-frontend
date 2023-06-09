@@ -25,23 +25,7 @@ html, body {
   overflow-x: hidden;
   display: flex;
   flex-direction: column;
-}
-
-
-
-.uk-card {
-  background: rgba(255, 255, 255, 0.95);
-  box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.37);
-  backdrop-filter: blur(4px);
-  -webkit-backdrop-filter: blur(4px);
-  border-radius: 10px;
-  width: 100% !important;
-  border: 1px solid rgba(255, 255, 255, 0.18);
-}
-
-.brand-svg {
-  width: 100% !important; 
-  height: 100% !important; 
+  min-height: 100vh;
 }
 
 /*
@@ -10175,7 +10159,7 @@ html.bp-xl .uk-text-bold\@xl {
 }
 .uk-radio-button > input:checked + span {
   border-color: var(--color-primary)
-}
+} 
 .uk-radio-button > span {
   display: flex;
   flex-direction: column;
@@ -19918,7 +19902,10 @@ html.bp-xl-max .uk-container-full\@xl {
   flex: 1 0 auto;
 }
 footer {
-  flex-shrink: 0;
+  position: fixed;
+  bottom: 0;
+  width: 100%;
+  z-index: 9999;
 }
 .uk-card-primary .uk-card-footer {
   border-top: 1px solid rgba(255, 255, 255, 0.25)
@@ -23951,6 +23938,7 @@ img.image-hover-revealer {
   top: 0;
   left: 0;
   z-index: 10;
+  background-color: pink;
   pointer-events: none;
   will-change: clip-path,transform;
   visibility: hidden;
@@ -23967,17 +23955,29 @@ img.image-hover-revealer.uk-active {
   z-index: 1;
   position: relative
 }
+.darkmode-trigger.light-theme {  
+  background-color: #fff
+}
+.darkmode-trigger.dark-theme {  
+  background-color: rgba(41, 41, 41, 0.9)
+}
 [data-darkmode-toggle] {
   transform: scale(0.9);
+  background-color: none;
   transition: 200ms ease;
-  z-index: 1000
+  z-index: 10000
+}
+[data-darkmode-toggle].dark-mode {
+  background-color: pink  !important;
+}
+[data-darkmode-toggle].light-mode {
+  background-color: pink ;
 }
 [data-darkmode-toggle] .switch {
   position: relative;
   display: inline-flex;
   justify-content: center;
   align-items: center;
-  /* margin: 10px !important; */
   width: 40px;
   height: 40px
 }
@@ -24006,7 +24006,6 @@ img.image-hover-revealer.uk-active {
   -webkit-transition: 300ms;
   transition: 300ms;
   z-index: 1;
-  background-color: var(--color-gray-90);
   color: white
 }
 [data-darkmode-toggle] .switch > .slider > .fas {
@@ -24025,11 +24024,17 @@ img.image-hover-revealer.uk-active {
 }
 [data-darkmode-toggle] .switch > input:checked + .slider:before {
   background-color: #fff;
-  color: black
+  color: pink
 }
 [data-darkmode-toggle]:hover {
   transform: scale(1.1);
   opacity: 1
+}
+#themeIcon {
+  color: var(--color-primary)
+}
+#themeIcon.light-mode {
+  color: #000;
 }
 .uk-image-middle {
   display: flex;
@@ -24891,4 +24896,58 @@ option {
       height: 150% !important; /* Double the height */
       padding: 20px 30px 0px !important;
     }
+}
+
+
+.todo-cards {
+  display: grid;
+  gap: 1em;
+  grid-template-columns: repeat(auto-fit, minmax(13em, 1fr));
+}
+
+.todo-cards > div {
+  border-radius: 0.5rem;
+  border: 1px solid var(--light-gray);
+  position: relative;
+  padding: 1rem;
+}
+.todo-cards h2 {
+  margin: 0;
+}
+.todo-cards p {
+  margin-bottom: 0;
+}
+.todo-cards > .done:after {
+  content: '✓';
+  color: var(--green);
+  display: block;
+  position: absolute;
+  top: 0;
+  right: 0;
+  padding: 0 0.25em 0 0;
+}
+
+.todo-cards .done {
+  border: 1px solid var(--green);
+}
+
+.todo-cards .done h2,
+.todo-cards .done p {
+  opacity: 0.5;
+  text-decoration: line-through;
+}
+
+.uk-card {
+  background: rgba(255, 255, 255, 0.95);
+  box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.37);
+  backdrop-filter: blur(4px);
+  -webkit-backdrop-filter: blur(4px);
+  border-radius: 10px;
+  width: 100% !important;
+  border: 1px solid rgba(255, 255, 255, 0.18);
+}
+
+.brand-svg {
+  width: 100% !important; 
+  height: 100% !important; 
 }

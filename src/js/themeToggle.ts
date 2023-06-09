@@ -5,6 +5,7 @@ export function initializeThemeToggle() {
 
   const html = document.querySelector("html");
   const body = document.querySelector("body");
+  const darkModeTrigger = document.querySelector(".darkmode-trigger");
 
   function updateTheme() {
     if (isDarkMode) {
@@ -15,6 +16,11 @@ export function initializeThemeToggle() {
       if (themeToggle) themeToggle.checked = true;
       themeIcon?.classList.remove("fa-sun");
       themeIcon?.classList.add("fa-moon");
+
+      darkModeTrigger?.classList.remove("light-theme");
+      darkModeTrigger?.classList.add("dark-theme");
+      themeIcon?.classList.remove("light-theme");
+      themeIcon?.classList.add("dark-theme");
     } else {
       html?.classList.add("uk-light-demo");
       body?.classList.add("uk-light-demo");
@@ -23,6 +29,12 @@ export function initializeThemeToggle() {
       if (themeToggle) themeToggle.checked = false;
       themeIcon?.classList.remove("fa-moon");
       themeIcon?.classList.add("fa-sun");
+
+      // Add or remove classes for the theme switch
+      darkModeTrigger?.classList.remove("dark-theme");
+      darkModeTrigger?.classList.add("light-theme");
+      themeIcon?.classList.remove("dark-theme");
+      themeIcon?.classList.add("light-theme");
     }
   }
 

@@ -44,39 +44,12 @@ async function getUserContracts({
   return userContracts;
 }
 
-async function checkFreighterPresence() {
-  window.hasFreighter = await isConnected();
-  const freighterButton = document.getElementById("freighterButton");
-  const freighterMessage = document.getElementById("freighterMessage");
-
-  if (window.hasFreighter) {
-    if (freighterButton) {
-      freighterButton.removeAttribute("disabled");
-    }
-    if (freighterMessage) {
-      freighterMessage.textContent = "Freighter is installed.";
-    }
-  } else {
-    if (freighterButton) {
-      freighterButton.setAttribute("disabled", "true");
-    }
-    if (freighterMessage) {
-      freighterMessage.textContent = "Please install Freighter to continue.";
-    }
-  }
-}
-
 async function checkUserAndRender() {
+  window.hasFreighter = await isConnected();
   if (window.hasFreighter) {
     try {
-      const [sorobanUserAddress, freighterNetwork] = await Promise.all([
-        getPublicKey(),
-        getNetworkDetails(),
-      ]);
-
-      window.sorobanUserAddress = sorobanUserAddress;
-      window.freighterNetwork = freighterNetwork;
-
+      window.sorobanUserAddress = await getPublicKey();
+      window.freighterNetwork = await getNetworkDetails();
       if (window.sorobanUserAddress) {
         await ensureAccountFunded(window.sorobanUserAddress);
 
@@ -134,11 +107,9 @@ async function checkUserAndRender() {
 
 (window as any).checkUserAndRender = checkUserAndRender;
 
-(window as any).checkFreighterPresence = checkFreighterPresence;
+checkUserAndRender();
 
-checkFreighterPresence();
-
-const freighterButton = document.getElementById("freighterButton");
+const freighterButton = document.getElementById("freighter-button");
 if (freighterButton) {
   freighterButton.addEventListener("click", checkUserAndRender);
 }
