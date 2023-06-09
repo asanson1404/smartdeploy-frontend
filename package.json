@@ -3,6 +3,7 @@
   "type": "module",
   "version": "0.0.1",
   "scripts": {
+    "preinstall": "just setup",
     "soroban": "./target/bin/soroban",
     "dev": "astro dev",
     "start": "astro dev",
@@ -19,8 +20,5 @@
     "preact": "^10.15.1",
     "smartdeploy": "file:target/js-clients/smartdeploy"
   },
-  "private": true,
-  "devDependencies": {
-    "just": "^0.1.8"
-  }
+  "private": true
 }
