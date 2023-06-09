@@ -1,3 +1,1 @@
 name: netlify-plugin-just-install
-functions:
-  - netlify-plugin-just-install
