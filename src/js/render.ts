@@ -1,5 +1,5 @@
 import { fill, hide, show } from './domHelpers'
-import * as smartdeploy from "smartdeploy"
+import * as smartdeploy from "../../target/js-clients/smartdeploy";
 
 /**
  * update the html based on user & data state
