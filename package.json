@@ -20,5 +20,8 @@
     "preact": "^10.15.1",
     "smartdeploy": "file:target/js-clients/smartdeploy"
   },
-  "private": true
+  "private": true,
+  "devDependencies": {
+    "just": "^0.1.8"
+  }
 }
