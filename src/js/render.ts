@@ -17,6 +17,7 @@ export default async function render() {
     // fill('deployedContracts').with()
 
     show('allReady')
+    show('contractPanel')
   } else {
     if (window.hasFreighter) {
       document.querySelector('#getFreighter')!.className = 'done'
@@ -29,6 +30,7 @@ export default async function render() {
     }
 
     hide('allReady')
+    hide('contractPanel')
     show('gettingStarted')
   }
 }
