@@ -1,12 +1,12 @@
-import { defineConfig } from "astro/config";
+import { defineConfig } from 'astro/config';
 
 // https://astro.build/config
 export default defineConfig({
-  site: "https://launch.smartdeploy.dev/",
-  base: "/",
+  site: 'https://tenk-dao.github.io/',
+  base: '/smartdeploy-frontend',
   vite: {
     build: {
       sourcemap: true,
     },
   },
-});
+})
