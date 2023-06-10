@@ -14,7 +14,7 @@ export function initializeThemeToggle() {
       html?.classList.remove("uk-light-demo");
       body?.classList.remove("uk-light-demo");
       if (themeToggle) themeToggle.checked = true;
-      themeIcon?.classList.remove("fa-brightness");
+      themeIcon?.classList.remove("fa-sun");
       themeIcon?.classList.add("fa-moon");
 
       darkModeTrigger?.classList.remove("light-theme");
@@ -28,7 +28,7 @@ export function initializeThemeToggle() {
       body?.classList.remove("uk-dark");
       if (themeToggle) themeToggle.checked = false;
       themeIcon?.classList.remove("fa-moon");
-      themeIcon?.classList.add("fa-brightness");
+      themeIcon?.classList.add("fa-sun");
 
       // Add or remove classes for the theme switch
       darkModeTrigger?.classList.remove("dark-theme");

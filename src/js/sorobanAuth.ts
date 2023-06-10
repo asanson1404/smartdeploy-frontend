@@ -8,7 +8,7 @@ import render from "./render";
 import {
   Server,
   list_deployed_contracts,
-} from "../../target/js-clients/smartdeploy";
+} from "smartdeploy";
 
 type RpcError = { code: number; message: string };
 
