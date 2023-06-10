@@ -1,10 +1,14 @@
+import UIkit from "uikit";
 import {
   getNetworkDetails,
   getPublicKey,
   isConnected,
 } from "@stellar/freighter-api";
 import render from "./render";
-import { Server, list_deployed_contracts } from "../../target/js-clients/smartdeploy";
+import {
+  Server,
+  list_deployed_contracts,
+} from "../../target/js-clients/smartdeploy";
 
 type RpcError = { code: number; message: string };
 
@@ -73,8 +77,11 @@ async function checkUserAndRender() {
             contractHeader.textContent = "Contract";
             const addressHeader = document.createElement("th");
             addressHeader.textContent = "Address";
+            const copyHeader = document.createElement("th");
+            copyHeader.textContent = "Copy";
             headerRow.appendChild(contractHeader);
             headerRow.appendChild(addressHeader);
+            headerRow.appendChild(copyHeader);
             thead.appendChild(headerRow);
             table.appendChild(thead);
 
@@ -88,6 +95,28 @@ async function checkUserAndRender() {
               addressCell.textContent = address;
               row.appendChild(contractCell);
               row.appendChild(addressCell);
+
+              const copyCell = document.createElement("td");
+              const copyButton = document.createElement("i");
+              copyButton.className = "fa-regular fa-clipboard";
+              copyButton.addEventListener("click", function () {
+                navigator.clipboard
+                  .writeText(address)
+                  .then(() => {
+                    UIkit.notification({
+                      message: "Address copied to clipboard",
+                      status: "primary",
+                      pos: "top-center",
+                      timeout: 2000,
+                    });
+                  })
+                  .catch((err) => {
+                    console.error("Failed to copy text: ", err);
+                  });
+              });
+              copyCell.appendChild(copyButton);
+              row.appendChild(copyCell);
+
               tbody.appendChild(row);
             });
             table.appendChild(tbody);
@@ -110,5 +139,16 @@ checkUserAndRender();
 
 const freighterButton = document.getElementById("freighter-button");
 if (freighterButton) {
-  freighterButton.addEventListener("click", checkUserAndRender);
+  freighterButton.addEventListener("click", async () => {
+    if (await isConnected()) {
+      UIkit.notification({
+        message: "You're already connected to the Freighter Wallet.",
+        status: "warning",
+        pos: "top-center",
+        timeout: 5000,
+      });
+    } else {
+      checkUserAndRender();
+    }
+  });
 }

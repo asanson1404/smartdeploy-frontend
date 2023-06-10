@@ -1,7 +1,8 @@
 ---
-import "../css/global.css"; 
+import "../css/global.css";
 import "../css/uikit.min.css";
 ---
+
 <html>
   <head>
     <meta charset="utf-8" />
@@ -26,16 +27,11 @@ import "../css/uikit.min.css";
     crossorigin="anonymous"
     referrerpolicy="no-referrer"
   />
-  <link href="../ukit.min.css" rel="stylesheet" />
-  <link href="../css/global.css" rel="stylesheet" />
 
   <meta property="og:image" content="img/social-preview.png" />
   <meta property="og:url" content="https://smartdeploy.dev/smartdeploy" />
   <meta name="twitter:card" content="summary_large_image" />
-  <meta
-    name="twitter:image"
-    content="img/social-preview.png"
-  />
+  <meta name="twitter:image" content="img/social-preview.png" />
 
   <body>
     <div class="content">
@@ -109,138 +105,134 @@ import "../css/uikit.min.css";
       <main style="margin: 0 auto; max-width: 100vw; padding-bottom: 2rem">
         <div
           id="hero"
-          class="uni-hero uk-section uk-section-xlarge uk-padding-remove-bottom uk-panel"
+          class="uni-hero uk-blend-overlay uk-section uk-section-xlarge uk-padding-remove-bottom uk-panel"
+        >
+          <img
+            class="uk-position-top-left uk-position-fixed uk-blur-large object-x"
+            style={{ left: "-4%", top: "-4%" }}
+            width="500"
+            src="img/gradient-circle.svg"
+            alt="Circle"
+          />
+          <img
+            class="uk-position-bottom-right uk-position-fixed uk-blur-large object-x"
+            style={{ right: "-4%", bottom: "-4%" }}
+            width="500"
+            src="img/gradient-circle.svg"
+            alt="Circle"
+          />
+        </div>
+        <div
+          class="uk-position-top uk-position-z-index"
+          data-uk-height-viewport=""
         >
           <div
-            class="uk-position-top uk-position-z-index uk-overflow-hidden uk-blend-overlay"
-            data-uk-height-viewport=""
+            class="uk-position-cover uk-background-cover uk-opacity-10 dark:uk-hidden"
+            style={{ backgroundImage: 'url("img/gradient-01.png")' }}
+            data-uk-img
           >
-            <img
-              class="uk-position-top-left uk-position-fixed uk-blur-large object-x"
-              style={{ left: "-4%", top: "-4%" }}
-              width="500"
-              src="img/gradient-circle.svg"
-              alt="Circle"
-            />
-            <img
-              class="uk-position-bottom-right uk-position-fixed uk-blur-large object-x"
-              style={{ right: "-4%", bottom: "-4%" }}
-              width="500"
-              src="img/gradient-circle.svg"
-              alt="Circle"
-            />
           </div>
           <div
-            class="uk-position-top uk-position-z-index"
-            data-uk-height-viewport=""
+            class="uk-position-cover uk-background-cover uk-opacity-20 uk-hidden dark:uk-visible"
+            style={{ backgroundImage: 'url("img/gradient-01.png")' }}
+            data-uk-img
           >
-            <div
-              class="uk-position-cover uk-background-cover uk-opacity-10 dark:uk-hidden"
-              style={{ backgroundImage: 'url("img/gradient-01.png")' }}
-              data-uk-img
-            >
+          </div>
+        </div>
+        <div
+          class="uk-panel uk-margin-large-bottom uk-position-z-index"
+          data-behavior="gettingStarted"
+          style="display: none"
+        >
+          <div class="uk-container">
+            <div>
+              <h1>Let's get you set up</h1>
+              <p>
+                You'll need a few things to get started. Don't worry, it's easy!
+              </p>
             </div>
             <div
-              class="uk-position-cover uk-background-cover uk-opacity-20 uk-hidden dark:uk-visible"
-              style={{ backgroundImage: 'url("img/gradient-01.png")' }}
-              data-uk-img
+              class="uk-grid uk-grid-match uk-child-width-1-3@m"
+              data-uk-grid
             >
-            </div>
-          </div>
-          <div
-            class="uk-panel uk-margin-large-bottom uk-position-z-index"
-            data-behavior="gettingStarted"
-            style="display: none"
-          >
-            <div class="uk-container">
-              <div>
-                <h1>Let's get you set up</h1>
-                <p>
-                  You'll need a few things to get started. Don't worry, it's
-                  easy!
-                </p>
-              </div>
-              <div
-                class="uk-grid uk-grid-match uk-child-width-1-3@m"
-                data-uk-grid
-              >
-                <div>
-                  <div
-                    id="getFreighter"
-                    class="uk-card uk-card-default uk-card-body todo-cards"
-                  >
-                    <h2 class="uk-card-title">1. Get Freighter</h2>
-                    <p>
-                      Freighter is a browser extension that lets you interact
-                      with the Soroban network.
-                    </p>
-                    <p>
-                      <a class="uk-link-text" href="https://www.freighter.app/"
-                        >Get Freighter</a
-                      >
-                    </p>
-                  </div>
-                </div>
-                <div>
-                  <div
-                    id="enableFreighter"
-                    class="uk-card uk-card-default uk-card-body todo-cards"
-                  >
-                    <h2 class="uk-card-title">2. Enable Freighter</h2>
-                    <p>
-                      Once you install Freighter, this page will prompt you to
-                      connect to it. Say yes!
-                    </p>
-                  </div>
-                </div>
-                <div>
-                  <div
-                    id="selectFuturenet"
-                    class="uk-card uk-card-default uk-card-body todo-cards"
-                  >
-                    <h2 class="uk-card-title">3. Select Futurenet</h2>
-                    <ol style="padding: 0 0 0 1em; margin-bottom: 0">
-                      <li>
-                        Freighter Settings → Preferences, enable Experimental
-                        Mode.
-                      </li>
-                      <li>Select Futurenet network in the top right.</li>
-                    </ol>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-          <div
-            class="uk-panel uk-position-z-index"
-            data-behavior="contractPanel"
-            style="display: none"
-          >
-            <div class="uk-container">
               <div>
                 <div
-                  class="uni-minting-item uk-card uk-card-medium uk-card-border uk-card-default uk-height-large@m uk-radius-medium uk-radius-large@m dark:uk-background-white-5"
+                  id="getFreighter"
+                  class="uk-card uk-card-default uk-card-body todo-cards"
                 >
-                  <div
-                    class="uk-grid uk-grid-small@m uk-flex-column uk-flex-top"
-                    data-uk-grid
-                  >
-                    <div class="uk-width-expand@m">
-                      <div class="content uk-panel">
-                        <div id="userData">
-                          <h1>User Info:</h1>
-                          <h2>Wallet Address:</h2>
-                          <code
-                            style="font-size: 22px, overflow: hidden"
-                            id="userAddress"></code>
-                          <hr />
-                          <div id="userContractsWrapper">
-                            <h2>Deployed Contracts:</h2>
-                            <div
-                              id="userContracts"
-                              class="uk-table-wrapper uk-overflow-auto uk-table-striped"
-                            >
-                            </div>
+                  <h2 class="uk-card-title">1. Get Freighter</h2>
+                  <p>
+                    Freighter is a browser extension that lets you interact with
+                    the Soroban network.
+                  </p>
+                  <p>
+                    <a class="uk-link-text" href="https://www.freighter.app/"
+                      >Get Freighter</a
+                    >
+                  </p>
+                </div>
+              </div>
+              <div>
+                <div
+                  id="enableFreighter"
+                  class="uk-card uk-card-default uk-card-body todo-cards"
+                >
+                  <h2 class="uk-card-title">2. Enable Freighter</h2>
+                  <p>
+                    Once you install Freighter, this page will prompt you to
+                    connect to it. Say yes!
+                  </p>
+                </div>
+              </div>
+              <div>
+                <div
+                  id="selectFuturenet"
+                  class="uk-card uk-card-default uk-card-body todo-cards"
+                >
+                  <h2 class="uk-card-title">3. Select Futurenet</h2>
+                  <ol style="padding: 0 0 0 1em; margin-bottom: 0">
+                    <li>
+                      Freighter Settings → Preferences, enable Experimental
+                      Mode.
+                    </li>
+                    <li>Select Futurenet network in the top right.</li>
+                  </ol>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div
+          class="uk-panel uk-position-z-index"
+          data-behavior="contractPanel"
+          style="display: none"
+        >
+          <div class="uk-container">
+            <div>
+              <div
+                class="uni-minting-item uk-card uk-card-medium uk-card-border uk-card-default uk-height-large@m uk-radius-medium uk-radius-large@m dark:uk-background-white-5"
+              >
+                <div
+                  class="uk-grid uk-grid-small@m uk-flex-column uk-flex-top"
+                  data-uk-grid
+                >
+                  <div class="uk-width-expand@m">
+                    <div class="content uk-panel">
+                      <div id="userData">
+                        <h1>User Info:</h1>
+                        <h2>Wallet Address:</h2>
+                        <p
+                          style="font-size: 22px, overflow: hidden"
+                          id="userAddress"
+                        >
+                        </p>
+                        <hr />
+                        <div id="userContractsWrapper">
+                          <h2>Deployed Contracts:</h2>
+                          <div
+                            id="userContracts"
+                            class="uk-table-wrapper uk-overflow-auto uk-table-striped"
+                          >
                           </div>
                         </div>
                       </div>
@@ -252,61 +244,80 @@ import "../css/uikit.min.css";
           </div>
         </div>
       </main>
-      <div class="theme_switcher">
-        <div class="wrap uk-overflow-hidden">
-          <div
-            class="darkmode-trigger uk-position-bottom-right uk-position-small uk-position-fixed uk-box-shadow-large uk-radius-circle"
-            data-darkmode-toggle=""
-          >
-            <label class="switch">
-              <span class="sr-only">Dark Mode Toggle</span>
-              <input
-                data-theme="light"
-                class="setColor light"
-                id="themeToggle"
-                type="checkbox"
-              />
-              <span class="slider"></span>
-              <i id="themeIcon" class="fas"></i>
-            </label>
-          </div>
+    </div>
+    <div class="theme_switcher">
+      <div class="wrap uk-overflow-hidden">
+        <div
+          class="darkmode-trigger uk-position-bottom-right uk-position-small uk-position-fixed uk-box-shadow-large uk-radius-circle"
+          data-darkmode-toggle=""
+        >
+          <label class="switch">
+            <span class="sr-only">Dark Mode Toggle</span>
+            <input
+              data-theme="light"
+              class="setColor light"
+              id="themeToggle"
+              type="checkbox"
+            />
+            <span class="slider"></span>
+            <i id="themeIcon" class="fas"></i>
+          </label>
         </div>
       </div>
-      <footer class="uni-footer uk-section uk-section-xlarge@m">
-        <div class="uk-container">
-          <div class="uk-panel">
-            <hr class="uk-margin-medium uk-margin-3xlarge-top@m" />
-            <div class="uk-panel uk-text-small">
-              <div
-                class="uk-grid uk-child-width-auto@m uk-flex-center uk-flex-between@m uk-text-center uk-text-left@m"
-              >
-                <div>
-                  <ul
-                    class="uk-subnav uk-subnav-small uk-text-muted uk-flex-center"
-                  >
-                    <li>
-                      <a href="https://smartdeplpy.dev/privacy"
-                        >Privacy Policy</a
-                      >
-                    </li>
-                    <li>
-                      <a href="https://smartdeplpy.dev/terms">Terms of Use</a>
-                    </li>
-                    <li>
-                      <a href="https://smartdeplpy.dev/contact">Contact Us</a>
-                    </li>
-                  </ul>
-                </div>
-                <div class="uk-flex-first@m uk-flex-center">
-                  <p>© 2023 SmartDeploy. All rights reserved.</p>
-                </div>
+    </div>
+    <footer class="uni-footer uk-section uk-section-xlarge@m">
+      <div class="uk-container">
+        <div class="uk-panel">
+          <hr class="uk-margin-medium uk-margin-3xlarge-top@m" />
+          <div class="uk-panel uk-text-small">
+            <div
+              class="uk-grid uk-child-width-auto@m uk-flex-center uk-flex-between@m uk-text-center uk-text-left@m"
+            >
+              <div>
+                <ul
+                  class="social-icons-mobile uk-subnav uk-subnav-small uk-text-muted uk-flex-center"
+                  style="display: none;"
+                >
+                  <li>
+                    <a href="https://twitter.com/TENKDAO">
+                      <i class="fa-brands fa-twitter"></i>
+                    </a>
+                  </li>
+                  <li>
+                    <a href="https://discord.gg/6fKqnSfr">
+                      <i class="fa-brands fa-discord"></i>
+                    </a>
+                  </li>
+                  <li>
+                    <a href="https://github.com/TENK-DAO/smartdeploy-frontend">
+                      <i class="fa-brands fa-github-alt"></i>
+                    </a>
+                  </li>
+                </ul>
+                <ul
+                  class="uk-subnav uk-subnav-small uk-text-muted uk-flex-center"
+                >
+                  <li>
+                    <a href="https://smartdeploy.dev/privacy">Privacy Policy</a>
+                  </li>
+                  <li>
+                    <a href="https://smartdeploy.dev/terms">Terms of Use</a>
+                  </li>
+                  <li>
+                    <a href="https://smartdeploy.dev/contact">Contact Us</a>
+                  </li>
+                </ul>
+              </div>
+              <div class="uk-flex-first@m uk-flex-center">
+                <p>© 2023 SmartDeploy. All rights reserved.</p>
               </div>
             </div>
           </div>
         </div>
-      </footer>
-    </div>
+      </div>
+    </footer>
   </body>
+
   <script src="../js/index.js"></script>
   <script
     src="https://cdnjs.cloudflare.com/ajax/libs/uikit/3.16.19/js/uikit.min.js"
