@@ -20,13 +20,16 @@ export default async function render() {
     show('contractPanel')
   } else {
     if (window.hasFreighter) {
-      document.querySelector('#getFreighter')!.className = 'done'
+      document.querySelector('#getFreighter')!.classList.add('done');
+      document.querySelector('#getFreighterCheck')!.style.display = 'inline';
     }
     if (window.sorobanUserAddress) {
-      document.querySelector('#enableFreighter')!.className = 'done'
+      document.querySelector('#enableFreighter')!.classList.add('done');
+      document.querySelector('#enableFreighterCheck')!.style.display = 'inline';
     }
     if (window.freighterNetwork?.network.toUpperCase() === 'FUTURENET') {
-      document.querySelector('#selectFuturenet')!.className = 'done'
+      document.querySelector('#selectFuturenet')!.classList.add('done');
+      document.querySelector('#selectFuturenetCheck')!.style.display = 'inline';
     }
 
     hide('allReady')

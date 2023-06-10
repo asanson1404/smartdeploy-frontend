@@ -124,128 +124,13 @@
   font-style: normal;
   font-display: block;
 }
-
-/*
- * Custom Styles
- * ----------------------------------------
- */
-
-* {
-  box-sizing: border-box;
-}
-html,
-body {
-  margin: 0;
-  padding: 0;
-  overflow-x: hidden;
-  height: 100vh;
-}
-body {
-  margin: 0;
-  padding: 0;
-  overflow-x: hidden;
-  min-height: 100vh;
-  display: flex;
-  flex-flow: column;
-  justify-content: space-between; 
-}
-.todo-cards {
-  display: grid;
-  gap: 1em;
-  grid-template-columns: repeat(auto-fit, minmax(13em, 1fr));
-}
-.todo-cards > div {
-  border-radius: 0.5rem;
-  border: 1px solid var(--light-gray);
-  position: relative;
-  padding: 1rem;
-}
-.todo-cards h2 {
-  margin: 0;
-}
-.todo-cards p {
-  margin-bottom: 0;
-}
-.todo-cards > .done:after {
-  content: "✓";
-  color: var(--green);
-  display: block;
-  position: absolute;
-  top: 0;
-  right: 0;
-  padding: 0 0.25em 0 0;
-}
-.todo-cards .done {
-  border: 1px solid var(--green);
-}
-.todo-cards .done h2,
-.todo-cards .done p {
-  opacity: 0.5;
-  text-decoration: line-through;
-}
-.uk-card {
-  background: rgba(255, 255, 255, 0.95);
-  box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.37);
-  backdrop-filter: blur(4px);
-  -webkit-backdrop-filter: blur(4px);
-  border-radius: 10px;
-  width: 100% !important;
-  border: 1px solid rgba(255, 255, 255, 0.18);
-}
-.brand-svg {
-  width: 100% !important;
-  height: 100% !important;
-}
-.content {
-  flex-grow: 1 !important;
-}
-footer {
-  bottom: 0;
-  width: 100%;
-  z-index: 9999;
-}
-.uni-footer {
-  width: 100%;
-}
-i {
-  color: #999999; /* Or whatever color you want on hover */
-  cursor: pointer !important;
-}
-tr th:nth-child(3),
-tr td:nth-child(3) {
-  text-align: center;
-}
-#themeIcon {
-  color: var(--color-primary);
-}
-#themeIcon.light-mode {
-  color: #000;
-}
-#userAddress {
-  background-color: #f8f8f8;
-  border: 1px solid #ccc; 
-  padding: 8px; 
-  font-family: monospace; 
-  word-wrap: break-word;
-  overflow-wrap: break-word; 
-  font-size: 18px;
-}
-@media screen and (max-width: 968px) {
-  .social-icons-desktop {
-    display: none;
-  }
-  .social-icons-mobile {
-    display: block !important;
-  }
-}
-
 /*
  * Table of content: Global
  * ----------------------------------------
  * 01. Common Helpers files (Do not edit any for updates.)
  * 02. User Helpers files
  * 03. Core Framework (Do not edit any for updates.)
- * 04. Overrides
+ * 04. Custom Styles & Overrides
  */
 
 [class^="unicon-"],
@@ -25932,6 +25817,113 @@ option {
   }
   html.bp-m .uni-header-3 .uk-flex-1\@m {
     flex: unset;
+  }
+}
+/*
+ * Custom Styles
+ * ----------------------------------------
+ */
+
+ * {
+  box-sizing: border-box;
+}
+html,
+body {
+  margin: 0;
+  padding: 0;
+  overflow-x: hidden;
+  height: 100vh;
+}
+body {
+  margin: 0;
+  padding: 0;
+  overflow-x: hidden;
+  min-height: 100vh;
+  display: flex;
+  flex-flow: column;
+  justify-content: space-between; 
+}
+h2 {
+  margin-bottom: 0 !important;
+}
+.uk-card {
+  background: rgba(255, 255, 255, 0.95);
+  box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.37);
+  backdrop-filter: blur(4px);
+  -webkit-backdrop-filter: blur(4px);
+  border-radius: 10px;
+  width: 100% !important;
+  border: 1px solid rgba(255, 255, 255, 0.18);
+}
+.uk-card-title-wrapper {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  vertical-align: top;
+}
+.uk-card-title h2, .done-icon {
+  vertical-align: top !important;
+  margin-bottom: 0px !important;
+}
+.done {
+  opacity: 0.7 !important; 
+}
+.done .uk-card-title, .done p {
+  text-decoration: line-through !important; 
+  opacity: 0.5;
+}
+.done-icon {
+  color: rgba(9, 255, 70, 1.0);
+  padding-left: 5px;
+  vertical-align: top;
+}
+.done .uk-card {
+  border: 1px solid rgba(9, 255, 70, 0.538) !important;
+}
+.brand-svg {
+  width: 100% !important;
+  height: 100% !important;
+}
+.content {
+  flex-grow: 1 !important;
+}
+footer {
+  bottom: 0;
+  width: 100%;
+  z-index: 9999;
+}
+.uni-footer {
+  width: 100%;
+}
+i {
+  color: #999999;
+  cursor: pointer !important;
+}
+tr th:nth-child(3),
+tr td:nth-child(3) {
+  text-align: center;
+}
+#themeIcon {
+  color: var(--color-primary);
+}
+#themeIcon.light-mode {
+  color: #000;
+}
+#userAddress {
+  background-color: #f8f8f8;
+  border: 1px solid #ccc; 
+  padding: 8px; 
+  font-family: monospace; 
+  word-wrap: break-word;
+  overflow-wrap: break-word; 
+  font-size: 18px;
+}
+@media screen and (max-width: 968px) {
+  .social-icons-desktop {
+    display: none;
+  }
+  .social-icons-mobile {
+    display: block !important;
   }
 }
 @media (max-width: 767px) {
