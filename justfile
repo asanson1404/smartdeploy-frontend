@@ -35,7 +35,7 @@ fetch:
     
 
 generate: setup && install_generated
-    ./target/bin/soroban contract bindings ts \
+    ./target/bin/soroban contract bindings typescript \
         --wasm {{ SMARTDEPLOY }} \
         --id {{ CONTRACT_ID }} \
         --root-dir ./target/js-clients/smartdeploy \
