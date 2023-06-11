@@ -5,7 +5,7 @@ import {
   isConnected,
 } from "@stellar/freighter-api";
 import render from "./render";
-import { Server, list_deployed_contracts } from "smartdeploy";
+import { Server, list_deployed_contracts, list_published_contracts, Version, PublishedWasm } from "smartdeploy";
 
 type RpcError = { code: number; message: string };
 
@@ -38,11 +38,167 @@ async function getUserContracts({
     start,
     limit,
   });
-
-  const userContracts = contractsResult.unwrap();
-
-  return userContracts;
+  return contractsResult.unwrap();
 }
+
+
+async function setupPublishedContractsTable(publishedContractsElement: HTMLElement) {
+
+  const publishedContracts = (await list_published_contracts({
+    start: 0,
+    limit: 100,
+  })).unwrap();
+  publishedContractsElement.innerHTML = "";
+  const table = document.createElement("table");
+  table.className =
+    "uk-table uk-table-striped uk-table-condensed uk-text-nowrap";
+  const thead = document.createElement("thead");
+  const headerRow = document.createElement("tr");
+  const contractHeader = document.createElement("th");
+  contractHeader.textContent = "Contract";
+  const authorHeader = document.createElement("th");
+  authorHeader.textContent = "Author";
+  const versionHeader = document.createElement("th");
+  versionHeader.textContent = "Version";
+  const copyHeader = document.createElement("th");
+  copyHeader.textContent = "Copy";
+  headerRow.appendChild(contractHeader);
+  headerRow.appendChild(authorHeader);
+  headerRow.appendChild(versionHeader);
+  headerRow.appendChild(copyHeader);
+  thead.appendChild(headerRow);
+  table.appendChild(thead);
+
+  const tbody = document.createElement("tbody");
+  publishedContracts.forEach(([name, a]) => {
+    if (!name) {
+      return;
+    }
+    let version = (a.get("versions") as Map<Version, PublishedWasm>).keys().next()!.value as unknown as Map<string, number>;
+    // @ts-expect-error
+    window.version = version;
+    let major = version.get("major") as number;
+    let minor = version.get("minor") as number;
+    let patch = version.get("patch") as number;
+
+    let versionString = `v${major}.${minor}.${patch}`;
+
+    console.log({ version });
+    let author = a.get("author") as string;
+
+    const row = document.createElement("tr");
+    const contractCell = document.createElement("td");
+    contractCell.textContent = name;
+    const authorCell = document.createElement("td");
+    authorCell.className = "contract-address-text";
+    authorCell.textContent = author;
+
+    const versionCell = document.createElement("td");
+    versionCell.textContent = versionString;
+    row.appendChild(contractCell);
+    row.appendChild(authorCell);
+    row.appendChild(versionCell);
+
+    const copyCell = document.createElement("td");
+    const copyButton = document.createElement("i");
+    copyButton.className = "fa-regular fa-clipboard";
+    copyButton.addEventListener("click", function () {
+      navigator.clipboard
+        .writeText(name)
+        .then(() => {
+          UIkit.notification({
+            message: "Address copied to clipboard",
+            status: "primary",
+            pos: "top-center",
+            timeout: 2000,
+          });
+        })
+        .catch((err) => {
+          console.error("Failed to copy text: ", err);
+        });
+    });
+    copyCell.appendChild(copyButton);
+    row.appendChild(copyCell);
+
+    tbody.appendChild(row);
+  });
+  table.appendChild(tbody);
+  publishedContractsElement.appendChild(table);
+  if (publishedContracts.length > 0) {
+
+  } else {
+    publishedContractsElement.textContent = "No contracts to display.";
+  }
+}
+
+
+async function setupDeployedContractsTable(userContractsElement: HTMLElement) {
+
+  const userContracts = await getUserContracts({
+    start: 0,
+    limit: 100,
+  });
+  if (userContracts.length > 0) {
+    userContractsElement.innerHTML = "";
+    const table = document.createElement("table");
+    table.className =
+      "uk-table uk-table-striped uk-table-condensed uk-text-nowrap";
+    const thead = document.createElement("thead");
+    const headerRow = document.createElement("tr");
+    const contractHeader = document.createElement("th");
+    contractHeader.textContent = "Contract";
+    const addressHeader = document.createElement("th");
+    addressHeader.textContent = "Address";
+    const copyHeader = document.createElement("th");
+    copyHeader.textContent = "Copy";
+    headerRow.appendChild(contractHeader);
+    headerRow.appendChild(addressHeader);
+    headerRow.appendChild(copyHeader);
+    thead.appendChild(headerRow);
+    table.appendChild(thead);
+
+    const tbody = document.createElement("tbody");
+    userContracts.forEach(([name, address]) => {
+      const row = document.createElement("tr");
+      const contractCell = document.createElement("td");
+      contractCell.textContent = name;
+      const addressCell = document.createElement("td");
+      addressCell.className = "contract-address-text";
+      addressCell.textContent = address;
+      row.appendChild(contractCell);
+      row.appendChild(addressCell);
+
+      const copyCell = document.createElement("td");
+      const copyButton = document.createElement("i");
+      copyButton.className = "fa-regular fa-clipboard";
+      copyButton.addEventListener("click", function () {
+        navigator.clipboard
+          .writeText(address)
+          .then(() => {
+            UIkit.notification({
+              message: "Address copied to clipboard",
+              status: "primary",
+              pos: "top-center",
+              timeout: 2000,
+            });
+          })
+          .catch((err) => {
+            console.error("Failed to copy text: ", err);
+          });
+      });
+      copyCell.appendChild(copyButton);
+      row.appendChild(copyCell);
+
+      tbody.appendChild(row);
+    });
+    table.appendChild(tbody);
+    userContractsElement.appendChild(table);
+
+  } else {
+    userContractsElement.textContent = "No contracts to display.";
+  }
+}
+
 
 async function checkUserAndRender() {
   window.hasFreighter = await isConnected();
@@ -53,10 +209,6 @@ async function checkUserAndRender() {
       if (window.sorobanUserAddress) {
         await ensureAccountFunded(window.sorobanUserAddress);
 
-        const userContracts = await getUserContracts({
-          start: 0,
-          limit: 100,
-        });
 
         const userAddressElement = document.getElementById("userAddress");
         if (userAddressElement) {
@@ -65,65 +217,11 @@ async function checkUserAndRender() {
 
         const userContractsElement = document.getElementById("userContracts");
         if (userContractsElement) {
-          userContractsElement.innerHTML = "";
-
-          if (userContracts.length > 0) {
-            const table = document.createElement("table");
-            table.className =
-              "uk-table uk-table-striped uk-table-condensed uk-text-nowrap";
-            const thead = document.createElement("thead");
-            const headerRow = document.createElement("tr");
-            const contractHeader = document.createElement("th");
-            contractHeader.textContent = "Contract";
-            const addressHeader = document.createElement("th");
-            addressHeader.textContent = "Address";
-            const copyHeader = document.createElement("th");
-            copyHeader.textContent = "Copy";
-            headerRow.appendChild(contractHeader);
-            headerRow.appendChild(addressHeader);
-            headerRow.appendChild(copyHeader);
-            thead.appendChild(headerRow);
-            table.appendChild(thead);
-
-            const tbody = document.createElement("tbody");
-            userContracts.forEach(([name, address]) => {
-              const row = document.createElement("tr");
-              const contractCell = document.createElement("td");
-              contractCell.textContent = name;
-              const addressCell = document.createElement("td");
-              addressCell.className = "contract-address-text";
-              addressCell.textContent = address;
-              row.appendChild(contractCell);
-              row.appendChild(addressCell);
-
-              const copyCell = document.createElement("td");
-              const copyButton = document.createElement("i");
-              copyButton.className = "fa-regular fa-clipboard";
-              copyButton.addEventListener("click", function () {
-                navigator.clipboard
-                  .writeText(address)
-                  .then(() => {
-                    UIkit.notification({
-                      message: "Address copied to clipboard",
-                      status: "primary",
-                      pos: "top-center",
-                      timeout: 2000,
-                    });
-                  })
-                  .catch((err) => {
-                    console.error("Failed to copy text: ", err);
-                  });
-              });
-              copyCell.appendChild(copyButton);
-              row.appendChild(copyCell);
-
-              tbody.appendChild(row);
-            });
-            table.appendChild(tbody);
-            userContractsElement.appendChild(table);
-          } else {
-            userContractsElement.textContent = "No contracts to display.";
-          }
+          await setupDeployedContractsTable(userContractsElement);
+        }
+        const publishedContractsElement = document.getElementById("publishedContracts");
+        if (publishedContractsElement) {
+          await setupPublishedContractsTable(publishedContractsElement);
         }
       }
     } catch (e: unknown) {

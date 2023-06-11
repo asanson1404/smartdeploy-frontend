@@ -125,7 +125,9 @@ import "../css/uikit.min.css";
                       id="freighterButton"
                       href="#connect_wallet"
                       class="uk-button uk-button-medium@m uk-button-default uk-button-outline uk-margin-left"
-                      onclick="checkUserAndRender()"
+                      onclick="
+                      checkUserAndRender()
+                      "
                     >
                       <span>Connect Wallet</span>
                     </a>
@@ -279,6 +281,15 @@ import "../css/uikit.min.css";
                         >
                         </p>
                         <hr />
+                        <div id="publishedContractsWrapper">
+                          <h2>Published Contracts:</h2>
+                          <div
+                            id="publishedContracts"
+                            class="uk-table-wrapper uk-overflow-auto uk-table-striped"
+                          >
+                          </div>
+                        </div>
+                        <hr />
                         <div id="userContractsWrapper">
                           <h2>Deployed Contracts:</h2>
                           <div
@@ -377,6 +388,5 @@ import "../css/uikit.min.css";
     src="https://cdnjs.cloudflare.com/ajax/libs/uikit/3.16.19/js/uikit.min.js"
     integrity="sha512-/k+FklzAB0pRCCst26dYpLQDMySHzrunntrrT3sMFlGxO6KHEGdzMY0l0hIdsM+q6/0OkfeXgnKdGqPB36uM6w=="
     crossorigin="anonymous"
-    referrerpolicy="no-referrer"
-  ></script>
+    referrerpolicy="no-referrer"></script>
 </html>
