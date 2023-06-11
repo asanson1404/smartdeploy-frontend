@@ -194,7 +194,7 @@ if (typeof window !== "undefined") {
             pos: "top-center",
             timeout: 3000,
           });
-          return; // If the platform isn't supported, we stop the execution here
+          return;
         }
 
         if (browserName !== "Chrome/Brave" && browserName !== "Firefox") {
@@ -205,7 +205,7 @@ if (typeof window !== "undefined") {
             pos: "top-center",
             timeout: 3000,
           });
-          return; // If the browser isn't supported, we stop the execution here
+          return;
         }
 
         const isConnectedResult = await isConnected();
