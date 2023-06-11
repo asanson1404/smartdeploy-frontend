@@ -11138,8 +11138,8 @@ html.bp-xl .uk-form-2xsmall\@xl {
 .uk-button {
   --btn-shadow-color: transparent;
   box-sizing: border-box;
-  position: relative;
-  display: flex;
+  position: relative; 
+  display: flex !important;
   justify-content: center !important;
   align-items: center;
   flex-shrink: 0;
@@ -11149,7 +11149,7 @@ html.bp-xl .uk-form-2xsmall\@xl {
   text-transform: var(--button-font-transform, initial);
   font-size: var(--button-font-size);
   height: var(--button-height);
-  padding: 3px 30px 0px !important;
+  padding: 0px 30px 0px !important;
   margin: var(--button-margin);
   color: inherit;
   text-align: var(--button-align-text);
@@ -11190,7 +11190,7 @@ html.bp-xl .uk-form-2xsmall\@xl {
 }
 .uk-button-justify {
   justify-content: space-between;
-  padding: 0 calc(var(--sizes-button-medium-padding) / 2) !important;
+  /* padding: 0 calc(var(--sizes-button-medium-padding) / 2) !important; */
 }
 .uk-button-link {
   color: inherit;
@@ -11217,7 +11217,7 @@ html.bp-xl .uk-form-2xsmall\@xl {
   color: var(--colors-button-primary-hover);
 }
 .uk-button-text {
-  padding: 0 !important;
+  padding: 10px !important;
 }
 .uk-button-text::before {
   display: none;

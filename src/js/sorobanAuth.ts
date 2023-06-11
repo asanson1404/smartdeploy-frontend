@@ -5,10 +5,7 @@ import {
   isConnected,
 } from "@stellar/freighter-api";
 import render from "./render";
-import {
-  Server,
-  list_deployed_contracts,
-} from "smartdeploy";
+import { Server, list_deployed_contracts } from "smartdeploy";
 
 type RpcError = { code: number; message: string };
 
@@ -56,7 +53,10 @@ async function checkUserAndRender() {
       if (window.sorobanUserAddress) {
         await ensureAccountFunded(window.sorobanUserAddress);
 
-        const userContracts = await getUserContracts({ start: 0, limit: 100 });
+        const userContracts = await getUserContracts({
+          start: 0,
+          limit: 100,
+        });
 
         const userAddressElement = document.getElementById("userAddress");
         if (userAddressElement) {
@@ -133,22 +133,94 @@ async function checkUserAndRender() {
   render();
 }
 
-(window as any).checkUserAndRender = checkUserAndRender;
+function getBrowserAndPlatform() {
+  const { userAgent } = navigator;
+  let browserName = "unknown";
+  let platform = "unknown";
 
-checkUserAndRender();
+  // Detect browser
+  if (/(chrome|brave)/i.test(userAgent)) {
+    browserName = "Chrome/Brave";
+  } else if (/firefox/i.test(userAgent)) {
+    browserName = "Firefox";
+  }
 
-const freighterButton = document.getElementById("freighter-button");
-if (freighterButton) {
-  freighterButton.addEventListener("click", async () => {
-    if (await isConnected()) {
+  // Detect platform
+  if (/mobi/i.test(userAgent)) {
+    platform = "mobile";
+  } else {
+    platform = "desktop";
+  }
+
+  return { browserName, platform };
+}
+
+if (typeof window !== "undefined") {
+  document.addEventListener("DOMContentLoaded", function () {
+    const { browserName, platform } = getBrowserAndPlatform();
+
+    if (platform === "mobile") {
       UIkit.notification({
-        message: "You're already connected to the Freighter Wallet.",
-        status: "warning",
+        message: "Freighter Wallet is not available on mobile devices.",
+        status: "danger",
         pos: "top-center",
-        timeout: 5000,
+        timeout: 3000,
       });
-    } else {
-      checkUserAndRender();
+    }
+
+    if (browserName !== "Chrome/Brave" && browserName !== "Firefox") {
+      UIkit.notification({
+        message:
+          "Freighter Wallet is only available on Chrome, Brave, or Firefox.",
+        status: "danger",
+        pos: "top-center",
+        timeout: 3000,
+      });
+    }
+
+    (window as any).checkUserAndRender = checkUserAndRender;
+    checkUserAndRender();
+
+    const freighterButton = document.getElementById("freighterButton");
+
+    if (freighterButton) {
+      freighterButton.addEventListener("click", async () => {
+        const { browserName, platform } = getBrowserAndPlatform();
+
+        if (platform === "mobile") {
+          UIkit.notification({
+            message: "Freighter Wallet is not available on mobile devices.",
+            status: "danger",
+            pos: "top-center",
+            timeout: 3000,
+          });
+          return; // If the platform isn't supported, we stop the execution here
+        }
+
+        if (browserName !== "Chrome/Brave" && browserName !== "Firefox") {
+          UIkit.notification({
+            message:
+              "Freighter Wallet is only available on Chrome, Brave, or Firefox.",
+            status: "danger",
+            pos: "top-center",
+            timeout: 3000,
+          });
+          return; // If the browser isn't supported, we stop the execution here
+        }
+
+        const isConnectedResult = await isConnected();
+        console.log("Freighter connected:", isConnectedResult);
+        if (isConnectedResult) {
+          UIkit.notification({
+            message: "You're already connected to the Freighter Wallet.",
+            status: "warning",
+            pos: "top-center",
+            timeout: 5000,
+          });
+        } else {
+          checkUserAndRender();
+        }
+      });
     }
   });
 }
