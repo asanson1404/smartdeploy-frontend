@@ -126,7 +126,7 @@ import "../css/uikit.min.css";
                       href="#connect_wallet"
                       class="uk-button uk-button-medium@m uk-button-default uk-button-outline uk-margin-left"
                       onclick="checkUserAndRender()"
-                      >
+                    >
                       <span>Connect Wallet</span>
                     </a>
                   </div>
@@ -194,9 +194,12 @@ import "../css/uikit.min.css";
                   id="getFreighter"
                   class="uk-card uk-card-default uk-card-body todo-cards"
                 >
-                <div class="uk-card-title-wrapper">
-                  <h2 class="uk-card-title">1. Get Freighter</h2>
-                  <i id="getFreighterCheck" class="fas fa-check done-icon" style="display: none;"></i>
+                  <div class="uk-card-title-wrapper">
+                    <h2 class="uk-card-title">1. Get Freighter</h2>
+                    <i
+                      id="getFreighterCheck"
+                      class="fas fa-check done-icon"
+                      style="display: none;"></i>
                   </div>
                   <p>
                     Freighter is a browser extension that lets you interact with
@@ -214,9 +217,12 @@ import "../css/uikit.min.css";
                   id="enableFreighter"
                   class="uk-card uk-card-default uk-card-body todo-cards"
                 >
-                <div class="uk-card-title-wrapper">
-                  <h2 class="uk-card-title">2. Enable Freighter</h2>
-                  <i id="enableFreighterCheck" class="fas fa-check done-icon" style="display: none;"></i>
+                  <div class="uk-card-title-wrapper">
+                    <h2 class="uk-card-title">2. Enable Freighter</h2>
+                    <i
+                      id="enableFreighterCheck"
+                      class="fas fa-check done-icon"
+                      style="display: none;"></i>
                   </div>
                   <p>
                     Once you install Freighter, this page will prompt you to
@@ -229,9 +235,12 @@ import "../css/uikit.min.css";
                   id="selectFuturenet"
                   class="uk-card uk-card-default uk-card-body todo-cards"
                 >
-                <div class="uk-card-title-wrapper">
-                  <h2 class="uk-card-title">3. Select Futurenet</h2>
-                  <i id="selectFuturenetCheck" class="fas fa-check done-icon" style="display: none;"></i>
+                  <div class="uk-card-title-wrapper">
+                    <h2 class="uk-card-title">3. Select Futurenet</h2>
+                    <i
+                      id="selectFuturenetCheck"
+                      class="fas fa-check done-icon"
+                      style="display: none;"></i>
                   </div>
                   <ol style="padding: 0 0 0 1em; margin-bottom: 0">
                     <li>
@@ -338,7 +347,7 @@ import "../css/uikit.min.css";
                   </li>
                 </ul>
                 <ul
-                  class="uk-subnav uk-subnav-small uk-text-muted uk-flex-center"
+                  class="uk-subnav uk-subnav-small uk-text-muted uk-margin-small-top uk-flex-center"
                 >
                   <li>
                     <a href="https://smartdeploy.dev/privacy">Privacy Policy</a>
@@ -351,8 +360,10 @@ import "../css/uikit.min.css";
                   </li>
                 </ul>
               </div>
-              <div class="uk-flex-first@m uk-flex-center">
-                <p>© 2023 SmartDeploy. All rights reserved.</p>
+              <div class="uk-flex-first@m uk-flex-center uk-margin-small-top">
+                <p>
+                  © {new Date().getFullYear()} SmartDeploy. All rights reserved.
+                </p>
               </div>
             </div>
           </div>

@@ -25820,7 +25820,7 @@ option {
   }
 }
 /*
- * Custom Styles
+ * Custom Styles & Overrides
  * ----------------------------------------
  */
 
@@ -25877,8 +25877,17 @@ h2 {
   padding-left: 5px;
   vertical-align: top;
 }
-.done .uk-card {
-  border: 1px solid rgba(9, 255, 70, 0.538) !important;
+.done {
+  background: linear-gradient(white, white) padding-box,
+              linear-gradient(to right, darkblue, darkorchid) border-box;
+  border-radius: 10px;
+  border: 3px solid transparent;
+}
+.uk-link-text {
+  color: var(--color-primary) !important;
+}
+.uk-link-text:hover {
+  color: var(--color-secondary) !important;
 }
 .brand-svg {
   width: 100% !important;
@@ -25931,8 +25940,8 @@ tr td:nth-child(3) {
     display: none;
   }
   .brand-svg {
-    width: 150% !important; /* Double the width */
-    height: 150% !important; /* Double the height */
+    width: 150% !important; 
+    height: 150% !important; 
     padding: 20px 30px 0px !important;
   }
 }
