@@ -1,0 +1,15 @@
+export PATH := './target/bin:' + env_var('PATH')
+soroban := 'target/bin/soroban'
+
+@setup:
+    echo {{ if path_exists(soroban) == "true" { "" } else { `cargo install_soroban` } }}
+
+
+generate_bindings:
+    npm run postinstall
+
+@setup-node:
+    npm i
+
+dev:
+    npm run dev

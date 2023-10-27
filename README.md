@@ -1,6 +1,78 @@
+Smart Deploy
+==================
+
+
+
+Contributing
+============
+
+## Prerequisites 
+
+0. Install [just](https://github.com/casey/just#readme): `cargo install just`
+0. Install [Node.js](https://nodejs.org/en/download/package-manager/) ≥ 18
+
+
+Install the right soroban version:
+```bash
+just setup
+# or
+cargo install_soroban
+```
+
+Install the nodes dependencies (bindings included):
+```bash
+just setup-node
+# or
+npm i
+```
+
+Generate the bindings (for example after you installed a new npm package):
+```bash
+just generate_bindings
+# or
+npm run postinstall
+```
+
+Finally, run the development server:
+
+```bash
+just dev 
+# or
+npm run dev
+```
+
+
+
+
+Get the frontend working:
+0. Clone this repo and `cd` into its directory
+0. Generate the JS client for the contract with `just generate` (or `npm run generate`, which runs `just generate`)
+0. Install dependencies with `npm install`
+0. Run frontend app in development mode with `npm run dev` or `just dev` (see other commands you can run with `just --list` and in the `scripts` section of `package.json`)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
 
-## Getting Started
+## Getting Started (default README don't read it)
 
 First, run the development server:
 
