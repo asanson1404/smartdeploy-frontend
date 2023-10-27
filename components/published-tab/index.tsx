@@ -116,8 +116,9 @@ async function deploy(
                 setDeployedName("");
 
                 let deployedAddr = await smartdeploy
+                                                    .deploy(argsObj, { responseType: 'simulated' })
                                                     //.deploy(argsObj, { responseType: 'full', secondsToWait: 0 })
-                                                    .deploy(argsObj)
+                                                    //.deploy(argsObj)
                                                     .then((response) => {
                                                         console.log(response);
                                                         if (response instanceof Ok) {return response.unwrap()}
