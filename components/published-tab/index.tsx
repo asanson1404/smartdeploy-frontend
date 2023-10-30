@@ -96,8 +96,8 @@ async function deploy(
             setIsDeploying(false);
         }
         // Check is the network is Futurenet
-        else if (userWalletInfo.network !== "FUTURENET") {
-            alert("Wrong Network. Please, switch to Future Net.");
+        else if (userWalletInfo.network.replace(" ", "").toUpperCase() !== "TESTNET") {
+            alert("Wrong Network. Please, switch to Testnet.");
             setIsDeploying(false);
         }
         else {
@@ -115,21 +115,20 @@ async function deploy(
             else {
                 setDeployedName("");
 
-                let deployedAddr = await smartdeploy
-                                                    .deploy(argsObj, { responseType: 'simulated' })
+                let deployedAddr = await smartdeploy.deploy(argsObj);
                                                     //.deploy(argsObj, { responseType: 'full', secondsToWait: 0 })
                                                     //.deploy(argsObj)
-                                                    .then((response) => {
-                                                        console.log(response);
-                                                        if (response instanceof Ok) {return response.unwrap()}
-                                                        else if (response instanceof Err) {response.unwrap()}
-                                                        else if (response === undefined) {console.log("deployed address is UNDEFINED")}
-                                                        else { console.log("Neither Ok, nor Err, nor undefined")}
-                                                    })
-                                                    .catch((err) => {
-                                                        console.error("Failed to deploy the contract: ", err);
-                                                        window.alert(err);
-                                                    });
+                                                    // .then((response) => {
+                                                    //     console.log(response);
+                                                    //     if (response instanceof Ok) {return response.unwrap()}
+                                                    //     else if (response instanceof Err) {response.unwrap()}
+                                                    //     else if (response === undefined) {console.log("deployed address is UNDEFINED")}
+                                                    //     else { console.log("Neither Ok, nor Err, nor undefined")}
+                                                    // })
+                                                    // .catch((err) => {
+                                                    //     console.error("Failed to deploy the contract: ", err);
+                                                    //     window.alert(err);
+                                                    // });
                 console.log(deployedAddr);                                
                 setIsDeploying(false);
             }

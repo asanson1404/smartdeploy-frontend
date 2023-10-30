@@ -14,8 +14,9 @@ const inter = Inter({ subsets: ['latin'] })
 
 // Smartdeploy Contract Instance
 export const smartdeploy = new Contract({
-  ...networks.futurenet,
-  rpcUrl: 'https://rpc-futurenet.stellar.org:443',
+  networkPassphrase: "Test SDF Network ; September 2015",
+  contractId: "CCKWBFU4OK42Y62VQOGCXFYHMALFZPLTDVIKLLZPBBWGIZZBOJS5G7YF",
+  rpcUrl: 'https://soroban-testnet.stellar.org:443',
 });
 
 export type UserWalletInfo = {

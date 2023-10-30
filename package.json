@@ -7,7 +7,9 @@
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
-    "postinstall": "~/WEB3/TenkStudio/soroban-tools/target/debug/soroban contract bindings typescript --network futurenet --contract-id $(cat contract_id.txt) --output-dir node_modules/smartdeploy-client"
+    "postinstall": "cargo install_soroban && npm run bindings",
+    "soroban": "./target/bin/soroban",
+    "bindings": "npm run soroban -- contract bindings typescript --overwrite --network futurenet --contract-id $(cat contract_id.txt) --output-dir node_modules/smartdeploy-client"
   },
   "dependencies": {
     "@stellar/freighter-api": "^1.7.1",
