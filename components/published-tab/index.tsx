@@ -115,7 +115,7 @@ async function deploy(
             else {
                 setDeployedName("");
 
-                let deployedAddr = await smartdeploy.deploy(argsObj);
+                let deployedAddr = await smartdeploy.deploy(argsObj, {responseType: 'full' });
                                                     //.deploy(argsObj, { responseType: 'full', secondsToWait: 0 })
                                                     //.deploy(argsObj)
                                                     // .then((response) => {
