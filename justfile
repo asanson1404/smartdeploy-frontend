@@ -6,7 +6,7 @@ soroban := 'target/bin/soroban'
 
 
 generate_bindings:
-    npm run postinstall
+    npm run bindings
 
 @setup-node:
     npm i
