@@ -122,24 +122,9 @@ async function deploy(
 
                 try {
 
-                    ///@ts-ignore
-                    //const { result } = await smartdeploy.deploy(argsObj, { responseType: 'full' }).sign().send()
                     const tx = await smartdeploy.deploy(argsObj, { responseType: 'full' });
                     console.log(tx);
 
-                    //if (result instanceof Ok) {return result.unwrap()}
-                    //else if (result instanceof Err) {result.unwrap()}
-                    //else if (result === undefined) {console.log("deployed address is UNDEFINED")}
-                    //else { console.log("Neither Ok, nor Err, nor undefined")}
-
-                    //if (!(deployedAddr instanceof Err)){
-                    //    if ( deployedAddr.getTransactionResponse?.status == "SUCCESS"){
-                    //        /// Refresh the deployed contracts list
-                    //        console.log(`Deployed contract ${argsObj.deployed_name}`);
-                    //    }
-                    //}
-
-                    //console.log(result);
 
                 } catch (error) {
                     console.error(error);
