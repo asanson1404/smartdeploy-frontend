@@ -20,38 +20,40 @@ type ClipboardIconComponentProps = {
 
 async function listAllDeployedContracts() {
 
-    return await smartdeploy
-                            .listDeployedContracts({start: undefined, limit: undefined})
-                            .then((response) => {
+    try {
+        const response = await smartdeploy.listDeployedContracts({ start: undefined, limit: undefined });
+        
+        if (response instanceof Ok) {
+            
+            let deployedContracts: DeployedContract[] = [];
 
-                                if (response instanceof Ok) {
+            const contractArray =  response.unwrap();
 
-                                    let deployedContracts: DeployedContract[] = [];
+            contractArray.forEach(([name, address], i) => {
 
-                                    const contractArray =  response.unwrap();
+                const parsedDeployedContract: DeployedContract = {
+                    index: i,
+                    name: name,
+                    address: address.toString(),
+                }
 
-                                    contractArray.forEach(([name, address], i) => {
+                deployedContracts.push(parsedDeployedContract);
+                
+            });
+            
+            //console.log(deployedContracts);
+            return deployedContracts;
 
-                                        const parsedDeployedContract: DeployedContract = {
-                                            index: i,
-                                            name: name,
-                                            address: address.toString(),
-                                        }
-
-                                        deployedContracts.push(parsedDeployedContract);
-                                        
-                                    });
-                                    
-                                    //console.log(deployedContracts);
-                                    return deployedContracts;
-
-                                } else if (response instanceof Err) {
-                                    response.unwrap();
-                                } else {
-                                    throw new Error("listDeployedContracts returns undefined. Impossible to fetch the deployed contracts.");
-                                }
-                            });
-
+        } else if (response instanceof Err) {
+            response.unwrap();
+        } else {
+            throw new Error("listDeployedContracts returns undefined. Impossible to fetch the deployed contracts.");
+        }
+    } catch (error) {
+        console.error(error);
+        window.alert(error);
+    }
+    
 }
 
 async function copyAddr(setCopied: Dispatch<SetStateAction<boolean>> , addr: string) {

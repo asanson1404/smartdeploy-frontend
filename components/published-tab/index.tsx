@@ -34,46 +34,46 @@ type DeployArgsObj = {
 
 async function listAllPublishedContracts() {
 
-    return await smartdeploy
-                            .listPublishedContracts({start: undefined, limit: undefined})
-                            .then((response) => {
+    try {
+        const response = await smartdeploy.listPublishedContracts({ start: undefined, limit: undefined });
+        console.log(response);
+        
+        if (response instanceof Ok) {
+            let publishedContracts: PublishedContract[] = [];
+            
+            const contractArray = response.unwrap();
+            
+            contractArray.forEach(([name, publishedContract], i) => {
+                const version: Version = publishedContract.versions.keys().next().value;
+                const major = version.major;
+                const minor = version.minor;
+                const patch = version.patch;
+                const versionString = `v.${major}.${minor}.${patch}`;
+                
+                const hash = publishedContract.versions.values().next().value.hash.join('');
+                const parsedPublishedContract: PublishedContract = {
+                    index: i,
+                    name: name,
+                    author: publishedContract.author.toString(),
+                    version: version,
+                    version_string: versionString,
+                    hash: hash
+                };
+                
+                publishedContracts.push(parsedPublishedContract);
+            });
 
-                                if (response instanceof Ok) {
+            return publishedContracts;
 
-                                    let publishedContracts: PublishedContract[] = [];
-
-                                    const contractArray =  response.unwrap();
-
-                                    contractArray.forEach(([name, publishedContract], i) => {
-                                        
-                                        const version: Version = publishedContract.versions.keys().next().value;
-                                        const major = version.major;
-                                        const minor = version.minor;
-                                        const patch = version.patch;
-                                        const versionString = `v.${major}.${minor}.${patch}`;
-
-                                        const hash = publishedContract.versions.values().next().value.hash.join('');
-                                        const parsedPublishedContract: PublishedContract = {
-                                            index: i,
-                                            name: name,
-                                            author: publishedContract.author.toString(),
-                                            version: version,
-                                            version_string: versionString,
-                                            hash: hash
-                                        }
-
-                                        publishedContracts.push(parsedPublishedContract);
-                                    });
-                                    
-                                    //console.log(publishedContracts);
-                                    return publishedContracts;
-
-                                } else if (response instanceof Err) {
-                                    response.unwrap();
-                                } else {
-                                    throw new Error("listPublishedContracts returns undefined. Impossible to fetch the published contracts.");
-                                }
-                            });
+        } else if (response instanceof Err) {
+            response.unwrap();
+        } else {
+            throw new Error("listPublishedContracts returns undefined. Impossible to fetch the published contracts.");
+        }
+    } catch (error) {
+        console.error(error);
+        window.alert(error);
+    }
 
 }
 
@@ -115,7 +115,8 @@ async function deploy(
             else {
                 setDeployedName("");
 
-                let deployedAddr = await smartdeploy.deploy(argsObj, {responseType: 'full' });
+                //let deployedAddr = await smartdeploy.deploy(argsObj, {responseType: undefined });
+                const tx = await smartdeploy.deploy(argsObj, { responseType: 'full' });
                                                     //.deploy(argsObj, { responseType: 'full', secondsToWait: 0 })
                                                     //.deploy(argsObj)
                                                     // .then((response) => {
@@ -129,8 +130,17 @@ async function deploy(
                                                     //     console.error("Failed to deploy the contract: ", err);
                                                     //     window.alert(err);
                                                     // });
-                console.log(deployedAddr);                                
+                
+                /*if (deployedAddr instanceof Ok) {
+                    console.log("Enter in if")
+                    console.log(deployedAddr.unwrap());
+                    return deployedAddr.unwrap()
+                
+                }
+                
+                console.log("after check: ", deployedAddr);                                
                 setIsDeploying(false);
+                */
             }
         }
     }
