@@ -84,6 +84,7 @@ async function deploy(
     userWalletInfo: UserWalletInfo,
     setIsDeploying: Dispatch<SetStateAction<boolean>>,
     setDeployedName: Dispatch<SetStateAction<string>>,
+    setWouldDeploy: Dispatch<SetStateAction<boolean>>,
     argsObj: DeployArgsObj
 ) {
     
@@ -145,6 +146,7 @@ async function deploy(
                     window.alert(error);
                 }
 
+                setWouldDeploy(false);
                 setIsDeploying(false);
                 
             }
@@ -216,6 +218,7 @@ function DeployIconComponent(props: DeployIconComponentProps) {
                                                         props.userWalletInfo.data,
                                                         setIsDeploying,
                                                         setDeployedName,
+                                                        setWouldDeploy,
                                                         argsObj
                                                     );
                                                 }}
