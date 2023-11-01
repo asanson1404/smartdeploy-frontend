@@ -7,9 +7,9 @@
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
-    "postinstall": "cargo install_soroban && npm run bindings",
+    "postinstall": "just && npm run bindings",
     "soroban": "./target/bin/soroban",
-    "bindings": "npm run soroban -- contract bindings typescript --overwrite --network futurenet --contract-id $(cat contract_id.txt) --output-dir node_modules/smartdeploy-client"
+    "bindings": "npm run soroban -- contract bindings typescript --overwrite --network testnet --contract-id $(cat contract_id.txt) --output-dir node_modules/smartdeploy-client"
   },
   "dependencies": {
     "@stellar/freighter-api": "^1.7.1",
