@@ -115,19 +115,12 @@ async function deploy(
                 setDeployedName("");
 
                 let deployedAddr = await smartdeploy.deploy(argsObj, { responseType: 'full'});
-                                                    //.deploy(argsObj, { responseType: 'full', secondsToWait: 0 })
-                                                    //.deploy(argsObj)
-                                                    // .then((response) => {
-                                                    //     console.log(response);
-                                                    //     if (response instanceof Ok) {return response.unwrap()}
-                                                    //     else if (response instanceof Err) {response.unwrap()}
-                                                    //     else if (response === undefined) {console.log("deployed address is UNDEFINED")}
-                                                    //     else { console.log("Neither Ok, nor Err, nor undefined")}
-                                                    // })
-                                                    // .catch((err) => {
-                                                    //     console.error("Failed to deploy the contract: ", err);
-                                                    //     window.alert(err);
-                                                    // });
+                if (!(deployedAddr instanceof Err)){
+                    if ( deployedAddr.getTransactionResponse?.status == "SUCCESS"){
+                        /// Refresh the deployed contracts list
+                        console.log(`Deployed contract ${argsObj.deployed_name}`);
+                    }
+                }
                 console.log(deployedAddr);                                
                 setIsDeploying(false);
             }
