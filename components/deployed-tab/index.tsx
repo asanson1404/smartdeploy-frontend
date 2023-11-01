@@ -22,8 +22,9 @@ async function listAllDeployedContracts() {
 
     return await smartdeploy
                             .listDeployedContracts({start: undefined, limit: undefined})
-                            .then((response) => {
-
+                            //@ts-ignore
+                            .then(({result}) => {
+                                const response = result;
                                 if (response instanceof Ok) {
 
                                     let deployedContracts: DeployedContract[] = [];

@@ -15,7 +15,7 @@ const inter = Inter({ subsets: ['latin'] })
 // Smartdeploy Contract Instance
 export const smartdeploy = new Contract({
   networkPassphrase: "Test SDF Network ; September 2015",
-  contractId: "CCKWBFU4OK42Y62VQOGCXFYHMALFZPLTDVIKLLZPBBWGIZZBOJS5G7YF",
+  contractId: "CDNOMEB3ZQHS5WPCUPQ7IS4OKGTOTBRDCZUITBRNSQAB63JJ52JFO4KX",
   rpcUrl: 'https://soroban-testnet.stellar.org:443',
 });
 
