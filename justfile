@@ -5,7 +5,7 @@ soroban := 'target/bin/soroban'
     echo {{ if path_exists(soroban) == "true" { "" } else { `cargo install_soroban` } }}
 
 
-generate_bindings:
+@generate_bindings:
     npm run bindings
 
 @setup-node:
@@ -13,3 +13,6 @@ generate_bindings:
 
 dev:
     npm run dev
+
+@clean:
+    rm -rf ./target/bin
