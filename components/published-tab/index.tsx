@@ -35,14 +35,17 @@ type DeployArgsObj = {
 async function listAllPublishedContracts() {
 
     try {
-        const response = await smartdeploy.listPublishedContracts({ start: undefined, limit: undefined });
-        console.log(response);
+
+        ///@ts-ignore
+        const {result} = await smartdeploy.listPublishedContracts({ start: undefined, limit: undefined });
+        const response = result;
         
         if (response instanceof Ok) {
             let publishedContracts: PublishedContract[] = [];
             
             const contractArray = response.unwrap();
-            
+
+            ///@ts-ignore
             contractArray.forEach(([name, publishedContract], i) => {
                 const version: Version = publishedContract.versions.keys().next().value;
                 const major = version.major;
@@ -115,8 +118,8 @@ async function deploy(
             else {
                 setDeployedName("");
 
-                //let deployedAddr = await smartdeploy.deploy(argsObj, {responseType: undefined });
-                const tx = await smartdeploy.deploy(argsObj, { responseType: 'full' });
+                let deployedAddr = await smartdeploy.deploy(argsObj, {responseType: 'full' });
+                //const tx = await smartdeploy.deploy(argsObj, { responseType: 'full' });
                                                     //.deploy(argsObj, { responseType: 'full', secondsToWait: 0 })
                                                     //.deploy(argsObj)
                                                     // .then((response) => {
@@ -131,6 +134,14 @@ async function deploy(
                                                     //     window.alert(err);
                                                     // });
                 
+                if (!(deployedAddr instanceof Err)){
+                    if ( deployedAddr.getTransactionResponse?.status == "SUCCESS"){
+                        /// Refresh the deployed contracts list
+                        console.log(`Deployed contract ${argsObj.deployed_name}`);
+                    }
+                }
+                console.log(deployedAddr);
+                setIsDeploying(false);
                 /*if (deployedAddr instanceof Ok) {
                     console.log("Enter in if")
                     console.log(deployedAddr.unwrap());

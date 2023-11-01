@@ -21,14 +21,18 @@ type ClipboardIconComponentProps = {
 async function listAllDeployedContracts() {
 
     try {
-        const response = await smartdeploy.listDeployedContracts({ start: undefined, limit: undefined });
-        
+
+        ///@ts-ignore
+        const { result } = await smartdeploy.listDeployedContracts({ start: undefined, limit: undefined });
+        const response = result;
+
         if (response instanceof Ok) {
             
             let deployedContracts: DeployedContract[] = [];
 
             const contractArray =  response.unwrap();
 
+            ///@ts-ignore
             contractArray.forEach(([name, address], i) => {
 
                 const parsedDeployedContract: DeployedContract = {
