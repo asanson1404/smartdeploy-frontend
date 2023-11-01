@@ -138,7 +138,16 @@ async function deploy(
                 
                 }
                 
-                console.log("after check: ", deployedAddr);                                
+                console.log("after check: ", deployedAddr);
+
+                let deployedAddr = await smartdeploy.deploy(argsObj, { responseType: 'full'});
+                if (!(deployedAddr instanceof Err)){
+                    if ( deployedAddr.getTransactionResponse?.status == "SUCCESS"){
+                        /// Refresh the deployed contracts list
+                        console.log(`Deployed contract ${argsObj.deployed_name}`);
+                    }
+                }
+                console.log(deployedAddr);
                 setIsDeploying(false);
                 */
             }
