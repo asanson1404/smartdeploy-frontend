@@ -39,7 +39,7 @@ async function listAllPublishedContracts() {
         ///@ts-ignore
         const {result} = await smartdeploy.listPublishedContracts({ start: undefined, limit: undefined });
         const response = result;
-        
+
         if (response instanceof Ok) {
             let publishedContracts: PublishedContract[] = [];
             
@@ -116,51 +116,37 @@ async function deploy(
             }
             // Now that everything is ok, deploy the contract
             else {
+
                 setDeployedName("");
 
-                let deployedAddr = await smartdeploy.deploy(argsObj, {responseType: 'full' });
-                //const tx = await smartdeploy.deploy(argsObj, { responseType: 'full' });
-                                                    //.deploy(argsObj, { responseType: 'full', secondsToWait: 0 })
-                                                    //.deploy(argsObj)
-                                                    // .then((response) => {
-                                                    //     console.log(response);
-                                                    //     if (response instanceof Ok) {return response.unwrap()}
-                                                    //     else if (response instanceof Err) {response.unwrap()}
-                                                    //     else if (response === undefined) {console.log("deployed address is UNDEFINED")}
-                                                    //     else { console.log("Neither Ok, nor Err, nor undefined")}
-                                                    // })
-                                                    // .catch((err) => {
-                                                    //     console.error("Failed to deploy the contract: ", err);
-                                                    //     window.alert(err);
-                                                    // });
-                
-                if (!(deployedAddr instanceof Err)){
-                    if ( deployedAddr.getTransactionResponse?.status == "SUCCESS"){
-                        /// Refresh the deployed contracts list
-                        console.log(`Deployed contract ${argsObj.deployed_name}`);
-                    }
-                }
-                console.log(deployedAddr);
-                setIsDeploying(false);
-                /*if (deployedAddr instanceof Ok) {
-                    console.log("Enter in if")
-                    console.log(deployedAddr.unwrap());
-                    return deployedAddr.unwrap()
-                
-                }
-                
-                console.log("after check: ", deployedAddr);
+                try {
 
-                let deployedAddr = await smartdeploy.deploy(argsObj, { responseType: 'full'});
-                if (!(deployedAddr instanceof Err)){
-                    if ( deployedAddr.getTransactionResponse?.status == "SUCCESS"){
-                        /// Refresh the deployed contracts list
-                        console.log(`Deployed contract ${argsObj.deployed_name}`);
-                    }
+                    ///@ts-ignore
+                    //const { result } = await smartdeploy.deploy(argsObj, { responseType: 'full' }).sign().send()
+                    const tx = await smartdeploy.deploy(argsObj, { responseType: 'full' });
+                    console.log(tx);
+
+                    //if (result instanceof Ok) {return result.unwrap()}
+                    //else if (result instanceof Err) {result.unwrap()}
+                    //else if (result === undefined) {console.log("deployed address is UNDEFINED")}
+                    //else { console.log("Neither Ok, nor Err, nor undefined")}
+
+                    //if (!(deployedAddr instanceof Err)){
+                    //    if ( deployedAddr.getTransactionResponse?.status == "SUCCESS"){
+                    //        /// Refresh the deployed contracts list
+                    //        console.log(`Deployed contract ${argsObj.deployed_name}`);
+                    //    }
+                    //}
+
+                    //console.log(result);
+
+                } catch (error) {
+                    console.error(error);
+                    window.alert(error);
                 }
-                console.log(deployedAddr);
+
                 setIsDeploying(false);
-                */
+                
             }
         }
     }
