@@ -1,0 +1,204 @@
+.publishedTabContainer {
+    margin-bottom: 5rem;
+    border-radius: 10px;
+    box-shadow:
+        1.2rem 1.2rem 35px 22px rgba(2, 29, 104, 0.257);
+}
+
+.publishedTabHead,
+.publishedTabContent {
+    table-layout: fixed;
+    border-collapse: collapse;
+    margin-top: 0rem;
+    width: 55rem;
+}
+
+.publishedTabContentContainer {
+    max-height: 14.2rem; 
+    overflow-y: scroll;
+}
+.publishedTabContentContainer::-webkit-scrollbar {
+    display: none;
+}
+
+.publishedTabHead caption {
+    background-color: #025cb159;
+    font-size: 1.4rem;
+    font-weight: bold;
+    color: #b6b3b3;
+    text-align: center;
+    padding: 0.9rem 0.4rem 0.6rem 0.4rem;
+    border-radius: 8px 8px 0 0;
+}
+
+.contractCol {
+    width: 18%;
+}
+.authorCol {
+    width: 64%;
+}
+.versionCol {
+    width: 10%;
+}
+.deployCol {
+    width: 8%;
+}
+
+.publishedTabHead thead {
+    background-color: #025cb159;
+    color: #8d8c8c;
+    font-weight: bold;
+    text-align: left;
+}
+
+.publishedTabHead thead th,
+.publishedTabContent tbody td {
+    padding: 0.4rem 0.5rem;
+}
+
+.publishedTabContent tbody td {
+    padding: 0.4rem 0.5rem;
+    color: rgb(169, 168, 168);
+    font-size: 0.9rem;
+    border-bottom: 1px solid #dddddd9b;
+}
+
+.publishedTabContent tbody tr:nth-of-type(even) {
+    background-color: rgba(128, 128, 128, 0.328);
+}
+
+.contractCell {
+    text-overflow: ellipsis;
+}
+.contractCell::-webkit-scrollbar {
+    display: none;
+}
+.publishedTabContentContainer td {
+    overflow-x: scroll;
+}
+.publishedTabContentContainer td::-webkit-scrollbar {
+    display: none;
+}
+
+.deployIconCell {
+    text-align: center;
+}
+
+.deployIcon:hover {
+    fill: rgba(184, 77, 27, 0.83);
+}
+
+.load {
+    color: #8d8c8cbb;
+    font-size: 1.5rem;
+    font-style: italic;
+}
+
+.deployingMessage {
+    display: flex;
+    align-items: center;
+    font-size: 0.65rem;
+}
+
+.popupContainer {
+    background-color: rgb(45, 49, 49);
+    color: #cac8c8;
+    font-family: Arial, Helvetica, sans-serif;
+    width: 40rem;
+    border-radius: 10px;
+}
+.header {
+    width: 100%;
+    border-bottom: 1px solid gray;
+    font-size: 1.9rem;
+    font-weight: bold;
+    text-align: center;
+    padding: 0.7rem;
+}
+.nameColor {
+    color: rgb(0, 212, 250);
+}
+.content {
+    width: 100%;
+    text-align: center;
+    font-size: 1.2rem;
+    margin-top: 1rem;
+    margin-bottom: 1rem;
+    padding-left: 0.7rem;
+    padding-right: 0.7rem;
+}
+
+.deployedNameDiv {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-top: 2rem;
+    margin-bottom: 2rem;
+}
+.deployedNameInput {
+    outline: none;
+    font-size: 1.3rem;
+    font-weight: bold;
+    margin-top: 0.6rem;
+    width: 45%;
+    background-color: transparent;
+    padding: 0.5rem 0.4rem;
+    border: 1px solid gray;
+    border-radius: 5px;
+    color: #f3ebeb;
+}
+.deployedNameInput::placeholder {
+    color: rgba(128, 128, 128, 0.51);
+  }
+
+.buttonContainer {
+    width: 100%;
+    padding-top: 0.5rem;
+    padding-bottom:  1rem;
+    text-align: center;
+    
+}
+
+.button {
+    margin-right: 2rem;
+    margin-left: 2rem;
+    padding: 0.2rem 2.5rem 0.2rem 2.5rem;
+    width: 15rem;
+    font-size: 1.2rem;
+    font-weight: bold;
+    background-color: rgb(45, 49, 49);
+    color: rgb(0, 212, 250);
+    border: 1.5px solid rgb(0, 212, 250);
+    border-radius: 5px;
+}
+.button:hover {
+    background-color: rgba(2, 111, 128, 0.316);
+}
+.buttonWhenDeploying {
+    margin-right: 2rem;
+    margin-left: 2rem;
+    padding: 0.2rem 2.5rem 0.2rem 2.5rem;
+    width: 15rem;
+    font-size: 1.2rem;
+    font-weight: bold;
+    background-color: rgb(45, 49, 49);
+    color: rgb(0, 212, 250);
+    border: 1.5px solid rgb(0, 212, 250);
+    border-radius: 5px; 
+}
+  
+.close {
+    cursor: pointer;
+    outline: none;
+    color: red;
+    position: absolute;
+    display: block;
+    padding: 2px 5px;
+    line-height: 20px;
+    right: -10px;
+    top: -10px;
+    font-size: 24px;
+    background: #ffffff;
+    border-radius: 18px;
+    border: 1px solid #cfcece;
+}

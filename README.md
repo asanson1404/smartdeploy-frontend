@@ -9,7 +9,40 @@ Contributing
 ## Prerequisites 
 
 0. Install [just](https://github.com/casey/just#readme): `cargo install just`
-0. Install [Node.js](https://nodejs.org/en/download/package-manager/) ≥ 16
+0. Install [Node.js](https://nodejs.org/en/download/package-manager/) ≥ 18
+
+
+Install the right soroban version:
+```bash
+just setup
+# or
+cargo install_soroban
+```
+
+Install the nodes dependencies (bindings included):
+```bash
+just setup-node
+# or
+npm i
+```
+
+Generate the bindings (for example after you installed a new npm package):
+```bash
+just generate_bindings
+# or
+npm run postinstall
+```
+
+Finally, run the development server:
+
+```bash
+just dev 
+# or
+npm run dev
+```
+
+
+
 
 Get the frontend working:
 0. Clone this repo and `cd` into its directory
@@ -17,27 +50,63 @@ Get the frontend working:
 0. Install dependencies with `npm install`
 0. Run frontend app in development mode with `npm run dev` or `just dev` (see other commands you can run with `just --list` and in the `scripts` section of `package.json`)
 
-The Abundance Token source code lives in [./contract](./contract). If you want to make CLI calls to the deployed contract:
-
-0. Install [Soroban CLI](https://soroban.stellar.org/docs/reference/soroban-cli)
-
-1. Configure a Futurenet network shortcut:
-
-       soroban config network add --global \
-                           --rpc-url https://rpc-futurenet.stellar.org:443/soroban/rpc \
-                           --network-passphrase "Test SDF Future Network ; October 2022" \
-                           futurenet
-
-2. You probably also want to configure a default identity:
-
-       soroban config identity generate --global default
-
-3. Now add an alias to your shell, maybe in your `.zprofile` (zsh) or `.bash_profile` (bash) or equivalent for your system:
-
-       alias abundance="soroban contract invoke --network futurenet --source default --id 3d0ad3712bcb251a0dc899882313ad7167c9400a5f51444d86ab6c3f93faa513 --"
-
-4. Check that it worked:
-
-      abundance --help
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+
+## Getting Started (default README don't read it)
+
+First, run the development server:
+
+```bash
+npm run dev
+# or
+yarn dev
+# or
+pnpm dev
+# or
+bun dev
+```
+
+Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+
+You can start editing the page by modifying `pages/index.tsx`. The page auto-updates as you edit the file.
+
+[API routes](https://nextjs.org/docs/api-routes/introduction) can be accessed on [http://localhost:3000/api/hello](http://localhost:3000/api/hello). This endpoint can be edited in `pages/api/hello.ts`.
+
+The `pages/api` directory is mapped to `/api/*`. Files in this directory are treated as [API routes](https://nextjs.org/docs/api-routes/introduction) instead of React pages.
+
+This project uses [`next/font`](https://nextjs.org/docs/basic-features/font-optimization) to automatically optimize and load Inter, a custom Google Font.
+
+## Learn More
+
+To learn more about Next.js, take a look at the following resources:
+
+- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
+- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+
+You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
+
+## Deploy on Vercel
+
+The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+
+Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.

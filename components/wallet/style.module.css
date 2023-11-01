@@ -1,0 +1,66 @@
+.walletInfo {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    float: right;
+    width: 40%;
+}
+
+.connectButton {
+    padding: 0.5rem 0.9rem;
+    background-color: #025bb1;
+    color: #fff;
+    border: none;
+    border-radius: 0.9rem;
+    font-size: 0.9rem;
+    cursor: pointer;
+    margin-right: 1.2rem;
+}
+
+.connectButton:hover {
+    transform: scale(1.05);
+}
+
+.card {
+    text-align: center;
+    font-size: 0.8rem;
+    background-color: #025bb1;
+    padding: 0.5rem;
+    border-radius: 10px;
+    margin-right: 0.5rem;
+    margin-left: 0.5rem;
+}
+
+.walletInfo a {
+    color: #c72cb0;
+}
+
+
+/* Mobile */
+/*
+@media (max-width: 700px) {
+
+    .walletInfo {
+        position: absolute;
+        width: 15rem;
+        top: 0;
+        left: 50%;
+        transform: translateX(-50%);
+    }
+
+}
+*/
+/* Tablet and Smaller Desktop */
+/*
+@media (min-width: 701px) and (max-width: 1120px) {
+
+    .walletInfo {
+        position: absolute;
+        width: 15rem;
+        top: 0;
+        left: 50%;
+        transform: translateX(-50%);
+    }
+  
+}
+*/

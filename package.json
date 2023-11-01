@@ -1,28 +1,30 @@
 {
-  "name": "smartdeploy-frontend",
-  "type": "module",
-  "version": "0.0.1",
+  "name": "frontend",
+  "version": "0.1.0",
+  "private": true,
   "scripts": {
-    "preinstall": "just setup",
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start",
+    "lint": "next lint",
+    "postinstall": "just && npm run bindings",
     "soroban": "./target/bin/soroban",
-    "dev": "astro dev",
-    "start": "astro dev",
-    "build": "astro build",
-    "preview": "astro preview",
-    "astro": "astro",
-    "build:contracts": "just build",
-    "test:contracts": "cargo test",
-    "generate": "just generate"
+    "bindings": "npm run soroban -- contract bindings typescript --overwrite --network testnet --contract-id $(cat contract_id.txt) --output-dir node_modules/smartdeploy-client"
   },
   "dependencies": {
-    "@stellar/freighter-api": "^1.4.0",
-    "astro": "^2.3.1",
-    "preact": "^10.15.1",
-    "smartdeploy": "file:target/js-clients/smartdeploy",
-    "uikit": "^3.16.19"
+    "@stellar/freighter-api": "^1.7.1",
+    "next": "13.5.4",
+    "react": "^18",
+    "react-async": "^10.0.1",
+    "react-dom": "^18",
+    "react-icons": "^4.11.0",
+    "reactjs-popup": "^2.0.6"
   },
-  "private": true,
   "devDependencies": {
-    "@types/uikit": "^3.14.0"
+    "@types/node": "^20",
+    "@types/react": "^18",
+    "@types/react-dom": "^18",
+    "@types/uikit": "^3.14.1",
+    "typescript": "^5"
   }
 }
