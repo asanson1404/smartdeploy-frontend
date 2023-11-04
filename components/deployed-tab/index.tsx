@@ -2,10 +2,10 @@ import { FaRegClipboard } from "react-icons/fa";
 import { MdDone } from "react-icons/md"
 import styles from './style.module.css';
 
-import { smartdeploy } from "@/pages";
+import { smartdeploy, FetchDatas } from "@/pages";
 import { Ok, Err } from 'smartdeploy-client'
-import { useAsync } from "react-async";
 import { useState, useEffect, Dispatch, SetStateAction } from "react";
+import { useThemeContext } from '../ThemeContext'
 
 interface DeployedContract {
     index: number;
@@ -104,21 +104,78 @@ function ClipboardIconComponent(props: ClipboardIconComponentProps) {
 }
 
 
-export default function DeployedTab() {   
+export default function DeployedTab(props: FetchDatas) {
 
-    const { data, error, isPending } = useAsync({ promiseFn: listAllDeployedContracts});
+    // Import the current Theme
+    const { activeTheme } = useThemeContext();
 
-    if (isPending) return (<p className={styles.load}>Loading...</p>)
+    const [loading, setLoading] = useState<boolean>(true);
+    const [error, setError] = useState<boolean>(false);
+    const [deployedContracts, setDeployedContracts] = useState<DeployedContract[]>([]);
 
-    else if (error) { throw new Error("Error when trying to fetch Deployed Contracts") }
+    useEffect(() => {
 
-    else if (data) {      
+        async function fetchDeployedContracts() {
+            try {
+              const datas = await listAllDeployedContracts();
+              setDeployedContracts(datas as DeployedContract[]);
+              setLoading(false);
+            } catch (error) {
+                console.error(error);
+                window.alert(error);
+                setError(true);
+            }
+        }
+
+        if (props.fetch === true) {
+            setLoading(true);
+            fetchDeployedContracts();
+            props.setFetch(false);
+        }
+
+    }, [props.fetch]);
+
+    if (loading) return (
+        <div className={styles.deployedTabContainer} data-theme={activeTheme}>
+            <table className={styles.deployedTabHead}>
+                <caption data-theme={activeTheme}>DEPLOYED CONTRACTS</caption>
+                <colgroup>
+                    <col className={styles.contractCol}></col>
+                    <col className={styles.addressCol}></col>
+                    <col className={styles.copyCol}></col>
+                </colgroup>
+                <thead data-theme={activeTheme}>
+                    <tr>
+                        <th>Contract</th>
+                        <th>Address</th>
+                        <th className={styles.copyThead}>Copy</th>
+                    </tr>
+                </thead>
+            </table>
+            <div className={styles.deployedTabContentContainer}>
+                <table className={styles.deployedTabContent}>
+                    <colgroup>
+                        <col className={styles.contractCol}></col>
+                        <col className={styles.addressCol}></col>
+                        <col className={styles.copyCol}></col>
+                    </colgroup>
+                    <tbody>
+                        
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    )
+
+    if (error) { throw new Error("Error when trying to fetch Deployed Contracts") }
+
+    if (deployedContracts) {    
 
         const rows: JSX.Element[] = [];
 
-        data.forEach((deployedContract) => {
+        deployedContracts.forEach((deployedContract) => {
             rows.push(
-                <tr key={deployedContract.index}>
+                <tr key={deployedContract.index} data-theme={activeTheme}>
                     <td className={styles.contractCell}>{deployedContract.name}</td>
                     <td>{deployedContract.address}</td>
                     <ClipboardIconComponent address={deployedContract.address}/>
@@ -127,15 +184,15 @@ export default function DeployedTab() {
         });
 
         return(
-            <div className={styles.deployedTabContainer}>
+            <div className={styles.deployedTabContainer} data-theme={activeTheme}>
                 <table className={styles.deployedTabHead}>
-                    <caption>DEPLOYED CONTRACTS</caption>
+                    <caption data-theme={activeTheme}>DEPLOYED CONTRACTS</caption>
                     <colgroup>
                         <col className={styles.contractCol}></col>
                         <col className={styles.addressCol}></col>
                         <col className={styles.copyCol}></col>
                     </colgroup>
-                    <thead>
+                    <thead data-theme={activeTheme}>
                         <tr>
                             <th>Contract</th>
                             <th>Address</th>
