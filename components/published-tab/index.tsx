@@ -45,7 +45,8 @@ type DeployArgsObj = {
     version: Option<Version>,
     deployed_name: string,
     owner: string,
-    salt: Option<Buffer>
+    salt: Option<Buffer>,
+    init: Option<readonly [string, Array<any>]>
 };
 
 async function listAllPublishedContracts() {
@@ -143,8 +144,8 @@ async function deploy(
 
                 try {
 
-                    const tx = await smartdeploy.deploy(argsObj, { responseType: 'full' });
-                    console.log(tx);
+                    const tx = await smartdeploy.deploy(argsObj);
+                    await tx.signAndSend();
                     refetchDeployedContract.setFetch(true);
                     setDeployedName("");
                     setWouldDeploy(false);
@@ -260,7 +261,8 @@ function DeployIconComponent(props: DeployVersionProps) {
                                                         version: props.selected_version.version,
                                                         deployed_name: deployedName,
                                                         owner: props.userWalletInfo.address,
-                                                        salt: undefined
+                                                        salt: undefined,
+                                                        init: undefined
                                                     }
 
                                                     deploy(
