@@ -7,10 +7,10 @@ import WalletInfo from '@/components/wallet'
 import PublishedTab from '@/components/published-tab'
 import DeployedTab from '@/components/deployed-tab'
 import PopupDappInfo from '@/components/dapp-info-popup'
-import { FaDiscord, FaTwitter, FaGithub } from "react-icons/fa";
+import { FaDiscord, FaTwitter, FaGithub } from "react-icons/fa"
 import { BsFillSunFill } from 'react-icons/bs'
 import { MdNightlightRound } from 'react-icons/md'
-import { Contract, networks } from 'smartdeploy-client';
+import { Contract, networks } from 'smartdeploy-client'
 import { useThemeContext } from '../components/ThemeContext'
 
 const inter = Inter({ subsets: ['latin'] })

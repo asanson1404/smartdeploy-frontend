@@ -5,6 +5,9 @@ import { DeployedContract, listAllDeployedContracts } from './smartdeploy-functi
 import { useState, useEffect } from "react";
 import ClipboardIconComponent from './clip-board-component';
 import { useThemeContext } from '../ThemeContext'
+import { useQuery } from '@tanstack/react-query'
+import axios from 'axios';
+import endpoints from '@/endpoints.config';
 
 export default function DeployedTab(props: FetchDatas) {
 
@@ -14,6 +17,23 @@ export default function DeployedTab(props: FetchDatas) {
     const [loading, setLoading] = useState<boolean>(true);
     const [error, setError] = useState<boolean>(false);
     const [deployedContracts, setDeployedContracts] = useState<DeployedContract[]>([]);
+    const [deployEvents, setDeployEvents] = useState<any>();
+
+    // Fetch deploy events data every 10 secondes
+    const { data, error: apiError } = useQuery({
+        queryKey: ['deploy_events'],
+        queryFn: async () => {
+            try {
+                const res = await axios.get(endpoints.deploy_events);
+                setDeployEvents(res.data);
+                return res.data;
+            } catch (error) {
+                console.error("Error to get the Deploy events", error);
+            }
+        },
+        refetchInterval: 10000,
+    });
+    console.log(deployEvents);
 
     useEffect(() => {
 

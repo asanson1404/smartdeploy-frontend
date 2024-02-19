@@ -6,6 +6,9 @@ import { useState, useEffect } from 'react';
 import { Version } from 'smartdeploy-client'
 import { PublishedContract, listAllPublishedContracts } from './smartdeploy-functions'
 import { DeployVersionComponent } from './deploy-components'
+import { useQuery } from '@tanstack/react-query'
+import axios from 'axios';
+import endpoints from '@/endpoints.config';
 
 
 export default function PublishedTab(props: StateVariablesProps) {
@@ -16,6 +19,23 @@ export default function PublishedTab(props: StateVariablesProps) {
     const [loading, setLoading] = useState<boolean>(true);
     const [error, setError] = useState<boolean>(false);
     const [publishedContracts, setPublishedContracts] = useState<PublishedContract[]>([]);
+    const [publishEvents, setPublishEvents] = useState<any>();
+
+    // Fetch publish events data every 10 secondes
+    const { data, error: apiError } = useQuery({
+        queryKey: ['publish_events'],
+        queryFn: async () => {
+            try {
+                const res = await axios.get(endpoints.publish_events);
+                setPublishEvents(res.data);
+                return res.data;
+            } catch (error) {
+                console.error("Error to get the Publish events", error);
+            }
+        },
+        refetchInterval: 10000,
+    });
+    console.log(publishEvents); 
 
     useEffect(() => {
 
