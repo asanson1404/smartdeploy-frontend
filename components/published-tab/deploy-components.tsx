@@ -1,7 +1,8 @@
 import styles from './style.module.css'
 
-import { useThemeContext } from '../ThemeContext'
-import { UserWalletInfo, FetchDatas } from "@/pages"
+import { useThemeContext } from '../../context/ThemeContext'
+import { useWalletContext } from '../../context/WalletContext'
+import { FetchDatas } from "@/pages"
 import { useState, ChangeEvent, Dispatch, SetStateAction } from 'react'
 import Popup from 'reactjs-popup'
 import Dropdown from 'react-dropdown'
@@ -12,7 +13,6 @@ import { deploy, DeployArgsObj } from './smartdeploy-functions'
 import { Version } from 'smartdeploy-client'
 
 type DeployVersionProps = {
-    userWalletInfo: UserWalletInfo;
     refetchDeployedContract: FetchDatas;
     contract_name: string;
     selected_version: {version: Version, version_string: string};
@@ -22,6 +22,8 @@ function DeployIconComponent(props: DeployVersionProps) {
 
     // Import the current Theme
     const { activeTheme } = useThemeContext();
+
+    const walletContext = useWalletContext();
 
     const [wouldDeploy, setWouldDeploy]   = useState<boolean>(false); 
     const [deployedName, setDeployedName] = useState<string>("");
@@ -79,13 +81,13 @@ function DeployIconComponent(props: DeployVersionProps) {
                                                         contract_name: props.contract_name,
                                                         version: props.selected_version.version,
                                                         deployed_name: deployedName,
-                                                        owner: props.userWalletInfo.address,
+                                                        owner: walletContext.address,
                                                         salt: undefined,
                                                         init: undefined
                                                     }
 
                                                     deploy(
-                                                        props.userWalletInfo,
+                                                        walletContext,
                                                         props.refetchDeployedContract,
                                                         setIsDeploying,
                                                         setDeployedName,
@@ -115,7 +117,6 @@ function DeployIconComponent(props: DeployVersionProps) {
 }
 
 type DeployProps = {
-    userWalletInfo: UserWalletInfo;
     refetchDeployedContract: FetchDatas;
     contract_name: string;
     versions: {version: Version, version_string: string}[];
@@ -141,7 +142,6 @@ export function DeployVersionComponent(props: DeployProps) {
                 />
             </td>
             <DeployIconComponent
-                userWalletInfo={props.userWalletInfo}
                 refetchDeployedContract={props.refetchDeployedContract}
                 contract_name={props.contract_name}
                 selected_version={selectedVersion}

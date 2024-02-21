@@ -11,7 +11,7 @@ import { FaDiscord, FaTwitter, FaGithub } from "react-icons/fa"
 import { BsFillSunFill } from 'react-icons/bs'
 import { MdNightlightRound } from 'react-icons/md'
 import { Contract, networks } from 'smartdeploy-client'
-import { useThemeContext } from '../components/ThemeContext'
+import { useThemeContext } from '../context/ThemeContext'
 
 const inter = Inter({ subsets: ['latin'] })
 
@@ -21,24 +21,12 @@ export const smartdeploy = new Contract({
   rpcUrl: 'https://soroban-testnet.stellar.org:443',
 });
 
-export type UserWalletInfo = {
-  connected: boolean;
-  setConnected: Dispatch<SetStateAction<boolean>>;
-  hasFreighter: boolean;
-  setHasFreighter: Dispatch<SetStateAction<boolean>>;
-  address: string;
-  setAddress: Dispatch<SetStateAction<string>>;
-  network: string;
-  setNetwork: Dispatch<SetStateAction<string>>;
-}
-
 export type FetchDatas = {
   fetch: boolean;
   setFetch: Dispatch<SetStateAction<boolean>>;
 }
 
 export type StateVariablesProps = {
-  walletInfo: UserWalletInfo;
   fetchDeployed?: FetchDatas;
   fetchPublished?: FetchDatas;
 }
@@ -47,24 +35,6 @@ export default function Home() {
 
   // Import the current Theme
   const { activeTheme, setActiveTheme, inactiveTheme } = useThemeContext();
-
-  // State variables from Freighter Wallet
-  const [connected, setConnected] = useState<boolean>(false);
-  const [hasFreighter, setHasFreighter] = useState<boolean>(true);
-  const [address, setAddress] = useState<string>("");
-  const [network, setNetwork] = useState<string>("");
-
-  // Parse state variables regarding the Freighter's infos
-  const userWalletInfo: UserWalletInfo = {
-    connected,
-    setConnected,
-    hasFreighter,
-    setHasFreighter,
-    address,
-    setAddress,
-    network,
-    setNetwork,
-  }
 
   // State variable to fetch the published contracts
   const [fetchPublishedContracts, setFetchPublishedContracts] = useState<boolean>(true);
@@ -147,7 +117,7 @@ export default function Home() {
               <FaTwitter className={styles.socialItem} style={{ fill: 'var(--social-item)' }}/>
             </a>
           </div>
-          <WalletInfo walletInfo={userWalletInfo}/>
+          <WalletInfo/>
           { activeTheme === "dark" ? (
               <BsFillSunFill  className={styles.themeChange}
                               style={{ fill: 'var(--social-item)' }}
@@ -192,7 +162,7 @@ export default function Home() {
         </div>
 
         <PopupDappInfo/>
-        <PublishedTab walletInfo={userWalletInfo} fetchDeployed={parsedFetchDeployedContracts} fetchPublished={parsedFetchPublishedContracts}/>
+        <PublishedTab fetchDeployed={parsedFetchDeployedContracts} fetchPublished={parsedFetchPublishedContracts}/>
         <DeployedTab fetch={fetchDeployedContracts} setFetch={setFetchDeployedContracts}/>
         
         <div className={styles.grid}>

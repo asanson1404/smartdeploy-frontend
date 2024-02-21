@@ -4,7 +4,7 @@ import { FetchDatas } from "@/pages";
 import { DeployedContract, listAllDeployedContracts } from './smartdeploy-functions';
 import { useState, useEffect } from "react";
 import ClipboardIconComponent from './clip-board-component';
-import { useThemeContext } from '../ThemeContext'
+import { useThemeContext } from '../../context/ThemeContext'
 import { useQuery } from '@tanstack/react-query'
 import axios from 'axios';
 import endpoints from '@/endpoints.config';

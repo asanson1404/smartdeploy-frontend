@@ -1,7 +1,8 @@
 import { Dispatch, SetStateAction } from 'react'
 import { isConnected } from '@stellar/freighter-api'
-import { smartdeploy, UserWalletInfo, FetchDatas } from "@/pages"
+import { smartdeploy, FetchDatas } from "@/pages"
 import { Ok, Err, Option, Version } from 'smartdeploy-client'
+import { WalletContextType } from '@/context/WalletContext'
 
 export interface PublishedContract {
     index: number;
@@ -77,7 +78,7 @@ export type DeployArgsObj = {
 };
 
 export async function deploy(
-    userWalletInfo: UserWalletInfo,
+    walletContext: WalletContextType,
     refetchDeployedContract: FetchDatas,
     setIsDeploying: Dispatch<SetStateAction<boolean>>,
     setDeployedName: Dispatch<SetStateAction<string>>,
@@ -92,12 +93,12 @@ export async function deploy(
     }
     else {
         // Check if the Wallet is connected
-        if (userWalletInfo.address === "") {
+        if (walletContext.address === "") {
             alert("Wallet not connected. Please, connect a Stellar account.");
             setIsDeploying(false);
         }
         // Check is the network is Futurenet
-        else if (userWalletInfo.network.replace(" ", "").toUpperCase() !== "TESTNET") {
+        else if (walletContext.network.replace(" ", "").toUpperCase() !== "TESTNET") {
             alert("Wrong Network. Please, switch to Testnet.");
             setIsDeploying(false);
         }

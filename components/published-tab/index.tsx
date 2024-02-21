@@ -1,6 +1,6 @@
 import styles from './style.module.css';
 
-import { useThemeContext } from '../ThemeContext'
+import { useThemeContext } from '../../context/ThemeContext'
 import { StateVariablesProps, FetchDatas } from "@/pages";
 import { useState, useEffect } from 'react';
 import { Version } from 'smartdeploy-client'
@@ -124,7 +124,6 @@ export default function PublishedTab(props: StateVariablesProps) {
                     <td className={styles.contractCell}>{publishedContract.name}</td>
                     <td>{publishedContract.author}</td>
                     <DeployVersionComponent
-                        userWalletInfo={props.walletInfo}
                         refetchDeployedContract={props.fetchDeployed as FetchDatas}
                         contract_name={publishedContract.name}
                         versions={versions}
