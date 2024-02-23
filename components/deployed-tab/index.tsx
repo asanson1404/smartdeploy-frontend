@@ -1,13 +1,10 @@
 import styles from './style.module.css';
 
 import { FetchDatas } from "@/pages";
-import { DeployedContract, listAllDeployedContracts } from './smartdeploy-functions';
+import { DeployedContract, listAllDeployedContracts, getDeployEvents, DeployEventData } from './backend';
 import { useState, useEffect } from "react";
 import ClipboardIconComponent from './clip-board-component';
 import { useThemeContext } from '../../context/ThemeContext'
-import { useQuery } from '@tanstack/react-query'
-import axios from 'axios';
-import endpoints from '@/endpoints.config';
 
 export default function DeployedTab(props: FetchDatas) {
 
@@ -17,23 +14,15 @@ export default function DeployedTab(props: FetchDatas) {
     const [loading, setLoading] = useState<boolean>(true);
     const [error, setError] = useState<boolean>(false);
     const [deployedContracts, setDeployedContracts] = useState<DeployedContract[]>([]);
-    const [deployEvents, setDeployEvents] = useState<any>();
+    const [deployEvents, setDeployEvents] = useState<DeployEventData[] | undefined>([]);
 
-    // Fetch deploy events data every 10 secondes
-    const { data, error: apiError } = useQuery({
-        queryKey: ['deploy_events'],
-        queryFn: async () => {
-            try {
-                const res = await axios.get(endpoints.deploy_events);
-                setDeployEvents(res.data);
-                return res.data;
-            } catch (error) {
-                console.error("Error to get the Deploy events", error);
-            }
-        },
-        refetchInterval: 10000,
-    });
-    console.log(deployEvents);
+    // newDeployEvents is updated when a new event is indexed
+    let newDeployEvents = getDeployEvents();
+    // Update deployEvents as well
+    if (newDeployEvents != deployEvents) {
+        setDeployEvents(newDeployEvents);
+    }
+    //console.log(deployEvents);
 
     useEffect(() => {
 

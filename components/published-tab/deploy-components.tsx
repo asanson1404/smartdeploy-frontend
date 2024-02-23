@@ -9,7 +9,7 @@ import Dropdown from 'react-dropdown'
 import { BsSendPlus } from 'react-icons/bs'
 import { IoMdArrowDropdown, IoMdArrowDropup } from 'react-icons/io'
 
-import { deploy, DeployArgsObj } from './smartdeploy-functions'
+import { deploy, DeployArgsObj } from './backend'
 import { Version } from 'smartdeploy-client'
 
 type DeployVersionProps = {

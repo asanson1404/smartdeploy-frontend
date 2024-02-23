@@ -1,8 +1,11 @@
 import { Dispatch, SetStateAction } from 'react'
 import { isConnected } from '@stellar/freighter-api'
 import { smartdeploy, FetchDatas } from "@/pages"
-import { Ok, Err, Option, Version } from 'smartdeploy-client'
+import { Ok, Err, Option, Version, Update, ContractMetadata } from 'smartdeploy-client'
 import { WalletContextType } from '@/context/WalletContext'
+import { useQuery } from '@tanstack/react-query'
+import axios from 'axios';
+import endpoints from '@/endpoints.config';
 
 export interface PublishedContract {
     index: number;
@@ -66,6 +69,70 @@ export async function listAllPublishedContracts() {
         window.alert(error);
     }
 
+}
+
+export interface PublishEventData {
+    publishedName: string;
+    author: string;
+    hash: string;
+    repo: ContractMetadata;
+    kind: Update;
+    [key: string]: string | ContractMetadata | Update;
+}
+
+export function getPublishEvents() {
+
+    // Fetch publish events data every 5 seconds
+    const { data } = useQuery({
+        queryKey: ['publish_events'],
+        queryFn: async () => {
+            try {
+                const res = await axios.get(endpoints.publish_events);
+
+                var publishEvents: PublishEventData[] = [];
+                
+                ///@ts-ignore
+                res.data.forEach((publishEvent) => {
+
+                    const parsedPublishEvent: PublishEventData = {
+                        publishedName: "",
+                        author: "",
+                        hash: "",
+                        repo: { repo: ""},
+                        kind: { tag: "Patch", values: undefined},
+                    }
+
+                    ///@ts-ignore
+                    publishEvent.map.forEach((eventField) => {
+                        var symbol: string = eventField.key.symbol;
+
+                        if (symbol === 'author') {
+                            parsedPublishEvent.author = eventField.val.address;
+                        } else if (symbol === 'hash') {
+                            parsedPublishEvent.hash = eventField.val.bytes;
+                        } else if (symbol === 'kind') {
+                            parsedPublishEvent.kind = { tag: eventField.val.vec[0].symbol, values: undefined} as Update;
+                        } else if (symbol === 'published_name') {
+                            parsedPublishEvent.publishedName = eventField.val.string;
+                        } else {
+                            parsedPublishEvent.repo = { repo: eventField.val.map[0].val.string } as ContractMetadata;
+                        }
+
+                    })
+                    publishEvents.push(parsedPublishEvent);
+                })
+                return publishEvents;
+
+            } catch (error) {
+                console.error("Error to get the Publish events", error);
+
+            }
+        },
+        refetchInterval: 5000,
+        
+    });
+
+    return data;
 }
 
 export type DeployArgsObj = { 
