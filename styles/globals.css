@@ -62,6 +62,11 @@ div[data-theme="light"] {
 
   --popup-background-color: rgb(219, 224, 224);
   --popup-font-color: rgb(33, 31, 31);
+
+  --toggle-table-button-selected-bg: rgba(181, 97, 58, 0.565);
+  --toggle-table-button-selected-color: #272626;
+  --toggle-table-button-not-selected-bg: rgba(181, 97, 58, 0.35);
+  --toggle-table-button-not-selected-color: #27262671;
 }
 div[data-theme="dark"] {
   --headerBar-background-color: #04042dab;
@@ -84,6 +89,11 @@ div[data-theme="dark"] {
 
   --popup-background-color: rgb(45, 49, 49);
   --popup-font-color: whitesmoke;
+
+  --toggle-table-button-selected-bg: #0d589f59;
+  --toggle-table-button-selected-color: #b6b3b3;
+  --toggle-table-button-not-selected-bg: #0d599f30;
+  --toggle-table-button-not-selected-color: #b6b3b390;
 }
 
 main,

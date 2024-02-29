@@ -3,17 +3,23 @@ import styles from './style.module.css';
 import { useThemeContext } from '../../context/ThemeContext'
 import { StateVariablesProps, FetchDatas } from "@/pages";
 import { useState, useEffect } from 'react';
+import { PublishTabContent } from './publish-tab-content';
+import { ToggleButtons, Tab } from './toggle-button-component';
 import { Version } from 'smartdeploy-client'
 import { PublishedContract, listAllPublishedContracts, getPublishEvents, PublishEventData } from './backend'
 import { DeployVersionComponent } from './deploy-components'
+import { useWalletContext } from '../../context/WalletContext'
 
 export default function PublishedTab(props: StateVariablesProps) {
 
     // Import the current Theme
     const { activeTheme } = useThemeContext();
+    // Import wallet infos
+    const walletContext = useWalletContext();
 
     const [loading, setLoading] = useState<boolean>(true);
     const [error, setError] = useState<boolean>(false);
+    const [selectedTab, setSelectedTab] = useState<Tab>(Tab.All);
     const [publishedContracts, setPublishedContracts] = useState<PublishedContract[]>([]);
     const [publishEvents, setPublishEvents] = useState<PublishEventData[] | undefined>([]);
 
@@ -25,7 +31,7 @@ export default function PublishedTab(props: StateVariablesProps) {
     }
     //console.log(publishEvents);
 
-    useEffect(() => {
+    /*useEffect(() => {
 
         async function fetchPublishedContracts() {
             try {
@@ -45,42 +51,60 @@ export default function PublishedTab(props: StateVariablesProps) {
             props.fetchPublished.setFetch(false);
         }
 
-    }, [props.fetchPublished?.fetch]);
+    }, [props.fetchPublished?.fetch]);*/
     
-    if (loading) return (
-        <div className={styles.publishedTabContainer} data-theme={activeTheme}>
-            <table className={styles.publishedTabHead}>
-                <caption data-theme={activeTheme}>PUBLISHED CONTRACTS</caption>
-                <colgroup>
-                    <col className={styles.contractCol}></col>
-                    <col className={styles.authorCol}></col>
-                    <col className={styles.versionCol}></col>
-                    <col className={styles.deployCol}></col>
-                </colgroup>
-                <thead data-theme={activeTheme}>
-                    <tr>
-                        <th>Contract</th>
-                        <th>Author</th>
-                        <th>Version</th>
-                        <th>Deploy</th>
-                    </tr>
-                </thead>
-            </table>
-            <div className={styles.publishedTabContentContainer}>
-                <table className={styles.publishedTabContent}>
-                    <colgroup>
-                        <col className={styles.contractCol}></col>
-                        <col className={styles.authorCol}></col>
-                        <col className={styles.versionCol}></col>
-                        <col className={styles.deployCol}></col>
-                    </colgroup>
-                    <tbody>
-                        
-                    </tbody>
-                </table>
+    if (loading) {
+
+        const content3: JSX.Element[] = [];
+
+        const versions: { version: Version, version_string: string }[] = [
+            { version: { major: 1, minor: 0, patch: 0 }, version_string: "v1.0.0" },
+            { version: { major: 2, minor: 1, patch: 3 }, version_string: "v2.1.3" },
+            { version: { major: 3, minor: 5, patch: 2 }, version_string: "v3.5.2" },
+        ];
+
+        content3.push(
+            <tr data-theme={activeTheme}>
+                <td className={styles.contractCell}>Smartdeploy</td>
+                <td>GD2DGTQWRWGEX4K5TFPVPGD6SXRSYTXTFBB2QOU3E4WVBYM7PINJKVVD</td>
+                <DeployVersionComponent
+                    refetchDeployedContract={props.fetchDeployed as FetchDatas}
+                    contract_name="Smartdeploy"
+                    versions={versions}
+                />
+            </tr>
+        );
+        content3.push(
+            <tr data-theme={activeTheme}>
+                <td className={styles.contractCell}>testssss</td>
+                <td>GD2DGTQWRWGEX4K5TFPVPGD6SXRSYTXTFBB2QOU3E4WVBYM7PINJKVVD</td>
+                <DeployVersionComponent
+                    refetchDeployedContract={props.fetchDeployed as FetchDatas}
+                    contract_name="testssss"
+                    versions={versions}
+                />
+            </tr>
+        );
+
+        return (
+            <div>
+                <ToggleButtons selectedTab={selectedTab} setSelectedTab={setSelectedTab} />
+                {selectedTab == Tab.All ? (
+                    <PublishTabContent title='ALL PUBLISHED CONTRACTS' displayedContracts={content3}/>
+                ) : (
+                    walletContext.connected ? (
+                        content3.length > 0 ? (
+                            <PublishTabContent title='MY PUBLISHED CONTRACTS' displayedContracts={content3}/>
+                        ) : (
+                            <PublishTabContent title='MY PUBLISHED CONTRACTS' displayedContracts="You haven't published or haven't followed any contract yet"/>
+                        )
+                    ) : (
+                        <PublishTabContent title='MY PUBLISHED CONTRACTS' displayedContracts="Wallet not connected. Connect your Stellar account to see your published contracts."/>
+                    )
+                )}
             </div>
-        </div>
-    );
+        );
+    }
 
     else if (error) { throw new Error("Error when trying to fetch Published Contracts");}
 
@@ -121,37 +145,21 @@ export default function PublishedTab(props: StateVariablesProps) {
         });
         
         return(
-            <div className={styles.publishedTabContainer} data-theme={activeTheme}>
-                <table className={styles.publishedTabHead}>
-                    <caption data-theme={activeTheme}>PUBLISHED CONTRACTS</caption>
-                    <colgroup>
-                        <col className={styles.contractCol}></col>
-                        <col className={styles.authorCol}></col>
-                        <col className={styles.versionCol}></col>
-                        <col className={styles.deployCol}></col>
-                    </colgroup>
-                    <thead data-theme={activeTheme}>
-                        <tr>
-                            <th>Contract</th>
-                            <th>Author</th>
-                            <th>Versions</th>
-                            <th>Deploy</th>
-                        </tr>
-                    </thead>
-                </table>
-                <div className={styles.publishedTabContentContainer}>
-                    <table className={styles.publishedTabContent}>
-                        <colgroup>
-                            <col className={styles.contractCol}></col>
-                            <col className={styles.authorCol}></col>
-                            <col className={styles.versionCol}></col>
-                            <col className={styles.deployCol}></col>
-                        </colgroup>
-                        <tbody>
-                            {rows}
-                        </tbody>
-                    </table>
-                </div>
+            <div>
+                <ToggleButtons selectedTab={selectedTab} setSelectedTab={setSelectedTab} />
+                {selectedTab == Tab.All ? (
+                    <PublishTabContent title='ALL PUBLISHED CONTRACTS' displayedContracts="All"/>
+                ) : (
+                    walletContext.connected ? (
+                        rows.length > 0 ? (
+                            <PublishTabContent title='MY PUBLISHED CONTRACTS' displayedContracts={rows}/>
+                        ) : (
+                            <PublishTabContent title='MY PUBLISHED CONTRACTS' displayedContracts="You haven't published or haven't followed any contract yet"/>
+                        )
+                    ) : (
+                        <PublishTabContent title='MY PUBLISHED CONTRACTS' displayedContracts="Wallet not connected. Connect your Stellar account to see your deployed contracts."/>
+                    )
+                )}
             </div>
         )
     }
