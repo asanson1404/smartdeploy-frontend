@@ -1,5 +1,6 @@
 import styles from './style.module.css';
 import { useThemeContext } from '../../context/ThemeContext'
+import { TtlPopUp } from './ttl-popup';
 
 type DeployedTabData = {
     title: string;
@@ -18,13 +19,15 @@ export function DeployedTabContent(props: DeployedTabData) {
                 <colgroup>
                     <col className={styles.contractCol}></col>
                     <col className={styles.addressCol}></col>
-                    <col className={styles.copyCol}></col>
+                    <col className={styles.fromCol}></col>
+                    <col className={styles.ttlCol}></col>
                 </colgroup>
                 <thead data-theme={activeTheme}>
                     <tr>
                         <th>Contract</th>
                         <th>Address</th>
-                        <th className={styles.copyThead}>Copy</th>
+                        <th>From</th>
+                        <th className={styles.ttlThead}><p>TTL</p> <TtlPopUp/></th>
                     </tr>
                 </thead>
             </table>
@@ -33,7 +36,8 @@ export function DeployedTabContent(props: DeployedTabData) {
                     <colgroup>
                         <col className={styles.contractCol}></col>
                         <col className={styles.addressCol}></col>
-                        <col className={styles.copyCol}></col>
+                        <col className={styles.fromCol}></col>
+                        <col className={styles.ttlCol}></col>
                     </colgroup>
                     {typeof(props.displayedContracts) != "string" && (
                         <tbody>

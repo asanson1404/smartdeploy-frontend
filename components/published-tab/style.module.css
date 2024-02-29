@@ -54,7 +54,7 @@
     table-layout: fixed;
     border-collapse: collapse;
     margin-top: 0rem;
-    width: 55rem;
+    width: 65rem;
 }
 
 .publishedTabContentContainer {
@@ -76,22 +76,32 @@
 }
 
 .contractCol {
-    width: 18%;
+    width: 14%;
+}
+.instancesCol {
+    width: 9%;
 }
 .authorCol {
-    width: 64%;
+    width: 57%;
 }
 .versionCol {
-    width: 10%;
+    width: 12%;
 }
 .deployCol {
     width: 8%;
 }
 
+.instancesThead {
+    text-align: center;
+}
+.instancesTd {
+    text-align: center;
+}
+
 .tabMessage {
     color: var(--toggle-table-button-selected-color);
     padding: 0.5rem;
-    width: 55rem;
+    width: 65rem;
     text-align: center;
     justify-content: center;
     font-size: 0.9rem;
@@ -126,7 +136,7 @@
 }
 
 .contractCell {
-    text-overflow: ellipsis;
+    text-overflow: scroll;
 }
 .contractCell::-webkit-scrollbar {
     display: none;

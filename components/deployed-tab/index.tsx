@@ -5,9 +5,13 @@ import { DeployedContract, listAllDeployedContracts, getDeployEvents, getMyDeplo
 import { useState, useEffect } from "react";
 import { DeployedTabContent } from './deployed-tab-content';
 import { ToggleButtons, Tab } from './toggle-button-component';
+import { FcOk } from "react-icons/fc";
+import { IoMdCloseCircle } from "react-icons/io";
 import ClipboardIconComponent from './clip-board-component';
 import { useThemeContext } from '../../context/ThemeContext'
 import { useWalletContext } from '../../context/WalletContext'
+import { TtlPopUp } from './ttl-popup';
+import Popup from 'reactjs-popup';
 
 export default function DeployedTab(props: FetchDatas) {
 
@@ -67,14 +71,54 @@ export default function DeployedTab(props: FetchDatas) {
             <tr data-theme={activeTheme}>
                 <td className={styles.contractCell}>smartdeployyyyyyyyyyyyyyyyyyyyyyyyt</td>
                 <td>CBXSF7FVBQNLQLNWZLPB7RIVMHBGTEZEWKBELZAX3PKZDSCROIXMV4LA</td>
-                <ClipboardIconComponent address="CBXSF7FVBQNLQLNWZLPB7RIVMHBGTEZEWKBELZAX3PKZDSCROIXMV4LA"/>
+                <td>
+                    <div className={styles.fromTd}>
+                        <p>Smartdeploy</p>
+                        <p>(v0.0.1)</p>
+                    </div>
+                </td>
+                <td>
+                    <div className={styles.ttlTd}>
+                        <p>03/12/24</p>
+                        <p className={styles.bumpLine}><FcOk/>bump in: 18d18h36m</p>
+                    </div>
+                </td>
             </tr>
         );
         content1.push(
             <tr data-theme={activeTheme}>
                 <td className={styles.contractCell}>smartdeploy</td>
                 <td>CDHEELOMWTX3SMRJ4RMLSIKWMXP62KKWNVJ3BGJQ354MTFK4HMDDOUSE</td>
-                <ClipboardIconComponent address="CDHEELOMWTX3SMRJ4RMLSIKWMXP62KKWNVJ3BGJQ354MTFK4HMDDOUSE"/>
+                <td>
+                    <div className={styles.fromTd}>
+                        <p>Errors</p>
+                        <p>(v0.0.1)</p>
+                    </div>
+                </td>
+                <td>
+                    <div className={styles.ttlTd}>
+                        <p>03/12/24</p>
+                        <p className={styles.bumpLine}><FcOk/>bump in: 18d18h36m</p>
+                    </div>
+                </td>
+            </tr>
+        );
+        content1.push(
+            <tr data-theme={activeTheme}>
+                <td className={styles.contractCell}>smartdeploy</td>
+                <td>CDHEELOMWTX3SMRJ4RMLSIKWMXP62KKWNVJ3BGJQ354MTFK4HMDDOUSE</td>
+                <td>
+                    <div className={styles.fromTd}>
+                        <p>t</p>
+                        <p>(v0.0.1)</p>
+                    </div>
+                </td>
+                <td>
+                    <div className={styles.ttlTd}>
+                        <p>03/12/24</p>
+                        <p className={styles.bumpLine}><IoMdCloseCircle style={{ fill: 'rgb(224, 16, 16)' }}/>No automatic bump</p>
+                    </div>
+                </td>
             </tr>
         );
     
@@ -84,14 +128,36 @@ export default function DeployedTab(props: FetchDatas) {
             <tr data-theme={activeTheme}>
                 <td className={styles.contractCell}>smartdeployyyyyyyyyyyyyyyyyyyyyyyy</td>
                 <td>CDHEELOMWTX3SMRJ4RMLSIKWMXP62KKWNVJ3BGJQ354MTFK4HMDDOUSE</td>
-                <ClipboardIconComponent address="CDHEELOMWTX3SMRJ4RMLSIKWMXP62KKWNVJ3BGJQ354MTFK4HMDDOUSE"/>
+                <td>
+                    <div className={styles.fromTd}>
+                        <p>t</p>
+                        <p>(v0.0.1)</p>
+                    </div>
+                </td>
+                <td>
+                    <div className={styles.ttlTd}>
+                        <p>03/12/24</p>
+                        <p className={styles.bumpLine}><IoMdCloseCircle style={{ fill: 'rgb(224, 16, 16)' }}/>No automatic bump</p>
+                    </div>
+                </td>
             </tr>
         );
         content2.push(
             <tr data-theme={activeTheme}>
                 <td className={styles.contractCell}>smartdeploy</td>
                 <td>CBXSF7FVBQNLQLNWZLPB7RIVMHBGTEZEWKBELZAX3PKZDSCROIXMV4LA</td>
-                <ClipboardIconComponent address="CBXSF7FVBQNLQLNWZLPB7RIVMHBGTEZEWKBELZAX3PKZDSCROIXMV4LA"/>
+                <td>
+                    <div className={styles.fromTd}>
+                        <p>t</p>
+                        <p>(v0.0.1)</p>
+                    </div>
+                </td>
+                <td>
+                    <div className={styles.ttlTd}>
+                        <p>03/12/24</p>
+                        <p className={styles.bumpLine}><IoMdCloseCircle style={{ fill: 'rgb(224, 16, 16)' }}/>No automatic bump</p>
+                    </div>
+                </td>
             </tr>
         );
     

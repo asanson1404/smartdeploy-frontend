@@ -58,14 +58,15 @@ export default function PublishedTab(props: StateVariablesProps) {
         const content3: JSX.Element[] = [];
 
         const versions: { version: Version, version_string: string }[] = [
-            { version: { major: 1, minor: 0, patch: 0 }, version_string: "v1.0.0" },
-            { version: { major: 2, minor: 1, patch: 3 }, version_string: "v2.1.3" },
-            { version: { major: 3, minor: 5, patch: 2 }, version_string: "v3.5.2" },
+            { version: { major: 1, minor: 0, patch: 0 }, version_string: "1.0.0" },
+            { version: { major: 2, minor: 1, patch: 3 }, version_string: "2.1.3" },
+            { version: { major: 3, minor: 5, patch: 2 }, version_string: "3.5.2" },
         ];
 
         content3.push(
             <tr data-theme={activeTheme}>
                 <td className={styles.contractCell}>Smartdeploy</td>
+                <td className={styles.instancesTd}>9</td>
                 <td>GD2DGTQWRWGEX4K5TFPVPGD6SXRSYTXTFBB2QOU3E4WVBYM7PINJKVVD</td>
                 <DeployVersionComponent
                     refetchDeployedContract={props.fetchDeployed as FetchDatas}
@@ -77,6 +78,7 @@ export default function PublishedTab(props: StateVariablesProps) {
         content3.push(
             <tr data-theme={activeTheme}>
                 <td className={styles.contractCell}>testssss</td>
+                <td className={styles.instancesTd}>3</td>
                 <td>GD2DGTQWRWGEX4K5TFPVPGD6SXRSYTXTFBB2QOU3E4WVBYM7PINJKVVD</td>
                 <DeployVersionComponent
                     refetchDeployedContract={props.fetchDeployed as FetchDatas}

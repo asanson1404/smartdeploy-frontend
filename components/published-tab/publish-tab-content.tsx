@@ -17,6 +17,7 @@ export function PublishTabContent(props: PublishTabData) {
                 <caption data-theme={activeTheme}>{props.title}</caption>
                 <colgroup>
                     <col className={styles.contractCol}></col>
+                    <col className={styles.instancesCol}></col>
                     <col className={styles.authorCol}></col>
                     <col className={styles.versionCol}></col>
                     <col className={styles.deployCol}></col>
@@ -24,8 +25,9 @@ export function PublishTabContent(props: PublishTabData) {
                 <thead data-theme={activeTheme}>
                     <tr>
                         <th>Contract</th>
+                        <th className={styles.instancesThead}>Instances</th>
                         <th>Author</th>
-                        <th>Version</th>
+                        <th>Versions</th>
                         <th>Deploy</th>
                     </tr>
                 </thead>
@@ -34,6 +36,7 @@ export function PublishTabContent(props: PublishTabData) {
                 <table className={styles.publishedTabContent}>
                     <colgroup>
                         <col className={styles.contractCol}></col>
+                        <col className={styles.instancesCol}></col>
                         <col className={styles.authorCol}></col>
                         <col className={styles.versionCol}></col>
                         <col className={styles.deployCol}></col>
