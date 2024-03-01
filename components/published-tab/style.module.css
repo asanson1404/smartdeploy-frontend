@@ -176,6 +176,14 @@
     border-radius: 10px;
     border: solid 1px rgb(76, 75, 75);
 }
+.bumpingPopupContainer {
+    background-color: var(--popup-background-color);
+    color: var(--popup-font-color);
+    font-family: Arial, Helvetica, sans-serif;
+    width: 40rem;
+    border-radius: 10px;
+    border: solid 1px rgb(76, 75, 75);
+}
 .header {
     width: 100%;
     border-bottom: 1px solid gray;
@@ -218,14 +226,45 @@
 }
 .deployedNameInput::placeholder {
     color: rgba(128, 128, 128, 0.51);
-  }
+}
+
+.bumpContainer {
+    text-align: justify;
+    padding-left: 2.2rem;
+    padding-right: 2.2rem;
+}
+
+.bumpContainer > p {
+    font-size: 1rem;
+    font-weight: 700;
+    color: var(--popup-input-font-color);
+}
+
+.checkboxContainer {
+    display: flex;
+    flex-direction: column;
+    margin-top: 0.6rem;
+    margin-left: 0.9rem;
+}
+.checkboxContainer > div {
+    display: flex;
+    margin-top: 0.4rem;
+}
+.checkboxContainer > div > input[type="checkbox"] {
+    transform: scale(1.5); 
+    margin-right: 0.5rem;
+    accent-color: rgb(18, 194, 18);
+}
+.checkboxContainer > div > label {
+    font-size: 1rem;
+    color: var(--popup-input-font-color);
+}
 
 .buttonContainer {
     width: 100%;
     padding-top: 0.5rem;
     padding-bottom:  1rem;
     text-align: center;
-    
 }
 
 .button {
@@ -242,6 +281,18 @@
 }
 .button:hover {
     background-color: var(--popup-button-hover);
+}
+.buttonDisabled {
+    margin-right: 2rem;
+    margin-left: 2rem;
+    padding: 0.2rem 2.5rem 0.2rem 2.5rem;
+    width: 15rem;
+    font-size: 1.2rem;
+    font-weight: bold;
+    background-color: var(--popup-button-disabled-background-color);
+    color: var(--popup-button-disabled-font-color);
+    border: 1.5px solid var(--popup-button-disabled-font-color);
+    border-radius: 5px;
 }
 .buttonWhenDeploying {
     margin-right: 2rem;

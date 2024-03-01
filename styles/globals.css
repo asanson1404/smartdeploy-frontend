@@ -187,11 +187,15 @@ button[data-theme="light"] {
   --popup-button-font-color: rgb(18, 16, 16);
   --popup-button-background-color: rgba(236, 136, 22, 0.745);
   --popup-button-hover: rgba(198, 117, 24, 0.745);
+  --popup-button-disabled-font-color: rgba(53, 53, 54, 0.563);
+  --popup-button-disabled-background-color: rgba(157, 160, 160, 0.684);
 }
 button[data-theme="dark"] {
   --popup-button-font-color: rgb(0, 212, 250);
   --popup-button-background-color: rgb(45, 49, 49);
   --popup-button-hover: rgba(2, 111, 128, 0.316);
+  --popup-button-disabled-font-color: rgba(0, 212, 250, 0.332);
+  --popup-button-disabled-background-color: rgba(45, 49, 49, 0.188);
 }
 
 input,
