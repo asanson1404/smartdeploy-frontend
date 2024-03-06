@@ -48,3 +48,7 @@ next-env.d.ts
 # Cargo/Rust build directory
 target
 .soroban/
+
+# contract clients are auto-built at run/compile time and considered build artifacts
+packages/*
+!packages/.gitkeep
