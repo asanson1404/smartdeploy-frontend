@@ -1,7 +1,6 @@
 import styles from './style.module.css';
 
-import { FetchDatas } from "@/pages";
-import { DeployedContract, listAllDeployedContracts, getDeployEvents, getMyDeployedContracts, DeployEventData } from './backend';
+import { DeployedContract, listAllDeployedContracts, getMyDeployedContracts } from './backend';
 import { useState, useEffect } from "react";
 import { DeployedTabContent } from './deployed-tab-content';
 import { ToggleButtons, Tab } from './toggle-button-component';
@@ -10,10 +9,8 @@ import { IoMdCloseCircle } from "react-icons/io";
 import ClipboardIconComponent from './clip-board-component';
 import { useThemeContext } from '../../context/ThemeContext'
 import { useWalletContext } from '../../context/WalletContext'
-import { TtlPopUp } from './ttl-popup';
-import Popup from 'reactjs-popup';
 
-export default function DeployedTab(props: FetchDatas) {
+export default function DeployedTab() {
 
     // Import the current Theme
     const { activeTheme } = useThemeContext();
@@ -25,15 +22,6 @@ export default function DeployedTab(props: FetchDatas) {
     const [selectedTab, setSelectedTab] = useState<Tab>(Tab.All);
     const [deployedContracts, setDeployedContracts] = useState<DeployedContract[]>([]);
     const [myDeployedContracts, setMyDeployedContracts] = useState<DeployedContract[] | undefined>([]);
-    const [deployEvents, setDeployEvents] = useState<DeployEventData[] | undefined>([]);
-
-    // newDeployEvents is updated when a new event is indexed
-    let newDeployEvents = getDeployEvents();
-    // Update deployEvents as well
-    if (newDeployEvents != deployEvents) {
-        setDeployEvents(newDeployEvents);
-    }
-    //console.log(deployEvents);
 
     /*useEffect(() => {
 

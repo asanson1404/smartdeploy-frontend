@@ -7,6 +7,10 @@ import WalletInfo from '@/components/wallet'
 import PublishedTab from '@/components/published-tab'
 import DeployedTab from '@/components/deployed-tab'
 import PopupDappInfo from '@/components/dapp-info-popup'
+import { 
+  getDeployEvents, DeployEventData,
+  getPublishEvents, PublishEventData
+} from '@/mercury_indexer/smartdeploy-api-client'
 import { FaDiscord, FaTwitter, FaGithub } from "react-icons/fa"
 import { BsFillSunFill } from 'react-icons/bs'
 import { MdNightlightRound } from 'react-icons/md'
@@ -21,38 +25,27 @@ export const smartdeploy = new Contract({
   rpcUrl: 'https://soroban-testnet.stellar.org:443',
 });
 
-export type FetchDatas = {
-  fetch: boolean;
-  setFetch: Dispatch<SetStateAction<boolean>>;
-}
-
-export type StateVariablesProps = {
-  fetchDeployed?: FetchDatas;
-  fetchPublished?: FetchDatas;
-}
-
 export default function Home() {
 
   // Import the current Theme
   const { activeTheme, setActiveTheme, inactiveTheme } = useThemeContext();
 
-  // State variable to fetch the published contracts
-  const [fetchPublishedContracts, setFetchPublishedContracts] = useState<boolean>(true);
+  const [deployEvents, setDeployEvents] = useState<DeployEventData[] | undefined>([]);
+  const [publishEvents, setPublishEvents] = useState<PublishEventData[] | undefined>([]);
 
-  // Parse state variable for fetching the deployed contracts
-  const parsedFetchPublishedContracts: FetchDatas = {
-    fetch: fetchPublishedContracts,
-    setFetch: setFetchPublishedContracts,
+  let newPublishEvents = getPublishEvents();
+  // Update publishEvents if necessary
+  if (newPublishEvents != publishEvents) {
+      setPublishEvents(newPublishEvents);
   }
+  console.log("PUBLISH EVENTS: ", publishEvents)
 
-  // State variable to fetch the deployed contracts
-  const [fetchDeployedContracts, setFetchDeployedContracts] = useState<boolean>(true);
-
-  // Parse state variable for fetching the deployed contracts
-  const parsedFetchDeployedContracts: FetchDatas = {
-    fetch: fetchDeployedContracts,
-    setFetch: setFetchDeployedContracts,
+  let newDeployEvents = getDeployEvents();
+  // Update deployEvents if necessary
+  if (newDeployEvents != deployEvents) {
+      setDeployEvents(newDeployEvents);
   }
+  console.log("DEPLOY EVENTS: ", deployEvents)
 
   return (
     <>
@@ -162,8 +155,8 @@ export default function Home() {
         </div>
 
         <PopupDappInfo/>
-        <PublishedTab fetchDeployed={parsedFetchDeployedContracts} fetchPublished={parsedFetchPublishedContracts}/>
-        <DeployedTab fetch={fetchDeployedContracts} setFetch={setFetchDeployedContracts}/>
+        <PublishedTab publishEvents={publishEvents} deployEvents={deployEvents}/>
+        <DeployedTab/>
         
         <div className={styles.grid}>
           <a

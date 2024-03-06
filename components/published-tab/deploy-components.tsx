@@ -13,7 +13,6 @@ import { deploy, DeployArgsObj } from './backend'
 import { Version } from 'smartdeploy-client'
 
 type DeployVersionProps = {
-    refetchDeployedContract: FetchDatas;
     contract_name: string;
     selected_version: {version: Version, version_string: string};
 }
@@ -122,7 +121,7 @@ function DeployIconComponent(props: DeployVersionProps) {
 
                                                     deploy(
                                                         walletContext,
-                                                        props.refetchDeployedContract,
+                                                        //props.refetchDeployedContract,
                                                         setIsDeploying,
                                                         setDeployedName,
                                                         setWouldDeploy,
@@ -288,9 +287,9 @@ function BumpingPopup({
 }
 
 type DeployProps = {
-    refetchDeployedContract: FetchDatas;
     contract_name: string;
-    versions: {version: Version, version_string: string}[];
+    contract_author: string;
+    versions: {version: Version, version_string: string, nb_instances: number}[];
 }
 
 export function DeployVersionComponent(props: DeployProps) {
@@ -303,8 +302,15 @@ export function DeployVersionComponent(props: DeployProps) {
 
     const [selectedVersion, setSelectedVersion] = useState<{version: Version, version_string: string}>(defaultSelectedVersion);
 
+    // Number of deployed instances per version
+    const inst = props.versions.find(v => v.version_string === selectedVersion.version_string)?.nb_instances ?? 0;
+
     return (
         <>
+            <td className={styles.instancesTd}>
+                {inst}
+            </td>
+            <td>{props.contract_author}</td>
             <td>
                 <VersionDropdownButton
                     versions={props.versions}
@@ -313,7 +319,6 @@ export function DeployVersionComponent(props: DeployProps) {
                 />
             </td>
             <DeployIconComponent
-                refetchDeployedContract={props.refetchDeployedContract}
                 contract_name={props.contract_name}
                 selected_version={selectedVersion}
             />

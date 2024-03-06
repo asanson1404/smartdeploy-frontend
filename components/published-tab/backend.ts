@@ -1,11 +1,9 @@
 import { Dispatch, SetStateAction } from 'react'
 import { isConnected } from '@stellar/freighter-api'
-import { smartdeploy, FetchDatas } from "@/pages"
-import { Ok, Err, Option, Version, Update, ContractMetadata } from 'smartdeploy-client'
+import { smartdeploy } from "@/pages"
+import { PublishEventData, DeployEventData } from '@/mercury_indexer/smartdeploy-api-client'
+import { Ok, Err, Option, Version } from 'smartdeploy-client'
 import { WalletContextType } from '@/context/WalletContext'
-import { useQuery } from '@tanstack/react-query'
-import axios from 'axios';
-import endpoints from '@/endpoints.config';
 
 export interface PublishedContract {
     index: number;
@@ -13,126 +11,110 @@ export interface PublishedContract {
     author: string;
     versions: {
         version: Version,
+        nb_instances: number,
         hash: string
     }[];
 }
 
-export async function listAllPublishedContracts() {
+export async function listAllPublishedContracts(
+    deploy_events: DeployEventData[] | undefined,
+) {
 
-    try {
-
-        ///@ts-ignore
-        const {result} = await smartdeploy.listPublishedContracts({ start: undefined, limit: undefined });
-        const response = result;
-
-        if (response instanceof Ok) {
-            let publishedContracts: PublishedContract[] = [];
-            
-            const contractArray = response.unwrap();
-
+    if (deploy_events) {
+        try {
+    
             ///@ts-ignore
-            contractArray.forEach(([name, publishedContract], i) => {
-
-                let versions: {version: Version, hash: string}[] = [];
-
-                ///@ts-ignore
-                Array.from(publishedContract.versions).forEach((contractDatas: [Version, any]) => {
-
-                    // Version object
-                    const version = contractDatas[0];
-
-                    // hash
-                    const hash = contractDatas[1].hash.join('');
-
-                    versions.push({version, hash});
-                });
-
-                const parsedPublishedContract: PublishedContract = {
-                    index: i,
-                    name: name,
-                    author: publishedContract.author.toString(),
-                    versions: versions
-                };
+            const {result} = await smartdeploy.listPublishedContracts({ start: undefined, limit: undefined });
+            const response = result;
+    
+            if (response instanceof Ok) {
+                let publishedContracts: PublishedContract[] = [];
                 
-                publishedContracts.push(parsedPublishedContract);
-            });
+                const contractArray = response.unwrap();
+    
+                ///@ts-ignore
+                contractArray.forEach(([name, publishedContract], i) => {
+        
+                    let versions: {version: Version, hash: string, nb_instances: number}[] = [];
+    
+                    ///@ts-ignore
+                    Array.from(publishedContract.versions).forEach((contractDatas: [Version, any]) => {
+    
+                        // Version object
+                        const version = contractDatas[0];
 
-            return publishedContracts;
-
-        } else if (response instanceof Err) {
-            response.unwrap();
-        } else {
-            throw new Error("listPublishedContracts returns undefined. Impossible to fetch the published contracts.");
+                        // Nb instances per version
+                        const nb_instances = deploy_events.filter(event => (event.publishedName == name && areVersionsEqual(event.version, version))).length ?? 0;
+    
+                        // hash
+                        const hash = contractDatas[1].hash.join('');
+    
+                        versions.push({version, hash, nb_instances});
+                    });
+    
+                    const parsedPublishedContract: PublishedContract = {
+                        index: i,
+                        name: name,
+                        author: publishedContract.author.toString(),
+                        versions: versions
+                    };
+                    
+                    publishedContracts.push(parsedPublishedContract);
+                });
+    
+                return publishedContracts;
+    
+            } else if (response instanceof Err) {
+                response.unwrap();
+            } else {
+                throw new Error("listPublishedContracts returns undefined. Impossible to fetch the published contracts.");
+            }
+        } catch (error) {
+            console.error(error);
+            window.alert(error);
         }
-    } catch (error) {
-        console.error(error);
-        window.alert(error);
+    }
+    else {
+        return 0;
     }
 
 }
 
-export interface PublishEventData {
-    publishedName: string;
-    author: string;
-    hash: string;
-    repo: ContractMetadata;
-    kind: Update;
-    [key: string]: string | ContractMetadata | Update;
+export function getMyPublishedContracts(
+    publishedContracts: PublishedContract[],
+    deploy_events: DeployEventData[] | undefined,
+    address: string
+) {
+
+    if (address === "") {
+        return 0;
+    
+    } else {
+        if(deploy_events) {
+
+            var myPublishedContracts: PublishedContract[] = [];
+
+            const contractsIOwn = publishedContracts.filter(contract => contract.author === address);
+
+            const nameIDeployed = deploy_events.filter(event => event.deployer == address).map(event => event.publishedName);
+            const contractsIDeployed = publishedContracts.filter(contract => nameIDeployed.includes(contract.name));
+            
+            myPublishedContracts.push(...contractsIOwn, ...contractsIDeployed);
+
+            const ret = myPublishedContracts.filter((contract, index) => {
+                return myPublishedContracts.findIndex(item => item.name === contract.name) === index;
+            });
+            
+            return ret;
+        } else {
+
+            return 0;
+        }
+    }
 }
 
-export function getPublishEvents() {
-
-    // Fetch publish events data every 5 seconds
-    const { data } = useQuery({
-        queryKey: ['publish_events'],
-        queryFn: async () => {
-            try {
-                const res = await axios.get(endpoints.publish_events);
-
-                var publishEvents: PublishEventData[] = [];
-                
-                ///@ts-ignore
-                res.data.forEach((publishEvent) => {
-
-                    const parsedPublishEvent: PublishEventData = {
-                        publishedName: "",
-                        author: "",
-                        hash: "",
-                        repo: { repo: ""},
-                        kind: { tag: "Patch", values: undefined},
-                    }
-
-                    ///@ts-ignore
-                    publishEvent.map.forEach((eventField) => {
-                        var symbol: string = eventField.key.symbol;
-
-                        if (symbol === 'author') {
-                            parsedPublishEvent.author = eventField.val.address;
-                        } else if (symbol === 'hash') {
-                            parsedPublishEvent.hash = eventField.val.bytes;
-                        } else if (symbol === 'kind') {
-                            parsedPublishEvent.kind = { tag: eventField.val.vec[0].symbol, values: undefined} as Update;
-                        } else if (symbol === 'published_name') {
-                            parsedPublishEvent.publishedName = eventField.val.string;
-                        } else {
-                            parsedPublishEvent.repo = { repo: eventField.val.map[0].val.string } as ContractMetadata;
-                        }
-
-                    })
-                    publishEvents.push(parsedPublishEvent);
-                })
-                return publishEvents;
-
-            } catch (error) {
-                console.error("Error to get the Publish events", error);
-
-            }
-        },
-        refetchInterval: 5000,
-        
-    });
-
-    return data;
+function areVersionsEqual(v1: Version, v2: Version) {
+    return v1.major == v2.major && v1.minor == v2.minor && v1.patch == v2.patch;
 }
 
 export type DeployArgsObj = { 
@@ -146,7 +128,7 @@ export type DeployArgsObj = {
 
 export async function deploy(
     walletContext: WalletContextType,
-    refetchDeployedContract: FetchDatas,
+    //refetchDeployedContract: FetchDatas,
     setIsDeploying: Dispatch<SetStateAction<boolean>>,
     setDeployedName: Dispatch<SetStateAction<string>>,
     setWouldDeploy: Dispatch<SetStateAction<boolean>>,
