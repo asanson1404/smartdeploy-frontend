@@ -128,39 +128,30 @@ export type DeployArgsObj = {
 
 export async function deploy(
     walletContext: WalletContextType,
-    //refetchDeployedContract: FetchDatas,
-    setIsDeploying: Dispatch<SetStateAction<boolean>>,
-    setDeployedName: Dispatch<SetStateAction<string>>,
-    setWouldDeploy: Dispatch<SetStateAction<boolean>>,
     argsObj: DeployArgsObj
 ) {
     
     // Check if the user has Freighter
     if (!(await isConnected())) {
         window.alert("Impossible to interact with Soroban: you don't have Freighter extension.\n You can install the extension here: https://www.freighter.app/");
-        setIsDeploying(false);
     }
     else {
         // Check if the Wallet is connected
         if (walletContext.address === "") {
             alert("Wallet not connected. Please, connect a Stellar account.");
-            setIsDeploying(false);
         }
         // Check is the network is Futurenet
         else if (walletContext.network.replace(" ", "").toUpperCase() !== "TESTNET") {
             alert("Wrong Network. Please, switch to Testnet.");
-            setIsDeploying(false);
         }
         else {
             // Check if deployed name is empty
             if (argsObj.deployed_name === "") {
                 alert("Deployed name cannot be empty. Please, choose a deployed name.");
-                setIsDeploying(false);
             }
             // Check if deployed name contains spaces
             else if (argsObj.deployed_name.includes(' ')) {
                 alert("Deployed name cannot includes spaces. Please, remove the spaces.");
-                setIsDeploying(false);
             }
             // Now that everything is ok, deploy the contract
             else {
@@ -169,17 +160,15 @@ export async function deploy(
 
                     const tx = await smartdeploy.deploy(argsObj);
                     await tx.signAndSend();
-                    refetchDeployedContract.setFetch(true);
-                    setDeployedName("");
-                    setWouldDeploy(false);
                     
 
                 } catch (error) {
                     console.error(error);
                     window.alert(error);
+                    return false;
                 }
 
-                setIsDeploying(false);
+                return true;
 
             }
         }

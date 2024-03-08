@@ -2,7 +2,6 @@ import styles from './style.module.css'
 
 import { useThemeContext } from '../../context/ThemeContext'
 import { useWalletContext } from '../../context/WalletContext'
-import { FetchDatas } from "@/pages"
 import { useState, ChangeEvent, Dispatch, SetStateAction, useEffect } from 'react'
 import Popup from 'reactjs-popup'
 import Dropdown from 'react-dropdown'
@@ -115,18 +114,24 @@ function DeployIconComponent(props: DeployVersionProps) {
                                     <>
                                         <button className={conditionalDeployButtonCss ? styles.button : styles.buttonDisabled}
                                                 data-theme={activeTheme}
-                                                onClick={() => {
+                                                onClick={async () => {
 
                                                     setIsDeploying(true);
 
-                                                    deploy(
+                                                    let success = await deploy(
                                                         walletContext,
-                                                        //props.refetchDeployedContract,
-                                                        setIsDeploying,
-                                                        setDeployedName,
-                                                        setWouldDeploy,
                                                         deployData
                                                     );
+
+                                                    if(success) {
+                                                        setIsDeploying(false)
+                                                        setDeployedName("")
+                                                        setBumping(null)
+                                                        setWouldDeploy(false)
+                                                    } else {
+                                                        setIsDeploying(false)
+                                                    }
+                                                    
                                                 }}
                                                 disabled={bumping === null}
                                         >
@@ -156,7 +161,13 @@ function DeployIconComponent(props: DeployVersionProps) {
                                         </button>
 
                                         {showBumpingPopup && (
-                                            <BumpingPopup showBumpingPopup={showBumpingPopup} setShowBumpingPopup={setShowBumpingPopup} deployData={deployData}/>
+                                            <BumpingPopup   showBumpingPopup={showBumpingPopup} 
+                                                            setShowBumpingPopup={setShowBumpingPopup}
+                                                            setDeployedName={setDeployedName}
+                                                            setBumping={setBumping}
+                                                            setWouldDeploy={setWouldDeploy}
+                                                            deployData={deployData}
+                                            />
                                         )}
                                     </>
                                 ) : (
@@ -176,10 +187,16 @@ function DeployIconComponent(props: DeployVersionProps) {
 function BumpingPopup({
     showBumpingPopup,
     setShowBumpingPopup,
+    setBumping,
+    setDeployedName,
+    setWouldDeploy,
     deployData
 }: {
     showBumpingPopup: boolean
     setShowBumpingPopup: Dispatch<SetStateAction<boolean>>,
+    setDeployedName: Dispatch<SetStateAction<string>>,
+    setBumping: Dispatch<SetStateAction<boolean | null>>,
+    setWouldDeploy: Dispatch<SetStateAction<boolean>>,
     deployData: DeployArgsObj
 }) {
 
@@ -253,18 +270,25 @@ function BumpingPopup({
                         <>
                             <button className={conditionalDeployButtonCss ? styles.button : styles.buttonDisabled}
                                     data-theme={activeTheme}
-                                    onClick={() => {
+                                    onClick={async () => {
 
                                         setIsDeploying(true);
 
-                                        //deploy(
-                                        //    walletContext,
-                                        //    deployData.refetchDeployedContract,
-                                        //    setIsDeploying,
-                                        //    setDeployedName,
-                                        //    setWouldDeploy,
-                                        //    deployData
-                                        //);
+                                        let success = await deploy(
+                                            walletContext,
+                                            deployData
+                                        );
+
+                                        if(success) {
+                                            setIsDeploying(false)
+                                            setDeployedName("")
+                                            setShowBumpingPopup(false);
+                                            setBumping(null)
+                                            setWouldDeploy(false)
+                                        } else {
+                                            setIsDeploying(false)
+                                        }
+                                        
                                     }}
                                     disabled={bumpingSubscription === null}
                             >
