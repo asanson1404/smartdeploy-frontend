@@ -1,4 +1,5 @@
 import { smartdeploy } from "@/pages";
+import { DeployEventData } from '@/mercury_indexer/smartdeploy-api-client';
 import { Ok, Err, Version } from 'smartdeploy-client'
 
 export interface DeployedContract {
@@ -10,7 +11,9 @@ export interface DeployedContract {
     version: Version | undefined;
 }
 
-export async function listAllDeployedContracts(deployEvents: DeployEventData[]) {
+export async function listAllDeployedContracts(
+    deployEvents: DeployEventData[] | undefined,
+) {
 
     if (deployEvents) {
         try {
@@ -45,13 +48,13 @@ export async function listAllDeployedContracts(deployEvents: DeployEventData[]) 
                     }
                     // If no Deploy events the contract has been claimed 
                     else {
-                        console.warn("No Publish event data found for contract ID ", address);
+                        console.warn("No Deploy event data found for contract ID ", address);
                         const parsedDeployedContract: DeployedContract = {
                             index: i,
                             name: name,
                             address: address,
-                            deployer: "CLAIM_EVENT_TODO",
-                            fromPublished: "CLAIM_EVENT_TODO",
+                            deployer: "no_evt_data",
+                            fromPublished: "no_evt_data",
                             version: undefined
                         }
         
@@ -60,7 +63,6 @@ export async function listAllDeployedContracts(deployEvents: DeployEventData[]) 
                     
                 });
                 
-                //console.log(deployedContracts);
                 return deployedContracts;
     
             } else if (response instanceof Err) {
@@ -72,13 +74,16 @@ export async function listAllDeployedContracts(deployEvents: DeployEventData[]) 
             console.error(error);
             window.alert(error);
         }
-    }    
+    }
+    else {
+        return 0;
+    }  
 }
 
 export function getMyDeployedContracts(deployedContracts: DeployedContract[], address: string) {
 
     if (address === "") {
-        alert("Please connect your wallet to see your deployed contracts");
+        return 0;
     } else {
         const myDeployedContracts: DeployedContract[] = deployedContracts.filter(deployedContract => deployedContract.deployer === address);
         return myDeployedContracts;

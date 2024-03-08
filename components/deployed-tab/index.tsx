@@ -1,5 +1,6 @@
 import styles from './style.module.css';
 
+import { DeployEventData } from '@/mercury_indexer/smartdeploy-api-client';
 import { DeployedContract, listAllDeployedContracts, getMyDeployedContracts } from './backend';
 import { useState, useEffect } from "react";
 import { DeployedTabContent } from './deployed-tab-content';
@@ -10,7 +11,11 @@ import ClipboardIconComponent from './clip-board-component';
 import { useThemeContext } from '../../context/ThemeContext'
 import { useWalletContext } from '../../context/WalletContext'
 
-export default function DeployedTab() {
+export default function DeployedTab({
+    deployEvents
+} : {
+    deployEvents: DeployEventData[] | undefined
+}) {
 
     // Import the current Theme
     const { activeTheme } = useThemeContext();
@@ -20,16 +25,19 @@ export default function DeployedTab() {
     const [loading, setLoading] = useState<boolean>(true);
     const [error, setError] = useState<boolean>(false);
     const [selectedTab, setSelectedTab] = useState<Tab>(Tab.All);
-    const [deployedContracts, setDeployedContracts] = useState<DeployedContract[]>([]);
+    const [allDeployedContracts, setAllDeployedContracts] = useState<DeployedContract[]>([]);
     const [myDeployedContracts, setMyDeployedContracts] = useState<DeployedContract[] | undefined>([]);
 
-    /*useEffect(() => {
+    // useEffect to have All Deployed Contracts
+    useEffect(() => {
 
-        async function fetchDeployedContracts(deployEvents) {
+        async function fetchDeployedContracts() {
             try {
-              const datas = await listAllDeployedContracts();
-              setDeployedContracts(datas as DeployedContract[]);
-              setLoading(false);
+                const datas = await listAllDeployedContracts(deployEvents);
+                if (datas != 0) {
+                    setAllDeployedContracts(datas as DeployedContract[]);
+                    setLoading(false);
+                }
             } catch (error) {
                 console.error(error);
                 window.alert(error);
@@ -37,134 +45,28 @@ export default function DeployedTab() {
             }
         }
 
-        if (props.fetch === true) {
-            setLoading(true);
-            fetchDeployedContracts();
-            props.setFetch(false);
-        }
+        fetchDeployedContracts();
 
-    }, [props.fetch]);*/
+    }, [deployEvents]);
 
+    // useEffect to have My Published Contracts
     useEffect(() => {
-        if (walletContext.connected) {
-            const myContracts = getMyDeployedContracts(deployedContracts, walletContext.address);
-            setMyDeployedContracts(myContracts);
+        const t = getMyDeployedContracts(allDeployedContracts, walletContext.address);
+        if (t != 0) {
+            setMyDeployedContracts(t);
         }
-    }, [deployedContracts, selectedTab])
+    }, [allDeployedContracts])
 
     if (loading) {
-        const content1: JSX.Element[] = [];
-
-        content1.push(
-            <tr data-theme={activeTheme}>
-                <td className={styles.contractCell}>smartdeployyyyyyyyyyyyyyyyyyyyyyyyt</td>
-                <td>CBXSF7FVBQNLQLNWZLPB7RIVMHBGTEZEWKBELZAX3PKZDSCROIXMV4LA</td>
-                <td>
-                    <div className={styles.fromTd}>
-                        <p>Smartdeploy</p>
-                        <p>(v0.0.1)</p>
-                    </div>
-                </td>
-                <td>
-                    <div className={styles.ttlTd}>
-                        <p>03/12/24</p>
-                        <p className={styles.bumpLine}><FcOk/>bump in: 18d18h36m</p>
-                    </div>
-                </td>
-            </tr>
-        );
-        content1.push(
-            <tr data-theme={activeTheme}>
-                <td className={styles.contractCell}>smartdeploy</td>
-                <td>CDHEELOMWTX3SMRJ4RMLSIKWMXP62KKWNVJ3BGJQ354MTFK4HMDDOUSE</td>
-                <td>
-                    <div className={styles.fromTd}>
-                        <p>Errors</p>
-                        <p>(v0.0.1)</p>
-                    </div>
-                </td>
-                <td>
-                    <div className={styles.ttlTd}>
-                        <p>03/12/24</p>
-                        <p className={styles.bumpLine}><FcOk/>bump in: 18d18h36m</p>
-                    </div>
-                </td>
-            </tr>
-        );
-        content1.push(
-            <tr data-theme={activeTheme}>
-                <td className={styles.contractCell}>smartdeploy</td>
-                <td>CDHEELOMWTX3SMRJ4RMLSIKWMXP62KKWNVJ3BGJQ354MTFK4HMDDOUSE</td>
-                <td>
-                    <div className={styles.fromTd}>
-                        <p>t</p>
-                        <p>(v0.0.1)</p>
-                    </div>
-                </td>
-                <td>
-                    <div className={styles.ttlTd}>
-                        <p>03/12/24</p>
-                        <p className={styles.bumpLine}><IoMdCloseCircle style={{ fill: 'rgb(224, 16, 16)' }}/>No automatic bump</p>
-                    </div>
-                </td>
-            </tr>
-        );
-    
-        const content2: JSX.Element[] = [];
-    
-        content2.push(
-            <tr data-theme={activeTheme}>
-                <td className={styles.contractCell}>smartdeployyyyyyyyyyyyyyyyyyyyyyyy</td>
-                <td>CDHEELOMWTX3SMRJ4RMLSIKWMXP62KKWNVJ3BGJQ354MTFK4HMDDOUSE</td>
-                <td>
-                    <div className={styles.fromTd}>
-                        <p>t</p>
-                        <p>(v0.0.1)</p>
-                    </div>
-                </td>
-                <td>
-                    <div className={styles.ttlTd}>
-                        <p>03/12/24</p>
-                        <p className={styles.bumpLine}><IoMdCloseCircle style={{ fill: 'rgb(224, 16, 16)' }}/>No automatic bump</p>
-                    </div>
-                </td>
-            </tr>
-        );
-        content2.push(
-            <tr data-theme={activeTheme}>
-                <td className={styles.contractCell}>smartdeploy</td>
-                <td>CBXSF7FVBQNLQLNWZLPB7RIVMHBGTEZEWKBELZAX3PKZDSCROIXMV4LA</td>
-                <td>
-                    <div className={styles.fromTd}>
-                        <p>t</p>
-                        <p>(v0.0.1)</p>
-                    </div>
-                </td>
-                <td>
-                    <div className={styles.ttlTd}>
-                        <p>03/12/24</p>
-                        <p className={styles.bumpLine}><IoMdCloseCircle style={{ fill: 'rgb(224, 16, 16)' }}/>No automatic bump</p>
-                    </div>
-                </td>
-            </tr>
-        );
-    
-        // Vérifier aussi si fetch est toujours utile car normalement le state deployEvents va automatiquement déclencher listAllDeployedContracts
-        const content3: JSX.Element[] = [];
-
 
         return (
             <div>
                 <ToggleButtons selectedTab={selectedTab} setSelectedTab={setSelectedTab} />
                 {selectedTab == Tab.All ? (
-                    <DeployedTabContent title='ALL DEPLOYED CONTRACTS' displayedContracts={content1}/>
+                    <DeployedTabContent title='ALL DEPLOYED CONTRACTS' displayedContracts="Loading..."/>
                 ) : (
                     walletContext.connected ? (
-                        content2.length > 0 ? (
-                            <DeployedTabContent title='MY DEPLOYED CONTRACTS' displayedContracts={content2}/>
-                        ) : (
-                            <DeployedTabContent title='MY DEPLOYED CONTRACTS' displayedContracts="You haven't deployed any contract yet"/>
-                        )
+                        <DeployedTabContent title='MY DEPLOYED CONTRACTS' displayedContracts="Loading..."/>
                     ) : (
                         <DeployedTabContent title='MY DEPLOYED CONTRACTS' displayedContracts="Wallet not connected. Connect your Stellar account to see your deployed contracts."/>
                     )
@@ -173,18 +75,35 @@ export default function DeployedTab() {
         )       
     }        
 
-    if (error) { throw new Error("Error when trying to fetch Deployed Contracts") }
+    else if (error) { throw new Error("Error when trying to fetch Deployed Contracts") }
 
-    if (deployedContracts) {    
+    else if (allDeployedContracts && selectedTab == Tab.All) {    
 
-        const rows: JSX.Element[] = [];
+        const allDeployedContractsRows: JSX.Element[] = [];
 
-        deployedContracts.forEach((deployedContract) => {
-            rows.push(
+        allDeployedContracts.forEach((deployedContract) => {
+
+            var version_string = "no_evt_data";
+            if (deployedContract.version) {
+                version_string = `v.${deployedContract.version.major}.${deployedContract.version.minor}.${deployedContract.version.patch}`;
+            }
+
+            allDeployedContractsRows.push(
                 <tr key={deployedContract.index} data-theme={activeTheme}>
                     <td className={styles.contractCell}>{deployedContract.name}</td>
                     <td>{deployedContract.address}</td>
-                    <ClipboardIconComponent address={deployedContract.address}/>
+                    <td>
+                        <div className={styles.fromTd}>
+                            <p>{deployedContract.fromPublished}</p>
+                            <p>({version_string})</p>
+                        </div>
+                    </td>
+                    <td>
+                        <div className={styles.ttlTd}>
+                            <p>03/12/24</p>
+                            <p className={styles.bumpLine}><IoMdCloseCircle style={{ fill: 'rgb(224, 16, 16)' }}/>No automatic bump</p>
+                        </div>
+                    </td>
                 </tr>
             );
         });
@@ -192,18 +111,53 @@ export default function DeployedTab() {
         return(
             <div>
                 <ToggleButtons selectedTab={selectedTab} setSelectedTab={setSelectedTab} />
-                {selectedTab == Tab.All ? (
-                    <DeployedTabContent title='ALL DEPLOYED CONTRACTS' displayedContracts={rows}/>
-                ) : (
-                    walletContext.connected ? (
-                        rows.length > 0 ? (
-                            <DeployedTabContent title='MY DEPLOYED CONTRACTS' displayedContracts={rows}/>
-                        ) : (
-                            <DeployedTabContent title='MY DEPLOYED CONTRACTS' displayedContracts="You haven't deployed any contract yet"/>
-                        )
+                <DeployedTabContent title='ALL DEPLOYED CONTRACTS' displayedContracts={allDeployedContractsRows}/>
+            </div>
+        )
+    }
+
+    else if (myDeployedContracts && selectedTab == Tab.My) {
+
+        const myDeployedContractsRows: JSX.Element[] = [];
+
+        myDeployedContracts.forEach((deployedContract) => {
+
+            var version_string = "no_evt_data";
+            if (deployedContract.version) {
+                version_string = `v.${deployedContract.version.major}.${deployedContract.version.minor}.${deployedContract.version.patch}`;
+            }
+
+            myDeployedContractsRows.push(
+                <tr key={deployedContract.index} data-theme={activeTheme}>
+                    <td className={styles.contractCell}>{deployedContract.name}</td>
+                    <td>{deployedContract.address}</td>
+                    <td>
+                        <div className={styles.fromTd}>
+                            <p>{deployedContract.fromPublished}</p>
+                            <p>({version_string})</p>
+                        </div>
+                    </td>
+                    <td>
+                        <div className={styles.ttlTd}>
+                            <p>03/12/24</p>
+                            <p className={styles.bumpLine}><FcOk/>bump in: 18d18h36m</p>
+                        </div>
+                    </td>
+                </tr>
+            );
+        })
+
+        return(
+            <div>
+                <ToggleButtons selectedTab={selectedTab} setSelectedTab={setSelectedTab} />
+                {walletContext.connected ? (
+                    myDeployedContracts.length > 0 ? (
+                        <DeployedTabContent title='MY DEPLOYED CONTRACTS' displayedContracts={myDeployedContractsRows}/>
                     ) : (
-                        <DeployedTabContent title='MY DEPLOYED CONTRACTS' displayedContracts="Wallet not connected. Connect your Stellar account to see your deployed contracts."/>
+                        <DeployedTabContent title='MY DEPLOYED CONTRACTS' displayedContracts="You haven't published or deployed any contract yet"/>
                     )
+                ) : (
+                    <DeployedTabContent title='MY DEPLOYED CONTRACTS' displayedContracts="Wallet not connected. Connect your Stellar account to see your deployed contracts."/>
                 )}
             </div>
         )

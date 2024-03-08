@@ -156,7 +156,7 @@ export default function Home() {
 
         <PopupDappInfo/>
         <PublishedTab publishEvents={publishEvents} deployEvents={deployEvents}/>
-        <DeployedTab/>
+        <DeployedTab deployEvents={deployEvents}/>
         
         <div className={styles.grid}>
           <a
