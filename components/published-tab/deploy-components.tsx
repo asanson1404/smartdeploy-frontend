@@ -2,13 +2,14 @@ import styles from './style.module.css'
 
 import { useThemeContext } from '../../context/ThemeContext'
 import { useWalletContext } from '../../context/WalletContext'
+import { useTimeToLiveContext } from '../../context/TimeToLiveContext'
 import { useState, ChangeEvent, Dispatch, SetStateAction, useEffect } from 'react'
 import Popup from 'reactjs-popup'
 import Dropdown from 'react-dropdown'
 import { BsSendPlus } from 'react-icons/bs'
 import { IoMdArrowDropdown, IoMdArrowDropup } from 'react-icons/io'
 
-import { deploy, DeployArgsObj } from './backend'
+import { DeployArgsObj, deployAndReadTtl, deployAndSubscribeExpiration } from './backend'
 import { Version } from 'smartdeploy-client'
 
 type DeployVersionProps = {
@@ -22,6 +23,9 @@ function DeployIconComponent(props: DeployVersionProps) {
     const { activeTheme } = useThemeContext();
 
     const walletContext = useWalletContext();
+
+    // Context to store Data Expiration Ledger
+    const timeToLiveMap = useTimeToLiveContext();
 
     const [wouldDeploy, setWouldDeploy]   = useState<boolean>(false); 
     const [deployedName, setDeployedName] = useState<string>("");
@@ -115,23 +119,15 @@ function DeployIconComponent(props: DeployVersionProps) {
                                         <button className={conditionalDeployButtonCss ? styles.button : styles.buttonDisabled}
                                                 data-theme={activeTheme}
                                                 onClick={async () => {
-
-                                                    setIsDeploying(true);
-
-                                                    let success = await deploy(
+                                                    deployAndReadTtl(
                                                         walletContext,
-                                                        deployData
-                                                    );
-
-                                                    if(success) {
-                                                        setIsDeploying(false)
-                                                        setDeployedName("")
-                                                        setBumping(null)
-                                                        setWouldDeploy(false)
-                                                    } else {
-                                                        setIsDeploying(false)
-                                                    }
-                                                    
+                                                        deployData,
+                                                        timeToLiveMap,
+                                                        setIsDeploying,
+                                                        setDeployedName,
+                                                        setBumping,
+                                                        setWouldDeploy,
+                                                    )
                                                 }}
                                                 disabled={bumping === null}
                                         >
@@ -203,6 +199,9 @@ function BumpingPopup({
     const { activeTheme } = useThemeContext();
     const walletContext = useWalletContext();
 
+    // Context to store Data Expiration Ledger
+    const timeToLiveMap = useTimeToLiveContext();
+
     enum BumpingSubscription {
         ONE_MONTH,
         SIX_MONTHS,
@@ -271,23 +270,15 @@ function BumpingPopup({
                             <button className={conditionalDeployButtonCss ? styles.button : styles.buttonDisabled}
                                     data-theme={activeTheme}
                                     onClick={async () => {
-
-                                        setIsDeploying(true);
-
-                                        let success = await deploy(
+                                        deployAndSubscribeExpiration(
                                             walletContext,
-                                            deployData
-                                        );
-
-                                        if(success) {
-                                            setIsDeploying(false)
-                                            setDeployedName("")
-                                            setShowBumpingPopup(false);
-                                            setBumping(null)
-                                            setWouldDeploy(false)
-                                        } else {
-                                            setIsDeploying(false)
-                                        }
+                                            deployData,
+                                            timeToLiveMap,
+                                            setIsDeploying,
+                                            setDeployedName,
+                                            setBumping,
+                                            setWouldDeploy,
+                                        )
                                         
                                     }}
                                     disabled={bumpingSubscription === null}

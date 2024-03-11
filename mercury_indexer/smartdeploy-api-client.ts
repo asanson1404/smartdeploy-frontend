@@ -139,3 +139,33 @@ export function getDeployEvents() {
 
     return data;
 }
+
+export async function subscribeBump(id: String) {
+
+    const url = endpoints.subscribe_ledger_expiration + '/' + id;
+
+    try {
+        const res = await axios.get(url);
+        return res.data;
+    } catch (error) {
+        console.error("Error to subscribe to Ledger Instance Expiration:", error);
+        window.alert("Error to subscribe to Ledger Instance Expiration. The problem comes from the Smart Deploy API");
+        return 0;
+    }
+
+}
+
+export async function readTtl(id: String) {
+
+    const url = endpoints.read_ttl + '/' + id;
+    
+    try {
+        const res = await axios.get(url);
+        return res.data;
+    } catch (error) {
+        console.error("Error to read Ledger Instance Expiration:", error);
+        window.alert("Error to read Ledger Instance Expiration. The problem comes from the Smart Deploy API");
+        return 0;
+    }
+
+}

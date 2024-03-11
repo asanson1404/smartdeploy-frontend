@@ -10,6 +10,7 @@ import { IoMdCloseCircle } from "react-icons/io";
 import ClipboardIconComponent from './clip-board-component';
 import { useThemeContext } from '../../context/ThemeContext'
 import { useWalletContext } from '../../context/WalletContext'
+import { useTimeToLiveContext } from '../../context/TimeToLiveContext'
 
 export default function DeployedTab({
     deployEvents
@@ -21,6 +22,8 @@ export default function DeployedTab({
     const { activeTheme } = useThemeContext();
     // Import wallet infos
     const walletContext = useWalletContext();
+    // Import expiration infos
+    const timeToLiveMap = useTimeToLiveContext(); 
 
     const [loading, setLoading] = useState<boolean>(true);
     const [error, setError] = useState<boolean>(false);
@@ -99,10 +102,14 @@ export default function DeployedTab({
                         </div>
                     </td>
                     <td>
-                        <div className={styles.ttlTd}>
-                            <p>03/12/24</p>
+                    <div className={styles.ttlTd}>
+                        <p>{timeToLiveMap.addressToTtl.get(deployedContract.address)?.date}</p>
+                        {timeToLiveMap.addressToTtl.get(deployedContract.address)?.automaticBump ? (
+                            <p className={styles.bumpLine}><FcOk/>bump in: 18d18h36m</p>
+                        ) : (
                             <p className={styles.bumpLine}><IoMdCloseCircle style={{ fill: 'rgb(224, 16, 16)' }}/>No automatic bump</p>
-                        </div>
+                        )}
+                    </div>
                     </td>
                 </tr>
             );
@@ -139,8 +146,12 @@ export default function DeployedTab({
                     </td>
                     <td>
                         <div className={styles.ttlTd}>
-                            <p>03/12/24</p>
-                            <p className={styles.bumpLine}><FcOk/>bump in: 18d18h36m</p>
+                            <p>{timeToLiveMap.addressToTtl.get(deployedContract.address)?.date}</p>
+                            {timeToLiveMap.addressToTtl.get(deployedContract.address)?.automaticBump ? (
+                                <p className={styles.bumpLine}><FcOk/>bump in: 18d18h36m</p>
+                            ) : (
+                                <p className={styles.bumpLine}><IoMdCloseCircle style={{ fill: 'rgb(224, 16, 16)' }}/>No automatic bump</p>
+                            )}
                         </div>
                     </td>
                 </tr>

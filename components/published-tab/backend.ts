@@ -1,9 +1,11 @@
 import { Dispatch, SetStateAction } from 'react'
 import { isConnected } from '@stellar/freighter-api'
 import { smartdeploy } from "@/pages"
-import { PublishEventData, DeployEventData } from '@/mercury_indexer/smartdeploy-api-client'
+import { PublishEventData, DeployEventData, readTtl, subscribeBump } from '@/mercury_indexer/smartdeploy-api-client'
 import { Ok, Err, Option, Version } from 'smartdeploy-client'
 import { WalletContextType } from '@/context/WalletContext'
+import { TimeToLiveType } from '@/context/TimeToLiveContext'
+import { format } from 'date-fns'
 
 export interface PublishedContract {
     index: number;
@@ -159,8 +161,12 @@ export async function deploy(
                 try {
 
                     const tx = await smartdeploy.deploy(argsObj);
-                    await tx.signAndSend();
-                    
+                    // Sign and send the transaction
+                    const signedTx = await tx.signAndSend();
+
+                    // Retrieve the id of the deployed contract
+                    const contract_id = signedTx.result.unwrap();
+                    return contract_id;
 
                 } catch (error) {
                     console.error(error);
@@ -168,9 +174,117 @@ export async function deploy(
                     return false;
                 }
 
-                return true;
-
             }
         }
     }
 }
+
+export async function deployAndReadTtl(
+    walletContext: WalletContextType,
+    deployData: DeployArgsObj,
+    timeToLiveMap: TimeToLiveType,
+    setIsDeploying: Dispatch<SetStateAction<boolean>>,
+    setDeployedName: Dispatch<SetStateAction<string>>,
+    setBumping: Dispatch<SetStateAction<boolean | null>>,
+    setWouldDeploy: Dispatch<SetStateAction<boolean>>,
+) {
+
+    setIsDeploying(true);
+
+    let id = await deploy(
+        walletContext,
+        deployData
+    );
+
+    if (id) {
+
+        const ttlData = await readTtl(id);
+        const latestLedger = ttlData[0];
+        const liveUntil = ttlData[1];
+        const timeToLiveLedger = liveUntil - latestLedger;
+
+        // Convert TTL in a date
+        const timeToLiveSeconds = timeToLiveLedger * 5;
+        const now = new Date();
+        const expirationDate = format(now.getTime() + timeToLiveSeconds * 1000, "MM/dd/yyyy");
+
+        timeToLiveMap.setAddressToTtl(prevMap => {
+            const updatedMap = new Map(prevMap);
+            updatedMap.set(id, {automaticBump: false, date: expirationDate});
+            return updatedMap;
+        })
+
+        setIsDeploying(false)
+        setDeployedName("")
+        setBumping(null)
+        setWouldDeploy(false)
+    } else {
+        setIsDeploying(false)
+    }
+}
+
+export async function deployAndSubscribeExpiration(
+    walletContext: WalletContextType,
+    deployData: DeployArgsObj,
+    timeToLiveMap: TimeToLiveType,
+    setIsDeploying: Dispatch<SetStateAction<boolean>>,
+    setDeployedName: Dispatch<SetStateAction<string>>,
+    setBumping: Dispatch<SetStateAction<boolean | null>>,
+    setWouldDeploy: Dispatch<SetStateAction<boolean>>,
+) {
+
+    setIsDeploying(true);
+
+    let id = await deploy(
+        walletContext,
+        deployData
+    );
+
+    if (id) {
+
+        const ttlData = await subscribeBump(id);
+
+        const latestLedger = ttlData.current_ledger;
+        const liveUntil = ttlData.ledger_ttl;
+        const timeToLiveLedger = liveUntil - latestLedger;
+
+        // Convert TTL in a date
+        const timeToLiveSeconds = timeToLiveLedger * 5;
+        const now = new Date();
+        const expirationDate = format(now.getTime() + timeToLiveSeconds * 1000, "MM/dd/yyyy");
+
+        timeToLiveMap.setAddressToTtl(prevMap => {
+            const updatedMap = new Map(prevMap);
+            console.log("prevvv Map", prevMap);
+            updatedMap.set(id, {automaticBump: true, date: expirationDate});
+            return updatedMap;
+        })
+        console.log(timeToLiveMap.addressToTtl)
+
+        setIsDeploying(false)
+        setDeployedName("")
+        setBumping(null)
+        setWouldDeploy(false)
+    } else {
+        setIsDeploying(false)
+    }
+}
+
+/*
+setIsDeploying(true);
+
+                                        let success = await deploy(
+                                            walletContext,
+                                            deployData
+                                        );
+
+                                        if(success) {
+                                            setIsDeploying(false)
+                                            setDeployedName("")
+                                            setShowBumpingPopup(false);
+                                            setBumping(null)
+                                            setWouldDeploy(false)
+                                        } else {
+                                            setIsDeploying(false)
+                                        }
+*/
