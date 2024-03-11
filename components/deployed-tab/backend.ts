@@ -82,11 +82,7 @@ export async function listAllDeployedContracts(
 
 export function getMyDeployedContracts(deployedContracts: DeployedContract[], address: string) {
 
-    if (address === "") {
-        return 0;
-    } else {
-        const myDeployedContracts: DeployedContract[] = deployedContracts.filter(deployedContract => deployedContract.deployer === address);
-        return myDeployedContracts;
-    }
+    const myDeployedContracts: DeployedContract[] = deployedContracts.filter(deployedContract => deployedContract.deployer === address);
+    return myDeployedContracts;
 
 }

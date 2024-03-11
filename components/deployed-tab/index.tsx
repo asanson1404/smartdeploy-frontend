@@ -54,11 +54,13 @@ export default function DeployedTab({
 
     // useEffect to have My Published Contracts
     useEffect(() => {
-        const t = getMyDeployedContracts(allDeployedContracts, walletContext.address);
-        if (t != 0) {
-            setMyDeployedContracts(t);
+
+        if (walletContext.address !== "") {
+            const myDeployedContracts = getMyDeployedContracts(allDeployedContracts, walletContext.address);
+            setMyDeployedContracts(myDeployedContracts);
         }
-    }, [allDeployedContracts])
+        
+    }, [allDeployedContracts, walletContext.address])
 
     if (loading) {
 

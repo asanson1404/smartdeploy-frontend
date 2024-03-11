@@ -87,32 +87,22 @@ export function getMyPublishedContracts(
     deploy_events: DeployEventData[] | undefined,
     address: string
 ) {
-
-    if (address === "") {
-        return 0;
     
-    } else {
-        if(deploy_events) {
+    var myPublishedContracts: PublishedContract[] = [];
 
-            var myPublishedContracts: PublishedContract[] = [];
+    const contractsIOwn = publishedContracts.filter(contract => contract.author === address);
 
-            const contractsIOwn = publishedContracts.filter(contract => contract.author === address);
+    const nameIDeployed = deploy_events!.filter(event => event.deployer == address).map(event => event.publishedName);
+    const contractsIDeployed = publishedContracts.filter(contract => nameIDeployed.includes(contract.name));
+    
+    myPublishedContracts.push(...contractsIOwn, ...contractsIDeployed);
 
-            const nameIDeployed = deploy_events.filter(event => event.deployer == address).map(event => event.publishedName);
-            const contractsIDeployed = publishedContracts.filter(contract => nameIDeployed.includes(contract.name));
-            
-            myPublishedContracts.push(...contractsIOwn, ...contractsIDeployed);
+    const ret = myPublishedContracts.filter((contract, index) => {
+        return myPublishedContracts.findIndex(item => item.name === contract.name) === index;
+    });
+    
+    return ret;
 
-            const ret = myPublishedContracts.filter((contract, index) => {
-                return myPublishedContracts.findIndex(item => item.name === contract.name) === index;
-            });
-            
-            return ret;
-        } else {
-
-            return 0;
-        }
-    }
 }
 
 function areVersionsEqual(v1: Version, v2: Version) {
@@ -269,22 +259,3 @@ export async function deployAndSubscribeExpiration(
         setIsDeploying(false)
     }
 }
-
-/*
-setIsDeploying(true);
-
-                                        let success = await deploy(
-                                            walletContext,
-                                            deployData
-                                        );
-
-                                        if(success) {
-                                            setIsDeploying(false)
-                                            setDeployedName("")
-                                            setShowBumpingPopup(false);
-                                            setBumping(null)
-                                            setWouldDeploy(false)
-                                        } else {
-                                            setIsDeploying(false)
-                                        }
-*/
