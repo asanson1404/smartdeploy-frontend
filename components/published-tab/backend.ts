@@ -6,6 +6,7 @@ import { Ok, Err, Option, Version } from 'smartdeploy-client'
 import { WalletContextType } from '@/context/WalletContext'
 import { TimeToLiveType } from '@/context/TimeToLiveContext'
 import { format } from 'date-fns'
+import { formatCountDown } from '../deployed-tab/backend'
 
 export interface PublishedContract {
     index: number;
@@ -249,6 +250,7 @@ export async function deployAndSubscribeExpiration(
                 automaticBump: true,
                 date: expirationDate,
                 ttlSec: timeToLiveSeconds,
+                countdown: formatCountDown(timeToLiveSeconds)
             });
             return updatedMap;
         })

@@ -4,6 +4,7 @@ export interface TimeToLive {
     automaticBump: boolean;
     date: string;
     ttlSec?: number;
+    countdown?: String;
 }
 
 export type TimeToLiveType = {

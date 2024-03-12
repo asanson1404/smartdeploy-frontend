@@ -30,7 +30,6 @@ export default function DeployedTab({
     const [selectedTab, setSelectedTab] = useState<Tab>(Tab.All);
     const [allDeployedContracts, setAllDeployedContracts] = useState<DeployedContract[]>([]);
     const [myDeployedContracts, setMyDeployedContracts] = useState<DeployedContract[] | undefined>([]);
-    const [formatedCountDown, setFormatedCountDown] = useState<Map<string, string>>();
 
     // useEffect to have All Deployed Contracts
     useEffect(() => {
@@ -76,16 +75,11 @@ export default function DeployedTab({
 
                     const newValue = {
                         ...ttl,
-                        ttlSec: ttl.ttlSec - 60
+                        ttlSec: ttl.ttlSec - 60,
+                        countdown: formatCountDown(ttl.ttlSec - 60)
                     }
                     newMap.set(address, newValue);
 
-                    const formatedString = formatCountDown(newValue.ttlSec);
-                    setFormatedCountDown(prevMap => {
-                        const newFormatedMap = new Map<string, string>(prevMap);
-                        newFormatedMap.set(address, formatedString);
-                        return newFormatedMap;
-                    })
                 }
 
             })
@@ -143,7 +137,7 @@ export default function DeployedTab({
                     <div className={styles.ttlTd}>
                         <p>{timeToLiveMap.addressToTtl.get(deployedContract.address)?.date}</p>
                         {timeToLiveMap.addressToTtl.get(deployedContract.address)?.automaticBump ? (
-                            <p className={styles.bumpLine}><FcOk/>bump in: {formatedCountDown?.get(deployedContract.address)}</p>
+                            <p className={styles.bumpLine}><FcOk/>bump in: {timeToLiveMap.addressToTtl.get(deployedContract.address)?.countdown}</p>
                         ) : (
                             <p className={styles.bumpLine}><IoMdCloseCircle style={{ fill: 'rgb(224, 16, 16)' }}/>No automatic bump</p>
                         )}
@@ -186,7 +180,7 @@ export default function DeployedTab({
                         <div className={styles.ttlTd}>
                             <p>{timeToLiveMap.addressToTtl.get(deployedContract.address)?.date}</p>
                             {timeToLiveMap.addressToTtl.get(deployedContract.address)?.automaticBump ? (
-                                <p className={styles.bumpLine}><FcOk/>bump in: {formatedCountDown?.get(deployedContract.address)}</p>
+                                <p className={styles.bumpLine}><FcOk/>bump in: {timeToLiveMap.addressToTtl.get(deployedContract.address)?.countdown}</p>
                             ) : (
                                 <p className={styles.bumpLine}><IoMdCloseCircle style={{ fill: 'rgb(224, 16, 16)' }}/>No automatic bump</p>
                             )}
