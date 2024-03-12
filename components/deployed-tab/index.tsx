@@ -1,7 +1,7 @@
 import styles from './style.module.css';
 
 import { DeployEventData } from '@/mercury_indexer/smartdeploy-api-client';
-import { DeployedContract, listAllDeployedContracts, getMyDeployedContracts } from './backend';
+import { DeployedContract, listAllDeployedContracts, getMyDeployedContracts, formatCountDown } from './backend';
 import { useState, useEffect } from "react";
 import { DeployedTabContent } from './deployed-tab-content';
 import { ToggleButtons, Tab } from './toggle-button-component';
@@ -10,7 +10,7 @@ import { IoMdCloseCircle } from "react-icons/io";
 import ClipboardIconComponent from './clip-board-component';
 import { useThemeContext } from '../../context/ThemeContext'
 import { useWalletContext } from '../../context/WalletContext'
-import { useTimeToLiveContext } from '../../context/TimeToLiveContext'
+import { useTimeToLiveContext, TimeToLive } from '../../context/TimeToLiveContext'
 
 export default function DeployedTab({
     deployEvents
@@ -30,6 +30,7 @@ export default function DeployedTab({
     const [selectedTab, setSelectedTab] = useState<Tab>(Tab.All);
     const [allDeployedContracts, setAllDeployedContracts] = useState<DeployedContract[]>([]);
     const [myDeployedContracts, setMyDeployedContracts] = useState<DeployedContract[] | undefined>([]);
+    const [formatedCountDown, setFormatedCountDown] = useState<Map<string, string>>();
 
     // useEffect to have All Deployed Contracts
     useEffect(() => {
@@ -61,6 +62,41 @@ export default function DeployedTab({
         }
         
     }, [allDeployedContracts, walletContext.address])
+
+    // useEffect to count down the next bump
+    useEffect(() => {
+
+        const interval = setInterval(() => {
+
+            const newMap = new Map<string, TimeToLive>(timeToLiveMap.addressToTtl);
+
+            newMap.forEach((ttl, address) => {
+
+                if (ttl.ttlSec !== undefined) {
+
+                    const newValue = {
+                        ...ttl,
+                        ttlSec: ttl.ttlSec - 60
+                    }
+                    newMap.set(address, newValue);
+
+                    const formatedString = formatCountDown(newValue.ttlSec);
+                    setFormatedCountDown(prevMap => {
+                        const newFormatedMap = new Map<string, string>(prevMap);
+                        newFormatedMap.set(address, formatedString);
+                        return newFormatedMap;
+                    })
+                }
+
+            })
+
+            timeToLiveMap.setAddressToTtl(newMap);
+            
+        }, 1000 * 60);
+
+        return () => clearInterval(interval);
+
+    }, [timeToLiveMap.addressToTtl]);
 
     if (loading) {
 
@@ -107,7 +143,7 @@ export default function DeployedTab({
                     <div className={styles.ttlTd}>
                         <p>{timeToLiveMap.addressToTtl.get(deployedContract.address)?.date}</p>
                         {timeToLiveMap.addressToTtl.get(deployedContract.address)?.automaticBump ? (
-                            <p className={styles.bumpLine}><FcOk/>bump in: 18d18h36m</p>
+                            <p className={styles.bumpLine}><FcOk/>bump in: {formatedCountDown?.get(deployedContract.address)}</p>
                         ) : (
                             <p className={styles.bumpLine}><IoMdCloseCircle style={{ fill: 'rgb(224, 16, 16)' }}/>No automatic bump</p>
                         )}
@@ -150,7 +186,7 @@ export default function DeployedTab({
                         <div className={styles.ttlTd}>
                             <p>{timeToLiveMap.addressToTtl.get(deployedContract.address)?.date}</p>
                             {timeToLiveMap.addressToTtl.get(deployedContract.address)?.automaticBump ? (
-                                <p className={styles.bumpLine}><FcOk/>bump in: 18d18h36m</p>
+                                <p className={styles.bumpLine}><FcOk/>bump in: {formatedCountDown?.get(deployedContract.address)}</p>
                             ) : (
                                 <p className={styles.bumpLine}><IoMdCloseCircle style={{ fill: 'rgb(224, 16, 16)' }}/>No automatic bump</p>
                             )}

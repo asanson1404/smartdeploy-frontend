@@ -186,7 +186,7 @@ export async function deployAndReadTtl(
         deployData
     );
 
-    if (id) {
+    if (typeof id === "string") {
 
         const ttlData = await readTtl(id);
         const latestLedger = ttlData[0];
@@ -200,7 +200,7 @@ export async function deployAndReadTtl(
 
         timeToLiveMap.setAddressToTtl(prevMap => {
             const updatedMap = new Map(prevMap);
-            updatedMap.set(id, {automaticBump: false, date: expirationDate});
+            updatedMap.set(id as string, {automaticBump: false, date: expirationDate});
             return updatedMap;
         })
 
@@ -230,7 +230,7 @@ export async function deployAndSubscribeExpiration(
         deployData
     );
 
-    if (id) {
+    if (typeof id === "string") {
 
         const ttlData = await subscribeBump(id);
 
@@ -242,14 +242,16 @@ export async function deployAndSubscribeExpiration(
         const timeToLiveSeconds = timeToLiveLedger * 5;
         const now = new Date();
         const expirationDate = format(now.getTime() + timeToLiveSeconds * 1000, "MM/dd/yyyy");
-
+        
         timeToLiveMap.setAddressToTtl(prevMap => {
             const updatedMap = new Map(prevMap);
-            console.log("prevvv Map", prevMap);
-            updatedMap.set(id, {automaticBump: true, date: expirationDate});
+            updatedMap.set(id as string, {
+                automaticBump: true,
+                date: expirationDate,
+                ttlSec: timeToLiveSeconds,
+            });
             return updatedMap;
         })
-        console.log(timeToLiveMap.addressToTtl)
 
         setIsDeploying(false)
         setDeployedName("")

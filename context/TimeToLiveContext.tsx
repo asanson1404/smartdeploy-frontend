@@ -1,9 +1,9 @@
 import { createContext, useContext, ReactNode, Dispatch, SetStateAction, useState } from 'react';
 
-interface TimeToLive {
+export interface TimeToLive {
     automaticBump: boolean;
     date: string;
-    countdown?: number;
+    ttlSec?: number;
 }
 
 export type TimeToLiveType = {

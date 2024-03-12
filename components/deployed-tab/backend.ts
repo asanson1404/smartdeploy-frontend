@@ -86,3 +86,12 @@ export function getMyDeployedContracts(deployedContracts: DeployedContract[], ad
     return myDeployedContracts;
 
 }
+
+export function formatCountDown(initialTime: number) {
+
+    const days = Math.floor(initialTime / (60 * 60 * 24));
+    const hours = Math.floor((initialTime % (60 * 60 * 24)) / (60 * 60));
+    const minutes = Math.floor((initialTime % (60 * 60)) / 60);
+
+    return `${days}d${hours}h${minutes}m`;
+}
