@@ -203,9 +203,9 @@ function BumpingPopup({
     const timeToLiveMap = useTimeToLiveContext();
 
     enum BumpingSubscription {
-        ONE_MONTH,
         SIX_MONTHS,
         ONE_YEAR,
+        TWO_YEAR
     }
 
     const [isDeploying, setIsDeploying] = useState(false);
@@ -235,31 +235,31 @@ function BumpingPopup({
                         <p>How long do you want us to keep your contract instance alive?</p>
                         <div className={styles.checkboxContainer}>
                             <div>
-                                <input 
-                                    type='checkbox'
-                                    onChange={() => { if(bumpingSubscription !== BumpingSubscription.ONE_MONTH) setBumpingSubscription(BumpingSubscription.ONE_MONTH)} }
-                                    onClick={() => { if(bumpingSubscription === BumpingSubscription.ONE_MONTH) setBumpingSubscription(null)} }
-                                    checked={bumpingSubscription === BumpingSubscription.ONE_MONTH}
-                                />
-                                <label>1 month (xxx XLM)</label>
-                            </div>
-                            <div>
-                                <input 
+                            <input 
                                     type='checkbox'
                                     onChange={() => { if(bumpingSubscription !== BumpingSubscription.SIX_MONTHS) setBumpingSubscription(BumpingSubscription.SIX_MONTHS)} }
                                     onClick={() => { if(bumpingSubscription === BumpingSubscription.SIX_MONTHS) setBumpingSubscription(null)} }
                                     checked={bumpingSubscription === BumpingSubscription.SIX_MONTHS}
                                 />
-                                <label>6 month (xxx XLM)</label>
+                                <label>6 months (xxx XLM)</label>
                             </div>
                             <div>
-                                <input 
+                            <input 
                                     type='checkbox'
                                     onChange={() => { if(bumpingSubscription !== BumpingSubscription.ONE_YEAR) setBumpingSubscription(BumpingSubscription.ONE_YEAR)} }
                                     onClick={() => { if(bumpingSubscription === BumpingSubscription.ONE_YEAR) setBumpingSubscription(null)} }
                                     checked={bumpingSubscription === BumpingSubscription.ONE_YEAR}
                                 />
                                 <label>1 year (xxx XLM)</label>
+                            </div>
+                            <div>
+                                <input 
+                                    type='checkbox'
+                                    onChange={() => { if(bumpingSubscription !== BumpingSubscription.TWO_YEAR) setBumpingSubscription(BumpingSubscription.TWO_YEAR)} }
+                                    onClick={() => { if(bumpingSubscription === BumpingSubscription.TWO_YEAR) setBumpingSubscription(null)} }
+                                    checked={bumpingSubscription === BumpingSubscription.TWO_YEAR}
+                                />
+                                <label>2 years (xxx XLM)</label>
                             </div>
                         </div>
                     </div>
