@@ -140,6 +140,8 @@ export function getDeployEvents() {
     return data;
 }
 
+// We don't use that function because we calculate ourself the TTL
+// Mercury expiration tracking too tricky to use
 export async function subscribeBump(id: String) {
 
     const url = endpoints.subscribe_ledger_expiration + '/' + id;
@@ -168,4 +170,19 @@ export async function readTtl(id: String) {
         return 0;
     }
 
+}
+
+export async function bumpContractInstance(contract_id: String, ledgers_to_extend: number) {
+    
+    const url = endpoints.bump_contract_instance + '/' + contract_id + '/' + ledgers_to_extend;
+    
+    try {
+        const res = await axios.get(url);
+        return res.data;
+
+    } catch (error) {
+        console.error("Error to extend Ledger Instance:", error);
+        window.alert("Error to bump Ledger Instance. The problem comes from the Smart Deploy API");
+        return 0;
+    }
 }

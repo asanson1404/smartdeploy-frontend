@@ -8,8 +8,8 @@ export interface TimeToLive {
 }
 
 export type TimeToLiveType = {
-  addressToTtl: Map<string, TimeToLive>;
-  setAddressToTtl: Dispatch<SetStateAction<Map<string, TimeToLive>>>
+  addressToTtl: Map<String, TimeToLive>;
+  setAddressToTtl: Dispatch<SetStateAction<Map<String, TimeToLive>>>
 }
 
 type TimeToLiveProviderProps = {
@@ -20,7 +20,7 @@ const TimeToLiveContext = createContext<TimeToLiveType | undefined>(undefined);
 
 export const TimeToLiveContextProvider: React.FC<TimeToLiveProviderProps> = ({ children }) => {
 
-  const [addressToTtl, setAddressToTtl] = useState<Map<string, TimeToLive>>(new Map<string, TimeToLive>());
+  const [addressToTtl, setAddressToTtl] = useState<Map<String, TimeToLive>>(new Map<String, TimeToLive>());
 
   return (
       <TimeToLiveContext.Provider value={{ addressToTtl, setAddressToTtl }}>

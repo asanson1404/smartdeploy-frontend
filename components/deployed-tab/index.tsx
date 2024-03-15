@@ -1,7 +1,7 @@
 import styles from './style.module.css';
 
 import { DeployEventData } from '@/mercury_indexer/smartdeploy-api-client';
-import { DeployedContract, listAllDeployedContracts, getMyDeployedContracts, formatCountDown } from './backend';
+import { DeployedContract, listAllDeployedContracts, getMyDeployedContracts, formatCountDown, bumpAndQueryNewTtl } from './backend';
 import { useState, useEffect } from "react";
 import { DeployedTabContent } from './deployed-tab-content';
 import { ToggleButtons, Tab } from './toggle-button-component';
@@ -11,6 +11,8 @@ import ClipboardIconComponent from './clip-board-component';
 import { useThemeContext } from '../../context/ThemeContext'
 import { useWalletContext } from '../../context/WalletContext'
 import { useTimeToLiveContext, TimeToLive } from '../../context/TimeToLiveContext'
+
+const LEDGERS_TO_EXTEND = 535_679;
 
 export default function DeployedTab({
     deployEvents
@@ -67,18 +69,24 @@ export default function DeployedTab({
 
         const interval = setInterval(() => {
 
-            const newMap = new Map<string, TimeToLive>(timeToLiveMap.addressToTtl);
+            const newMap = new Map<String, TimeToLive>(timeToLiveMap.addressToTtl);
 
             newMap.forEach((ttl, address) => {
 
                 if (ttl.ttlSec !== undefined) {
 
-                    const newValue = {
-                        ...ttl,
-                        ttlSec: ttl.ttlSec - 60,
-                        countdown: formatCountDown(ttl.ttlSec - 60)
+                    // If the contract expire in less than 5 minutes (300 seconds), bump it and update the countdown
+                    if (ttl.ttlSec > 300) {
+                        const newValue = {
+                            ...ttl,
+                            ttlSec: ttl.ttlSec - 60,
+                            countdown: formatCountDown(ttl.ttlSec - 60)
+                        }
+                        newMap.set(address, newValue);
                     }
-                    newMap.set(address, newValue);
+                    else {
+                        bumpAndQueryNewTtl(address, LEDGERS_TO_EXTEND, ttl, newMap);
+                    }
 
                 }
 

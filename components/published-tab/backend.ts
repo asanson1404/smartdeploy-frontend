@@ -1,7 +1,7 @@
 import { Dispatch, SetStateAction } from 'react'
 import { isConnected } from '@stellar/freighter-api'
 import { smartdeploy } from "@/pages"
-import { PublishEventData, DeployEventData, readTtl, subscribeBump } from '@/mercury_indexer/smartdeploy-api-client'
+import { PublishEventData, DeployEventData, readTtl } from '@/mercury_indexer/smartdeploy-api-client'
 import { Ok, Err, Option, Version } from 'smartdeploy-client'
 import { WalletContextType } from '@/context/WalletContext'
 import { TimeToLiveType } from '@/context/TimeToLiveContext'
@@ -233,10 +233,10 @@ export async function deployAndSubscribeExpiration(
 
     if (typeof id === "string") {
 
-        const ttlData = await subscribeBump(id);
+        const ttlData = await readTtl(id);
 
-        const latestLedger = ttlData.current_ledger;
-        const liveUntil = ttlData.ledger_ttl;
+        const latestLedger = ttlData[0];
+        const liveUntil = ttlData[1];
         const timeToLiveLedger = liveUntil - latestLedger;
 
         // Convert TTL in a date

@@ -1,5 +1,7 @@
 import { smartdeploy } from "@/pages";
-import { DeployEventData } from '@/mercury_indexer/smartdeploy-api-client';
+import { DeployEventData, bumpContractInstance } from '@/mercury_indexer/smartdeploy-api-client';
+import { TimeToLive } from '@/context/TimeToLiveContext'
+import { format } from 'date-fns'
 import { Ok, Err, Version } from 'smartdeploy-client'
 
 export interface DeployedContract {
@@ -94,4 +96,33 @@ export function formatCountDown(initialTime: number) {
     const minutes = Math.floor((initialTime % (60 * 60)) / 60);
 
     return `${days}d${hours}h${minutes}m`;
+}
+
+export async function bumpAndQueryNewTtl(
+    contract_id: String,
+    ledgers_to_extend: number,
+    ttl: TimeToLive,
+    newMap: Map<String, TimeToLive>,
+) {
+    try {
+        const datas = await bumpContractInstance(contract_id, ledgers_to_extend);
+        if (datas != 0) {
+            const newTtl = datas as number;
+            const newTtlSec = newTtl * 5;
+            const now = new Date();
+            const newExpirationDate = format(now.getTime() + newTtlSec * 1000, "MM/dd/yyyy");
+
+            const newValue = {
+                ...ttl,
+                date: newExpirationDate,
+                ttlSec: newTtlSec,
+                countdown: formatCountDown(newTtlSec)
+            }
+            newMap.set(contract_id, newValue);
+
+        }
+    } catch (error) {
+        console.error(error);
+        window.alert(error);
+    }
 }
