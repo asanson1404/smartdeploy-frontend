@@ -1,6 +1,6 @@
 import styles from './style.module.css';
 
-import { DeployEventData } from '@/mercury_indexer/smartdeploy-api-client';
+import { DeployEventData, fetchTtlContractsData } from '@/mercury_indexer/smartdeploy-api-client';
 import { DeployedContract, listAllDeployedContracts, getMyDeployedContracts, formatCountDown, bumpAndQueryNewTtl } from './backend';
 import { useState, useEffect } from "react";
 import { DeployedTabContent } from './deployed-tab-content';
@@ -11,6 +11,9 @@ import ClipboardIconComponent from './clip-board-component';
 import { useThemeContext } from '../../context/ThemeContext'
 import { useWalletContext } from '../../context/WalletContext'
 import { useTimeToLiveContext, TimeToLive } from '../../context/TimeToLiveContext'
+import { format } from 'date-fns'
+import axios from 'axios';
+import endpoints from '@/endpoints.config';
 
 const LEDGERS_TO_EXTEND = 535_679;
 
@@ -63,6 +66,48 @@ export default function DeployedTab({
         }
         
     }, [allDeployedContracts, walletContext.address])
+
+    // useEffect to fetch bumping data (only when the page load)
+    useEffect(() => {
+
+        async function fillAddressToTtlMap() {
+
+            let latestLedger = (await axios.get(endpoints.rpc_endpoint)).data.history_latest_ledger;
+            let ttl_datas = await fetchTtlContractsData();
+
+            ///@ts-ignore
+            ttl_datas.forEach((data) => {
+
+                // Convert TTL in a date
+                const timeToLiveLedger = data.live_until_ttl - latestLedger;
+                const timeToLiveSeconds = timeToLiveLedger * 5;
+                const now = new Date();
+                const expirationDate = format(now.getTime() + timeToLiveSeconds * 1000, "MM/dd/yyyy");
+
+                if (!data.automatic_bump) {
+                    timeToLiveMap.setAddressToTtl(prevMap => {
+                        const updatedMap = new Map(prevMap);
+                        updatedMap.set(data.contract_id as string, {automaticBump: false, date: expirationDate});
+                        return updatedMap;
+                    })
+                } else {
+                    timeToLiveMap.setAddressToTtl(prevMap => {
+                        const updatedMap = new Map(prevMap);
+                        updatedMap.set(data.contract_id as string, {
+                            automaticBump: true,
+                            date: expirationDate,
+                            ttlSec: timeToLiveSeconds,
+                            countdown: formatCountDown(timeToLiveSeconds)
+                        });
+                        return updatedMap;
+                    })
+                }
+            });
+        }
+
+        fillAddressToTtlMap();
+
+    }, [])
 
     // useEffect to count down the next bump
     useEffect(() => {

@@ -186,3 +186,36 @@ export async function bumpContractInstance(contract_id: String, ledgers_to_exten
         return 0;
     }
 }
+
+export async function addDbTtlData(
+    contractId: string,
+    automaticBump: boolean,
+    liveUntilTtl: number,
+) {
+
+    const ttl_Data = {
+        contract_id: contractId,
+        automatic_bump: automaticBump,
+        live_until_ttl: liveUntilTtl
+    }
+
+    try {
+        await axios.post(endpoints.postgresql_endpoint, ttl_Data);
+
+    } catch (error) {
+        console.error("Error to add data to postgres DB", error);
+        window.alert("Adding bumping data to postgres DB failed. The problem comes from the Smart Deploy API");
+        return 0;
+    }
+
+}
+
+export async function fetchTtlContractsData() {
+    try {
+        const res = await axios.get(endpoints.postgresql_endpoint);
+        return res.data;
+    } catch (error) {
+        console.error("Error to fetch data from postgres DB", error);
+        window.alert("Fetching bumping data from postgres DB failed. The problem comes from the Smart Deploy API");
+    }
+}

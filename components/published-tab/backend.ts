@@ -1,7 +1,7 @@
 import { Dispatch, SetStateAction } from 'react'
 import { isConnected } from '@stellar/freighter-api'
 import { smartdeploy } from "@/pages"
-import { PublishEventData, DeployEventData, readTtl } from '@/mercury_indexer/smartdeploy-api-client'
+import { PublishEventData, DeployEventData, readTtl, addDbTtlData } from '@/mercury_indexer/smartdeploy-api-client'
 import { Ok, Err, Option, Version } from 'smartdeploy-client'
 import { WalletContextType } from '@/context/WalletContext'
 import { TimeToLiveType } from '@/context/TimeToLiveContext'
@@ -170,7 +170,7 @@ export async function deploy(
     }
 }
 
-export async function deployAndReadTtl(
+export async function deployContract(
     walletContext: WalletContextType,
     deployData: DeployArgsObj,
     timeToLiveMap: TimeToLiveType,
@@ -178,50 +178,7 @@ export async function deployAndReadTtl(
     setDeployedName: Dispatch<SetStateAction<string>>,
     setBumping: Dispatch<SetStateAction<boolean | null>>,
     setWouldDeploy: Dispatch<SetStateAction<boolean>>,
-) {
-
-    setIsDeploying(true);
-
-    let id = await deploy(
-        walletContext,
-        deployData
-    );
-
-    if (typeof id === "string") {
-
-        const ttlData = await readTtl(id);
-        const latestLedger = ttlData[0];
-        const liveUntil = ttlData[1];
-        const timeToLiveLedger = liveUntil - latestLedger;
-
-        // Convert TTL in a date
-        const timeToLiveSeconds = timeToLiveLedger * 5;
-        const now = new Date();
-        const expirationDate = format(now.getTime() + timeToLiveSeconds * 1000, "MM/dd/yyyy");
-
-        timeToLiveMap.setAddressToTtl(prevMap => {
-            const updatedMap = new Map(prevMap);
-            updatedMap.set(id as string, {automaticBump: false, date: expirationDate});
-            return updatedMap;
-        })
-
-        setIsDeploying(false)
-        setDeployedName("")
-        setBumping(null)
-        setWouldDeploy(false)
-    } else {
-        setIsDeploying(false)
-    }
-}
-
-export async function deployAndSubscribeExpiration(
-    walletContext: WalletContextType,
-    deployData: DeployArgsObj,
-    timeToLiveMap: TimeToLiveType,
-    setIsDeploying: Dispatch<SetStateAction<boolean>>,
-    setDeployedName: Dispatch<SetStateAction<string>>,
-    setBumping: Dispatch<SetStateAction<boolean | null>>,
-    setWouldDeploy: Dispatch<SetStateAction<boolean>>,
+    subscribeBumping: boolean
 ) {
 
     setIsDeploying(true);
@@ -243,17 +200,27 @@ export async function deployAndSubscribeExpiration(
         const timeToLiveSeconds = timeToLiveLedger * 5;
         const now = new Date();
         const expirationDate = format(now.getTime() + timeToLiveSeconds * 1000, "MM/dd/yyyy");
-        
-        timeToLiveMap.setAddressToTtl(prevMap => {
-            const updatedMap = new Map(prevMap);
-            updatedMap.set(id as string, {
-                automaticBump: true,
-                date: expirationDate,
-                ttlSec: timeToLiveSeconds,
-                countdown: formatCountDown(timeToLiveSeconds)
-            });
-            return updatedMap;
-        })
+
+        if (!subscribeBumping) {
+            timeToLiveMap.setAddressToTtl(prevMap => {
+                const updatedMap = new Map(prevMap);
+                updatedMap.set(id as string, {automaticBump: false, date: expirationDate});
+                return updatedMap;
+            })
+        } else {
+            timeToLiveMap.setAddressToTtl(prevMap => {
+                const updatedMap = new Map(prevMap);
+                updatedMap.set(id as string, {
+                    automaticBump: true,
+                    date: expirationDate,
+                    ttlSec: timeToLiveSeconds,
+                    countdown: formatCountDown(timeToLiveSeconds)
+                });
+                return updatedMap;
+            })
+        }
+
+        await addDbTtlData(id, subscribeBumping, liveUntil);
 
         setIsDeploying(false)
         setDeployedName("")

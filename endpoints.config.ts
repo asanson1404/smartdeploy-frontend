@@ -4,6 +4,8 @@ const endpoints = {
     subscribe_ledger_expiration: process.env.NEXT_PUBLIC_SUBSCRIBE_LEDGER_EXPIRATION_ENDPOINT ?? "",
     read_ttl: process.env.NEXT_PUBLIC_READ_LEDGER_TTL_ENDPOINT ?? "",
     bump_contract_instance: process.env.NEXT_PUBLIC_BUMP_CONTRACT_INSTANCE_ENDPOINT ?? "",
+    postgresql_endpoint: process.env.NEXT_PUBLIC_POSTGRESQL_ENDPOINT ?? "",
+    rpc_endpoint: process.env.NEXT_PUBLIC_STELLAR_RPC_ENDPOINT ?? "",
 }
 
 export default endpoints;

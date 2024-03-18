@@ -9,7 +9,7 @@ import Dropdown from 'react-dropdown'
 import { BsSendPlus } from 'react-icons/bs'
 import { IoMdArrowDropdown, IoMdArrowDropup } from 'react-icons/io'
 
-import { DeployArgsObj, deployAndReadTtl, deployAndSubscribeExpiration } from './backend'
+import { DeployArgsObj, deployContract } from './backend'
 import { Version } from 'smartdeploy-client'
 
 type DeployVersionProps = {
@@ -119,7 +119,7 @@ function DeployIconComponent(props: DeployVersionProps) {
                                         <button className={conditionalDeployButtonCss ? styles.button : styles.buttonDisabled}
                                                 data-theme={activeTheme}
                                                 onClick={async () => {
-                                                    deployAndReadTtl(
+                                                    deployContract(
                                                         walletContext,
                                                         deployData,
                                                         timeToLiveMap,
@@ -127,6 +127,7 @@ function DeployIconComponent(props: DeployVersionProps) {
                                                         setDeployedName,
                                                         setBumping,
                                                         setWouldDeploy,
+                                                        false
                                                     )
                                                 }}
                                                 disabled={bumping === null}
@@ -270,7 +271,7 @@ function BumpingPopup({
                             <button className={conditionalDeployButtonCss ? styles.button : styles.buttonDisabled}
                                     data-theme={activeTheme}
                                     onClick={async () => {
-                                        deployAndSubscribeExpiration(
+                                        deployContract(
                                             walletContext,
                                             deployData,
                                             timeToLiveMap,
@@ -278,6 +279,7 @@ function BumpingPopup({
                                             setDeployedName,
                                             setBumping,
                                             setWouldDeploy,
+                                            true
                                         )
                                         
                                     }}
