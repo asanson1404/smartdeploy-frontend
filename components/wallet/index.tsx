@@ -1,11 +1,11 @@
-import { Inter } from 'next/font/google'
+import { Roboto } from 'next/font/google'
 import { use, useEffect, useState } from 'react'
 import { isAllowed, setAllowed, getUserInfo, getPublicKey, isConnected, getNetwork } from '@stellar/freighter-api'
 import styles from './style.module.css'
 import { useThemeContext } from '../../context/ThemeContext'
 import { useWalletContext } from '../../context/WalletContext'
 
-const inter = Inter({ subsets: ['latin'] })
+const roboto = Roboto({ weight: ['400', '700'], subsets: ['latin'] })
 
 export default function WalletInfo() {
 
@@ -62,7 +62,7 @@ export default function WalletInfo() {
     }, [walletContext.connected])
 
     return (
-        <div className={`${styles.walletInfo} ${inter.className}`} data-theme={activeTheme}>
+        <div className={`${styles.walletInfo} ${roboto.className}`} data-theme={activeTheme}>
             <>
                 {(!walletContext.address && walletContext.hasFreighter) || (!walletContext.connected) ? (
                     <button className={styles.connectButton} onClick={() => connect()}><b>Connect Wallet</b></button>

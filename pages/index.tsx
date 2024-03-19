@@ -1,6 +1,6 @@
 import Head from 'next/head'
 import Image from 'next/image'
-import { Inter } from 'next/font/google'
+import { Roboto } from 'next/font/google'
 import { useState, Dispatch, SetStateAction } from 'react'
 import styles from '@/styles/Home.module.css'
 import WalletInfo from '@/components/wallet'
@@ -17,7 +17,7 @@ import { MdNightlightRound } from 'react-icons/md'
 import { Contract, networks } from 'smartdeploy-client'
 import { useThemeContext } from '../context/ThemeContext'
 
-const inter = Inter({ subsets: ['latin'] })
+const roboto = Roboto({ weight: ['400', '700'], subsets: ['latin'] })
 
 // Smartdeploy Contract Instance
 export const smartdeploy = new Contract({
@@ -56,7 +56,7 @@ export default function Home() {
         <link rel="icon" href="/sd-logo-det.ico" />
       </Head>
 
-      <div className={styles.headerBar} data-theme={activeTheme}>
+      <div className={`${styles.headerBar} ${inter.className}`} data-theme={activeTheme}>
         <div className={styles.container} data-theme={activeTheme}>
           <div className={styles.social} data-theme={activeTheme}>
             {activeTheme === 'dark' ? (
@@ -129,7 +129,7 @@ export default function Home() {
         </div>
       </div>
 
-      <main className={`${styles.main} ${inter.className}`} data-theme={activeTheme}>
+      <main className={`${styles.main} ${roboto.className}`} data-theme={activeTheme}>
 
         <div className={styles.center} data-theme={activeTheme}>
           { activeTheme === "dark" ? (
