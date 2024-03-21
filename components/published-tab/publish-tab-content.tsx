@@ -24,7 +24,7 @@ export function PublishTabContent(props: PublishTabData) {
                 </colgroup>
                 <thead data-theme={activeTheme}>
                     <tr>
-                        <th>Contract</th>
+                        <th>Binary name</th>
                         <th className={styles.instancesThead}>Instances</th>
                         <th>Author</th>
                         <th>Versions</th>

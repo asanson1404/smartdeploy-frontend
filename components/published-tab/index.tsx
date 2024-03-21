@@ -29,7 +29,7 @@ export default function PublishedTab({
     const [allPublishedContracts, setAllPublishedContracts] = useState<PublishedContract[]>([]);
     const [myPublishedContracts, setMyPublishedContracts] = useState<PublishedContract[]>([]);
 
-    // useEffect to have All Published Contracts
+    // useEffect to have All Published Binaries
     useEffect(() => {
 
         async function fetchAllPublishedContracts() {
@@ -50,7 +50,7 @@ export default function PublishedTab({
 
     }, [publishEvents, deployEvents])
 
-    // useEffect to have My Published Contracts
+    // useEffect to have My Published Binaries
     useEffect(() => {
 
         if ((walletContext.address !== "") && deployEvents) {
@@ -66,19 +66,19 @@ export default function PublishedTab({
             <div>
                 <ToggleButtons selectedTab={selectedTab} setSelectedTab={setSelectedTab} />
                 {selectedTab == Tab.All ? (
-                    <PublishTabContent title='ALL PUBLISHED CONTRACTS' displayedContracts="Loading..."/>
+                    <PublishTabContent title='ALL PUBLISHED BINARIES' displayedContracts="Loading..."/>
                 ) : (
                     walletContext.connected ? (
-                        <PublishTabContent title='MY PUBLISHED CONTRACTS' displayedContracts="Loading..."/>
+                        <PublishTabContent title='MY PUBLISHED BINARIES' displayedContracts="Loading..."/>
                     ) : (
-                        <PublishTabContent title='MY PUBLISHED CONTRACTS' displayedContracts="Wallet not connected. Connect your Stellar account to see your published contracts."/>
+                        <PublishTabContent title='MY PUBLISHED BINARIES' displayedContracts="Wallet not connected. Connect your Stellar account to see your published binaries."/>
                     )
                 )}
             </div>
         );
     }
 
-    else if (error) { throw new Error("Error when trying to fetch Published Contracts");}
+    else if (error) { throw new Error("Error when trying to fetch Published Binaries");}
 
     else if (allPublishedContracts && selectedTab == Tab.All) {
 
@@ -121,7 +121,7 @@ export default function PublishedTab({
         return(
             <div>
                 <ToggleButtons selectedTab={selectedTab} setSelectedTab={setSelectedTab} />
-                <PublishTabContent title='ALL PUBLISHED CONTRACTS' displayedContracts={allPublishedContractsRows}/>
+                <PublishTabContent title='ALL PUBLISHED BINARIES' displayedContracts={allPublishedContractsRows}/>
             </div>
         )
     }
@@ -169,12 +169,12 @@ export default function PublishedTab({
                 <ToggleButtons selectedTab={selectedTab} setSelectedTab={setSelectedTab} />
                 {walletContext.connected ? (
                     myPublishedContracts.length > 0 ? (
-                        <PublishTabContent title='MY PUBLISHED CONTRACTS' displayedContracts={myPublishedContractsRows}/>
+                        <PublishTabContent title='MY PUBLISHED BINARIES' displayedContracts={myPublishedContractsRows}/>
                     ) : (
-                        <PublishTabContent title='MY PUBLISHED CONTRACTS' displayedContracts="You haven't published or deployed any contract yet"/>
+                        <PublishTabContent title='MY PUBLISHED BINARIES' displayedContracts="You haven't published or deployed any binaries yet"/>
                     )
                 ) : (
-                    <PublishTabContent title='MY PUBLISHED CONTRACTS' displayedContracts="Wallet not connected. Connect your Stellar account to see your deployed contracts."/>
+                    <PublishTabContent title='MY PUBLISHED BINARIES' displayedContracts="Wallet not connected. Connect your Stellar account to see your deployed binaries."/>
                 )}
             </div>
         )

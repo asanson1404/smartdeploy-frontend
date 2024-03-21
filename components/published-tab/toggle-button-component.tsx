@@ -24,13 +24,13 @@ export function ToggleButtons({
                  data-theme={activeTheme}
                  onClick={() => { setSelectedTab(Tab.All) }}
             >
-                All Contracts
+                All Binaries
             </div>
             <div className={selectedTab == Tab.My ? styles.myContractsButtonSelected : styles.myContractsButtonNotSelected}
                  data-theme={activeTheme}
                  onClick={() => { setSelectedTab(Tab.My) }}
             >
-                My Contracts
+                My Binaries
             </div>
         </div>
     )
