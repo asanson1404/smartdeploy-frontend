@@ -1,5 +1,5 @@
 import { smartdeploy } from "@/pages";
-import { DeployEventData, bumpContractInstance } from '@/mercury_indexer/smartdeploy-api-client';
+import { DeployEventData, ClaimEventData, bumpContractInstance } from '@/mercury_indexer/smartdeploy-api-client';
 import { TimeToLive } from '@/context/TimeToLiveContext'
 import { format } from 'date-fns'
 import { Ok, Err, Version } from 'smartdeploy-client'
@@ -15,9 +15,10 @@ export interface DeployedContract {
 
 export async function listAllDeployedContracts(
     deployEvents: DeployEventData[] | undefined,
+    claimEvents: ClaimEventData[] | undefined,
 ) {
 
-    if (deployEvents) {
+    if (deployEvents && claimEvents) {
         try {
     
             ///@ts-ignore
@@ -33,7 +34,7 @@ export async function listAllDeployedContracts(
                 ///@ts-ignore
                 contractArray.forEach(([name, address], i) => {
 
-                    const eventData: DeployEventData | undefined = deployEvents.find(event => event.contractId == address);
+                    let eventData: DeployEventData | ClaimEventData | undefined = deployEvents.find(event => event.contractId == address);
                     
                     // Contract deployed with SmartDeploy => trigger a Deploy event
                     if (eventData) {
@@ -50,13 +51,13 @@ export async function listAllDeployedContracts(
                     }
                     // If no Deploy events the contract has been claimed 
                     else {
-                        console.warn("No Deploy event data found for contract ID ", address);
+                        eventData = claimEvents.find(event => event.contractId == address);
                         const parsedDeployedContract: DeployedContract = {
                             index: i,
                             name: name,
                             address: address,
-                            deployer: "no_evt_data",
-                            fromPublished: "no_evt_data",
+                            deployer: eventData!.claimer,
+                            fromPublished: eventData!.wasmHash,
                             version: undefined
                         }
         

@@ -9,7 +9,8 @@ import DeployedTab from '@/components/deployed-tab'
 import PopupDappInfo from '@/components/dapp-info-popup'
 import { 
   getDeployEvents, DeployEventData,
-  getPublishEvents, PublishEventData
+  getPublishEvents, PublishEventData,
+  getClaimEvents, ClaimEventData,
 } from '@/mercury_indexer/smartdeploy-api-client'
 import { FaDiscord, FaTwitter, FaGithub } from "react-icons/fa"
 import { BsFillSunFill } from 'react-icons/bs'
@@ -32,6 +33,7 @@ export default function Home() {
 
   const [deployEvents, setDeployEvents] = useState<DeployEventData[] | undefined>([]);
   const [publishEvents, setPublishEvents] = useState<PublishEventData[] | undefined>([]);
+  const [claimEvents, setClaimEvents] = useState<ClaimEventData[] | undefined>([]);
 
   let newPublishEvents = getPublishEvents();
   // Update publishEvents if necessary
@@ -47,6 +49,13 @@ export default function Home() {
   }
   console.log("DEPLOY EVENTS: ", deployEvents)
 
+  let newClaimEvents = getClaimEvents();
+  // Update deployEvents if necessary
+  if (newClaimEvents != claimEvents) {
+      setClaimEvents(newClaimEvents);
+  }
+  console.log("CLAIM EVENTS: ", claimEvents)
+
   return (
     <>
       <Head>
@@ -56,7 +65,7 @@ export default function Home() {
         <link rel="icon" href="/sd-logo-det.ico" />
       </Head>
 
-      <div className={`${styles.headerBar} ${inter.className}`} data-theme={activeTheme}>
+      <div className={`${styles.headerBar} ${roboto.className}`} data-theme={activeTheme}>
         <div className={styles.container} data-theme={activeTheme}>
           <div className={styles.social} data-theme={activeTheme}>
             {activeTheme === 'dark' ? (
@@ -156,7 +165,7 @@ export default function Home() {
 
         <PopupDappInfo/>
         <PublishedTab publishEvents={publishEvents} deployEvents={deployEvents}/>
-        <DeployedTab deployEvents={deployEvents}/>
+        <DeployedTab deployEvents={deployEvents} claimEvents={claimEvents}/>
         
         <div className={styles.grid}>
           <a

@@ -140,6 +140,64 @@ export function getDeployEvents() {
     return data;
 }
 
+export interface ClaimEventData {
+    deployedName: string;
+    claimer: string;
+    contractId: string;
+    wasmHash: string;
+    [key: string]: string | Version;
+}
+
+export function getClaimEvents() {
+
+    // Fetch deploy events data every 5 seconds
+    const { data } = useQuery({
+        queryKey: ['claim_events'],
+        queryFn: async () => {
+            try {
+                const res = await axios.get(endpoints.claim_events);
+
+                var claimEvents: ClaimEventData[] = [];
+
+                ///@ts-ignore
+                res.data.forEach((claimEvent) => {
+
+                    const parsedClaimEvent: ClaimEventData = {
+                        deployedName: "",
+                        claimer: "",
+                        contractId: "",
+                        wasmHash: claimEvent[1],
+                    }
+
+                    ///@ts-ignore
+                    claimEvent[0].map.forEach((eventField) => {
+
+                        var symbol: string = eventField.key.symbol;
+
+                        if (symbol == "contract_id") {
+                            parsedClaimEvent.contractId = eventField.val.address;
+                        } else if (symbol === 'deployed_name') {
+                            symbol = 'deployedName';
+                            parsedClaimEvent.deployedName = eventField.val.string;
+                        } else {
+                            parsedClaimEvent.claimer = eventField.val.address;
+                        }
+                        
+                    })
+                    claimEvents.push(parsedClaimEvent);
+                })
+                return claimEvents;
+
+            } catch (error) {
+                console.error("Error to get the Claim events", error);
+            }
+        },
+        refetchInterval: 5000,
+    });
+
+    return data;
+}
+
 // We don't use that function because we calculate ourself the TTL
 // Mercury expiration tracking too tricky to use
 export async function subscribeBump(id: String) {

@@ -146,6 +146,23 @@
     border-radius: 4px;
     border: none;
 }
+.copyPopupContainer {
+    position: absolute;
+    left: 65%;
+}
+.copyPopUpContent {
+    text-align: center;
+    font-size: 0.5rem;
+    width: 5.5rem;
+    color: var(--ttl-popup-text-color);
+    padding: 0.3rem;
+    background-color: var(--ttl-popup-bg-color);
+    border-radius: 4px;
+    border: none;
+}
+.relativeRow {
+    position: relative;
+}
 .ttlTd {
     display: flex;
     flex-direction: column;
@@ -160,6 +177,7 @@
     font-style: italic;
 }
 .fromTd {
+    position: inherit;
     display: flex;
     flex-direction: column;
     justify-content: center;

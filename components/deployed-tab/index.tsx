@@ -1,13 +1,13 @@
 import styles from './style.module.css';
 
-import { DeployEventData, fetchTtlContractsData } from '@/mercury_indexer/smartdeploy-api-client';
+import { DeployEventData, ClaimEventData, fetchTtlContractsData } from '@/mercury_indexer/smartdeploy-api-client';
 import { DeployedContract, listAllDeployedContracts, getMyDeployedContracts, formatCountDown, bumpAndQueryNewTtl } from './backend';
 import { useState, useEffect } from "react";
 import { DeployedTabContent } from './deployed-tab-content';
 import { ToggleButtons, Tab } from './toggle-button-component';
 import { FcOk } from "react-icons/fc";
 import { IoMdCloseCircle } from "react-icons/io";
-import ClipboardIconComponent from './clip-board-component';
+import CopyComponent from './copy-component';
 import { useThemeContext } from '../../context/ThemeContext'
 import { useWalletContext } from '../../context/WalletContext'
 import { useTimeToLiveContext, TimeToLive } from '../../context/TimeToLiveContext'
@@ -18,9 +18,11 @@ import endpoints from '@/endpoints.config';
 const LEDGERS_TO_EXTEND = 535_679;
 
 export default function DeployedTab({
-    deployEvents
+    deployEvents,
+    claimEvents,
 } : {
-    deployEvents: DeployEventData[] | undefined
+    deployEvents: DeployEventData[] | undefined,
+    claimEvents: ClaimEventData[] | undefined
 }) {
 
     // Import the current Theme
@@ -41,7 +43,7 @@ export default function DeployedTab({
 
         async function fetchDeployedContracts() {
             try {
-                const datas = await listAllDeployedContracts(deployEvents);
+                const datas = await listAllDeployedContracts(deployEvents, claimEvents);
                 if (datas != 0) {
                     setAllDeployedContracts(datas as DeployedContract[]);
                     setLoading(false);
@@ -55,7 +57,7 @@ export default function DeployedTab({
 
         fetchDeployedContracts();
 
-    }, [deployEvents]);
+    }, [deployEvents, claimEvents]);
 
     // useEffect to have My Published Contracts
     useEffect(() => {
@@ -171,19 +173,23 @@ export default function DeployedTab({
 
         allDeployedContracts.forEach((deployedContract) => {
 
-            var version_string = "no_evt_data";
+            var version_string = undefined;
             if (deployedContract.version) {
                 version_string = `v.${deployedContract.version.major}.${deployedContract.version.minor}.${deployedContract.version.patch}`;
             }
 
             allDeployedContractsRows.push(
-                <tr key={deployedContract.index} data-theme={activeTheme}>
+                <tr key={deployedContract.index} data-theme={activeTheme} className={styles.relativeRow}>
                     <td className={styles.contractCell}>{deployedContract.name}</td>
                     <td>{deployedContract.address}</td>
                     <td>
                         <div className={styles.fromTd}>
-                            <p>{deployedContract.fromPublished}</p>
-                            <p>({version_string})</p>
+                            {deployedContract.version ? (
+                                <p>{deployedContract.fromPublished}</p>
+                            ) : (
+                                <CopyComponent hash={deployedContract.fromPublished} />
+                            )}
+                            <p>{version_string && `(${version_string})`}</p>
                         </div>
                     </td>
                     <td>
