@@ -3,6 +3,8 @@ import { DeployEventData, ClaimEventData, bumpContractInstance } from '@/mercury
 import { TimeToLive } from '@/context/TimeToLiveContext'
 import { format } from 'date-fns'
 import { Ok, Err, Version } from 'smartdeploy-client'
+import { WalletContextType } from '@/context/WalletContext'
+import { SetStateAction, Dispatch } from "react";
 
 export interface DeployedContract {
     index: number;
@@ -88,6 +90,67 @@ export function getMyDeployedContracts(deployedContracts: DeployedContract[], ad
     const myDeployedContracts: DeployedContract[] = deployedContracts.filter(deployedContract => deployedContract.deployer === address);
     return myDeployedContracts;
 
+}
+
+export type ImportArgsObj = { 
+    deployed_name: string,
+    contract_id: string,
+    admin: string,
+};
+
+export async function importContract(
+    walletContext: WalletContextType,
+    importData: ImportArgsObj,
+    setDeployedName: Dispatch<SetStateAction<string>>,
+    setContractId: Dispatch<SetStateAction<string>>,
+    setAdmin: Dispatch<SetStateAction<string>>,
+    setIsImporting: Dispatch<SetStateAction<boolean>>,
+    setBumping: Dispatch<SetStateAction<boolean | null>>,
+) {
+
+    // Check if the Wallet is connected
+    if (walletContext.address === "") {
+        alert("Wallet not connected. Please, connect a Stellar account.");
+    }
+    // Check is the network is Futurenet
+    else if (walletContext.network.replace(" ", "").toUpperCase() !== "TESTNET") {
+        alert("Wrong Network. Please, switch to Testnet.");
+    }
+    else {
+        // Check if deployed name contains spaces
+        if (importData.deployed_name.includes(' ')) {
+            alert("Deployed name cannot includes spaces. Please, remove the spaces.");
+        }
+        // Check if contract_id contains spaces
+        if (importData.contract_id.includes(' ')) {
+            alert("Contract Id cannot includes spaces. Please, remove the spaces.");
+        }
+        // Check if admin contains spaces
+        if (importData.admin.includes(' ')) {
+            alert("Admin address cannot includes spaces. Please, remove the spaces.");
+        }
+        // Now that everything is ok, deploy the contract
+        else {
+
+            try {
+                const tx = await smartdeploy.claimAlreadyDeployedContract(importData);
+                await tx.signAndSend();
+
+                setDeployedName("");
+                setContractId("");
+                setAdmin("");
+                setIsImporting(false);
+                setBumping(null);
+
+            } catch (error) {
+                console.error(error);
+                window.alert(error);
+                return false;
+            }
+
+        }
+
+    }
 }
 
 export function formatCountDown(initialTime: number) {

@@ -67,6 +67,7 @@ div[data-theme="light"] {
   --toggle-table-button-selected-color: #272626;
   --toggle-table-button-not-selected-bg: rgba(181, 97, 58, 0.35);
   --toggle-table-button-not-selected-color: #27262671;
+  --import-contract-button-left-border: rgba(241, 240, 240, 0.241);
 
   --ttl-popup-bg-color: rgb(43, 41, 41);
   --ttl-popup-text-color: #c7c2c2;  
@@ -97,6 +98,7 @@ div[data-theme="dark"] {
   --toggle-table-button-selected-color: #b6b3b3;
   --toggle-table-button-not-selected-bg: #0d599f30;
   --toggle-table-button-not-selected-color: #b6b3b390;
+  --import-contract-button-left-border: rgb(1, 11, 42);
 
   --ttl-popup-bg-color: rgb(189, 186, 186);
   --ttl-popup-text-color: #111111;
