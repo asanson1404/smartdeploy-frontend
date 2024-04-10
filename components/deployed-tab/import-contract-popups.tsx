@@ -50,8 +50,8 @@ export function ImportPopup({
 
     const importData: ImportArgsObj = {
         deployed_name: deployedName,
-        contract_id: contractId,
-        admin: admin
+        id: contractId,
+        owner: admin
     }
   
     return (

@@ -94,8 +94,8 @@ export function getMyDeployedContracts(deployedContracts: DeployedContract[], ad
 
 export type ImportArgsObj = { 
     deployed_name: string,
-    contract_id: string,
-    admin: string,
+    id: string,
+    owner: string,
 };
 
 export async function importContract(
@@ -122,14 +122,14 @@ export async function importContract(
             alert("Deployed name cannot includes spaces. Please, remove the spaces.");
         }
         // Check if contract_id contains spaces
-        if (importData.contract_id.includes(' ')) {
+        if (importData.id.includes(' ')) {
             alert("Contract Id cannot includes spaces. Please, remove the spaces.");
         }
         // Check if admin contains spaces
-        if (importData.admin.includes(' ')) {
+        if (importData.owner.includes(' ')) {
             alert("Admin address cannot includes spaces. Please, remove the spaces.");
         }
-        // Now that everything is ok, deploy the contract
+        // Now that everything is ok, import the contract
         else {
 
             try {
